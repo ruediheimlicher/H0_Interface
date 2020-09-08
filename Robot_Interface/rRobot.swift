@@ -10,18 +10,18 @@ import Cocoa
 
 let LOK_0:UInt8 = 0xA0
 let LOK_FAKTOR0:Float = 1
-let LOK0_START:UInt16 = 15 // Startwert Slider 1
+let LOK0_START:UInt16 = 0 // Startwert Slider 1
 let LOK0_OFFSET:UInt16 = 8 // Startwert low
 
 
 // 
 let LOK_1:UInt8 = 0xA1
-let LOK1_START:UInt16 = 15 // Startwert Slider 1
+let LOK1_START:UInt16 = 0 // Startwert Slider 1
 let LOK1_OFFSET:UInt16 = 8 // Startwert low
 let LOK_FAKTOR1:Float = 1
 
 let LOK_2:UInt8 = 0xA2
-let LOK2_START:UInt16 = 15 // Startwert Slider 1
+let LOK2_START:UInt16 = 0 // Startwert Slider 1
 let LOK2_OFFSET:UInt16 = 8 // starteinstellung
 let LOK_FAKTOR2:Float = 1
 
@@ -30,6 +30,9 @@ class rRobot: rViewController
 
     @IBOutlet weak var Intervalltimer_Feld: NSTextField!
    @IBOutlet weak var Intervalltimer_Stepper: NSStepper!
+
+   @IBOutlet weak var Pause_Feld: NSTextField!
+   @IBOutlet weak var Pause_Stepper: NSStepper!
    
    
    @IBOutlet  weak var RobotarmFeld:rRobotarm!
@@ -53,6 +56,11 @@ class rRobot: rViewController
    @IBOutlet weak var intpos0Feld: NSTextField!
    @IBOutlet weak var intpos1Feld: NSTextField!
    @IBOutlet weak var intpos2Feld: NSTextField!
+   
+   
+   @IBOutlet weak var Lok_0_RichtungTaste: NSButton!
+   @IBOutlet weak var Lok_1_RichtungTaste: NSButton!
+   @IBOutlet weak var Lok_2_RichtungTaste: NSButton!
    
    @IBOutlet weak var a0: NSSegmentedControl!
    @IBOutlet weak var a1: NSSegmentedControl!
@@ -83,6 +91,7 @@ class rRobot: rViewController
    var speedarray:[UInt8] = [UInt8](repeating: 0x00, count: 5)
    var lokarray:[UInt8] = [UInt8](repeating: 0x00, count:16)
    
+   var pause:UInt8 = 5
    
    override func viewDidAppear() 
    {
@@ -106,9 +115,8 @@ class rRobot: rViewController
       formatter.minimumIntegerDigits = 1
       //formatter.roundingMode = .down
       
-      Intervalltimer_Feld.intValue = Int32(timerintervall);
-      Intervalltimer_Stepper.intValue = Int32(timerintervall);
       
+       
       //USB_OK.backgroundColor = NSColor.greenColor()
       // Do any additional setup after loading the view.
       let newdataname = Notification.Name("newdata")
@@ -127,6 +135,19 @@ class rRobot: rViewController
       let a1seg  = Int(UserDefaults.standard.string(forKey: "a1index") ?? "0")
       let a2seg  = Int(UserDefaults.standard.string(forKey: "a2index") ?? "0")
       let a3seg  = Int(UserDefaults.standard.string(forKey: "a3index") ?? "0")
+      
+      pause = UInt8(UserDefaults.standard.string(forKey: "pause") ?? "5" ) ?? 5
+      Pause_Feld.integerValue = Int(pause)
+      Pause_Stepper.integerValue = Int(pause)
+
+      
+      
+      timerintervall = UInt8(UserDefaults.standard.string(forKey: "timerintervall") ?? "13") ?? 13
+      
+      Intervalltimer_Feld.integerValue = Int((timerintervall));
+      Intervalltimer_Stepper.integerValue = Int((timerintervall));
+     
+      
       //print("UserDefaults a0seg: \(a0seg)")
       a0.selectSegment(withTag: a0seg ?? 0)
       a1.selectSegment(withTag:  a1seg ?? 0)
@@ -147,15 +168,17 @@ class rRobot: rViewController
 
       print("lokarray: \(lokarray)")
      
+      // Lokadresse 0 schicken
       teensy.write_byteArray[8] = UInt8(a0seg ?? 0)
       teensy.write_byteArray[9] = UInt8(a1seg ?? 0)
       teensy.write_byteArray[10] = UInt8(a2seg ?? 0)
       teensy.write_byteArray[11] = UInt8(a3seg ?? 0)
       
-      teensy.write_byteArray[16] = 0 // Richtung
+      teensy.write_byteArray[16] = 0 // Funktion
       teensy.write_byteArray[17] = 0 // speed
       teensy.write_byteArray[18] = timerintervall // speed
-       
+      teensy.write_byteArray[19] = 5 // pause
+      
       Pot1_Slider.integerValue = Int(LOK1_START)
       Pot1_Feld.integerValue = Int(Pot1_Slider.floatValue * LOK_FAKTOR1)
       
@@ -168,7 +191,7 @@ class rRobot: rViewController
         
        
       
-      teensy.write_byteArray[0] = SET_ROB // Code
+      teensy.write_byteArray[0] = LOK_0 // Lok 0
    
       if (globalusbstatus > 0)
       {
@@ -413,8 +436,8 @@ class rRobot: rViewController
                   teensy.write_byteArray[HYP_BYTE_H] = UInt8((Int(hyp) & 0xFF00) >> 8) // hb
                   teensy.write_byteArray[HYP_BYTE_L] = UInt8((Int(hyp) & 0x00FF) & 0xFF) // lb
                   
-                  teensy.write_byteArray[STEPS_BYTE_H] = UInt8((Int(anzahlsteps) & 0xFF00) >> 8) // hb
-                  teensy.write_byteArray[STEPS_BYTE_L] = UInt8((Int(anzahlsteps) & 0x00FF) & 0xFF) // lb
+  //                teensy.write_byteArray[STEPS_BYTE_H] = UInt8((Int(anzahlsteps) & 0xFF00) >> 8) // hb
+  //                teensy.write_byteArray[STEPS_BYTE_L] = UInt8((Int(anzahlsteps) & 0x00FF) & 0xFF) // lb
                   
                   teensy.write_byteArray[INDEX_BYTE_H] = UInt8(((wegindex-1) & 0xFF00) >> 8) // hb // hb // Start, Index 0
                   teensy.write_byteArray[INDEX_BYTE_L] = UInt8(((wegindex-1) & 0x00FF) & 0xFF) // lb
@@ -469,57 +492,62 @@ class rRobot: rViewController
       
    }
 
+   
+   @IBAction  func report_Pause_Stepper(_ sender: NSStepper) // untere Grenze
+   {
+      print("report_Pause_Stepper IntVal: \(sender.integerValue)")
+      teensy.write_byteArray[0] = LOK_0 
+      let intpos = sender.integerValue 
+      Pause_Feld.integerValue = intpos
+      teensy.write_byteArray[19] = UInt8(intpos)
+      pause = UInt8(intpos)
+      if (usbstatus > 0)
+      {
+         let senderfolg = teensy.send_USB()
+         print("Robot report_Pause_Stepper senderfolg: \(senderfolg)")
+      }
+      
+      
+   }
+   
       
    //MARK: Slider 0
    @IBAction override func report_Slider0(_ sender: NSSlider)
    {
-      teensy.write_byteArray[0] = LOK_0 // Code 
+      teensy.write_byteArray[0] = 0xB0 // Code 
       print("Robot report_Slider0 IntVal: \(sender.intValue)")
-      lokarray[12] = LOK_0
+      lokarray[12] = 0xB0
       let pos = sender.floatValue
       
       let intpos = UInt8(pos * LOK_FAKTOR0)
       let Ustring = formatter.string(from: NSNumber(value: intpos))
-      var speed:UInt8 =  0
+      var speed:UInt8 =  intpos
       print("report_Slider0 pos: \(pos) intpos: \(intpos)  speed: \(speed)")
-      var richtungspeed:Int = 0
-      var richtung:UInt8 = 0
-      if intpos < 15
+      
+ //      print("report_Slider0 speed: \(speed) richtung: \(richtung)")
+      if speed > 0
       {
-         speedarray[0] = 0
-         lokarray[5] = 0
-         speed = (15 - intpos) 
-         richtungspeed = Int(speed) * -1
-         
+         speed += 1 // speed 1 ist Richtungsumschaltung
       }
-      else if intpos > 15
-      {
-         speedarray[0] = 1
-         lokarray[5] = 1
-         speed = intpos - 15
-         richtungspeed = Int(speed)
-         richtung = 2 // trit 1 ueberspringen
-      }
-       print("report_Slider0 speed: \(speed)")
       speedarray[1] = speed
       lokarray[6] = speed
       print("speedarray: \(speedarray)")
       print("lokarray: \(lokarray)")
       
-      teensy.write_byteArray[16] = richtung // Richtung
+  //  teensy.write_byteArray[16] = richtung // Richtung
       teensy.write_byteArray[17] = UInt8(speed) // speed
 
       
       // Pot0_Feld.stringValue  = Ustring!
       
-      Pot0_Feld.integerValue = (richtungspeed)
+      Pot0_Feld.integerValue = Int(pos)
       
  //     Pot0_Stepper_L.integerValue  = Int(sender.minValue) // Stepper min setzen
   //    Pot0_Stepper_L_Feld.integerValue = Int(sender.minValue)
 //      Pot0_Stepper_H.integerValue  = Int(sender.maxValue) // Stepper max setzen
  //     Pot0_Stepper_H_Feld.integerValue = Int(sender.maxValue)
       
-  print("usbstatus: \(usbstatus)")
+      print("usbstatus: \(usbstatus)")
       if (usbstatus > 0)
       {
          let senderfolg = teensy.send_USB()
@@ -527,6 +555,44 @@ class rRobot: rViewController
       }
  
    }
+   
+   @IBAction  func report_Richtung(_ sender: NSButton)
+   {
+      print("report_Richtung state: \(sender.state)")
+      teensy.write_byteArray[0] = 0xC0 // Code 
+      teensy.write_byteArray[17] = 1 // speed 1: Richtung togglen
+      if (usbstatus > 0)
+      {
+         let senderfolg = teensy.send_USB()
+         if (senderfolg < BUFFER_SIZE)
+         {
+            print("report_Richtung: %d",senderfolg)
+         }
+      }
+
+   }
+   
+   @IBAction  func report_Funktion(_ sender: NSButton)
+   {
+      print("report_Funktion state: \(sender.state)")
+      teensy.write_byteArray[0] = 0xD0 // Code 
+      var funktion:UInt8 = 1
+      if sender.state == .on
+      {
+         funktion = 0
+      }
+     teensy.write_byteArray[16] = funktion // Richtung
+      if (usbstatus > 0)
+      {
+         let senderfolg = teensy.send_USB()
+         if (senderfolg < BUFFER_SIZE)
+         {
+            print("report_Funktion: %d",senderfolg)
+         }
+      }
+
+   }
+   
    @IBAction override func report_set_Pot0(_ sender: NSTextField)
    {
       teensy.write_byteArray[0] = SET_0 // Code 
@@ -825,6 +891,11 @@ class rRobot: rViewController
       UserDefaults.standard.set(a1.indexOfSelectedItem, forKey: "a1index")
       UserDefaults.standard.set(a2.indexOfSelectedItem, forKey: "a2index")
       UserDefaults.standard.set(a3.indexOfSelectedItem, forKey: "a3index")
+      
+      UserDefaults.standard.set(pause, forKey: "pause")
+      
+      UserDefaults.standard.set(timerintervall, forKey: "timerintervall")
+      
            /*
       UserDefaults.standard.set(Pot1_Stepper_L.integerValue, forKey: "robot1min")
       UserDefaults.standard.set(Pot2_Stepper_L.integerValue, forKey: "robot2min")

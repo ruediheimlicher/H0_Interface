@@ -836,9 +836,9 @@ class rViewController: NSViewController, NSWindowDelegate
       print("report_Pot0_Stepper_L IntVal: \(sender.integerValue)")
       
       let intpos = sender.integerValue 
-      Pot0_Stepper_L_Feld.integerValue = intpos
+//      Pot0_Stepper_L_Feld.integerValue = intpos
       
-      Pot0_Slider.minValue = sender.doubleValue 
+ //     Pot0_Slider.minValue = sender.doubleValue 
       print("report_Pot0_Stepper_L Pot0_Slider.minValue: \(Pot0_Slider.minValue)")
       
    }
