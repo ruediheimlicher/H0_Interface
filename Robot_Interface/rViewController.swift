@@ -506,7 +506,7 @@ class rViewController: NSViewController, NSWindowDelegate
       var i = 0
       while i < 10
       {
-         //print("i: \(i)  wert: \(lastDataRead[i])\t")
+         print("i: \(i)  wert: \(lastDataRead[i])\t")
          i = i+1
       }
 
@@ -526,7 +526,7 @@ class rViewController: NSViewController, NSWindowDelegate
             var i = 0
             while i < 10
             {
-               //print("i: \(i)  wert: \(d![i])\t")
+              // print("i: \(i)  wert: \(d![i])\t")
                i = i+1
             }
             
@@ -540,6 +540,7 @@ class rViewController: NSViewController, NSWindowDelegate
       //print("dic: \(dic ?? ["a":[123]])\n")
 
    }
+   
    func tester(_ timer: Timer)
    {
       let theStringToPrint = timer.userInfo as! String

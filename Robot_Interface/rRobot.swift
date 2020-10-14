@@ -496,7 +496,7 @@ class rRobot: rViewController
    @IBAction  func report_Pause_Stepper(_ sender: NSStepper) // untere Grenze
    {
       print("report_Pause_Stepper IntVal: \(sender.integerValue)")
-      teensy.write_byteArray[0] = LOK_0 
+      teensy.write_byteArray[0] = 0xE0 
       let intpos = sender.integerValue 
       Pause_Feld.integerValue = intpos
       teensy.write_byteArray[19] = UInt8(intpos)
@@ -509,6 +509,83 @@ class rRobot: rViewController
       
       
    }
+   
+   @IBAction  func report_checkadresse(_ sender: NSButton)
+   {
+       lokarray[12] = LOK_0
+      for i in 0...3
+      {
+         for k in 0...3
+         {
+            
+            addressarray[i] = UInt8(k)
+            print("i: \(i) adresse: \(addressarray)")
+            
+            teensy.write_byteArray[8] = UInt8(k)
+            
+         }
+         //print("i: \(i) adresse: \(addressarray)")
+      }
+      return
+      /*
+         {
+         teensy.write_byteArray[0] = LOK_0 // Code 
+         print("Robot report_checkadresse ")
+         lokarray[12] = LOK_0
+         let ident:String = ((sender.identifier)!.rawValue)
+         var lok:Int = Int(ident)!
+         lok /= 100
+         //print("Robot report_Address0 lok A: \(lok) ")
+         lok %= 10
+         print("Robot report_Address0 lok B: \(lok) ")
+         switch ident
+         {
+         case "1000":
+            print("Robot report_Address0 index: \(sender.indexOfSelectedItem)")
+            lokarray[0] = UInt8((sender.indexOfSelectedItem))
+            addressarray[0] = UInt8((sender.indexOfSelectedItem))
+            teensy.write_byteArray[8] = UInt8((sender.indexOfSelectedItem))
+            break;
+         case "1001":
+            print("Robot report_Address0 index: \(sender.indexOfSelectedItem)")
+            lokarray[1] = UInt8((sender.indexOfSelectedItem))
+            addressarray[1] = UInt8((sender.indexOfSelectedItem))
+            teensy.write_byteArray[9] = UInt8((sender.indexOfSelectedItem))
+            break;
+         case "1002":
+            print("Robot report_Address0 index: \(sender.indexOfSelectedItem)")
+            lokarray[2] = UInt8((sender.indexOfSelectedItem))
+            addressarray[2] = UInt8((sender.indexOfSelectedItem))
+            teensy.write_byteArray[10] = UInt8((sender.indexOfSelectedItem))
+            break;
+         case "1003":
+            print("Robot report_Address0 index: \(sender.indexOfSelectedItem)")
+            lokarray[3] = UInt8((sender.indexOfSelectedItem))
+            addressarray[3] = UInt8((sender.indexOfSelectedItem))
+            teensy.write_byteArray[11] = UInt8((sender.indexOfSelectedItem))
+            break;
+         default:
+            break;
+         }
+         print("lokarray: \(lokarray)")
+         print("addressarray: \(addressarray)")
+         
+         //      teensy.write_byteArray[9] = UInt8((sender.indexOfSelectedItem))
+         //      teensy.write_byteArray[10] = UInt8((sender.indexOfSelectedItem))
+         //      teensy.write_byteArray[11] = UInt8((sender.indexOfSelectedItem))
+         
+         //      teensy.write_byteArray[16] = 0 // Richtung
+         //      teensy.write_byteArray[17] = 0 // speed
+         
+         if (usbstatus > 0)
+         {
+            let senderfolg = teensy.send_USB()
+            print("Robot report_Address0 senderfolg: \(senderfolg)")
+         }
+      }
+ */
+   }
+   
    
       
    //MARK: Slider 0
@@ -535,17 +612,10 @@ class rRobot: rViewController
       print("lokarray: \(lokarray)")
       
   //  teensy.write_byteArray[16] = richtung // Richtung
-      teensy.write_byteArray[17] = UInt8(speed) // speed
-
       
-      // Pot0_Feld.stringValue  = Ustring!
+      teensy.write_byteArray[17] = UInt8(speed) // speed
       
       Pot0_Feld.integerValue = Int(pos)
-      
- //     Pot0_Stepper_L.integerValue  = Int(sender.minValue) // Stepper min setzen
-  //    Pot0_Stepper_L_Feld.integerValue = Int(sender.minValue)
-//      Pot0_Stepper_H.integerValue  = Int(sender.maxValue) // Stepper max setzen
- //     Pot0_Stepper_H_Feld.integerValue = Int(sender.maxValue)
       
       print("usbstatus: \(usbstatus)")
       if (usbstatus > 0)
@@ -561,12 +631,32 @@ class rRobot: rViewController
       print("report_Richtung state: \(sender.state)")
       teensy.write_byteArray[0] = 0xC0 // Code 
       teensy.write_byteArray[17] = 1 // speed 1: Richtung togglen
+      Pot0_Slider.integerValue = 0
+      
       if (usbstatus > 0)
       {
          let senderfolg = teensy.send_USB()
          if (senderfolg < BUFFER_SIZE)
          {
             print("report_Richtung: %d",senderfolg)
+         }
+      }
+      var timer : Timer? = nil
+     timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(resetfunktion(_:)), userInfo: nil, repeats: false)
+
+   }
+   
+   @objc open func resetfunktion(_ timer: Timer)
+   {
+      print("resetfunktion")
+      teensy.write_byteArray[0] = 0xC0 // Code 
+      teensy.write_byteArray[17] = 0 // Richtungimpuls resetten
+      if (usbstatus > 0)
+      {
+         let senderfolg = teensy.send_USB()
+         if (senderfolg <= BUFFER_SIZE)
+         {
+            print("resetfunktion: %d",senderfolg)
          }
       }
 
@@ -576,10 +666,10 @@ class rRobot: rViewController
    {
       print("report_Funktion state: \(sender.state)")
       teensy.write_byteArray[0] = 0xD0 // Code 
-      var funktion:UInt8 = 1
+      var funktion:UInt8 = 0
       if sender.state == .on
       {
-         funktion = 0
+         funktion = 1
       }
      teensy.write_byteArray[16] = funktion // Richtung
       if (usbstatus > 0)
@@ -592,6 +682,7 @@ class rRobot: rViewController
       }
 
    }
+   
    
    @IBAction override func report_set_Pot0(_ sender: NSTextField)
    {
@@ -633,7 +724,7 @@ class rRobot: rViewController
       lok /= 100
       //print("Robot report_Address0 lok A: \(lok) ")
       lok %= 10
-      print("Robot report_Address0 lok B: \(lok) ")
+      print("Robot report_Address0 lok 0: \(lok) ")
       switch ident
       {
       case "1000":
@@ -679,6 +770,64 @@ class rRobot: rViewController
          print("Robot report_Address0 senderfolg: \(senderfolg)")
       }
    }
+  
+   @IBAction func report_Address1(_ sender: NSSegmentedControl)
+   {
+      teensy.write_byteArray[0] = LOK_1 // Code 
+      print("Robot report_Address1 ident: \(sender.identifier!.rawValue) ")
+      lokarray[12] = LOK_1
+      let ident:String = ((sender.identifier)!.rawValue)
+      var lok:Int = Int(ident)!
+      lok /= 100
+      //print("Robot report_Address0 lok A: \(lok) ")
+      lok %= 10
+      print("Robot report_Address1 lok 1: \(lok) ")
+      switch ident
+      {
+      case "1100":
+         print("Robot report_Address1 index: \(sender.indexOfSelectedItem)")
+         lokarray[0] = UInt8((sender.indexOfSelectedItem))
+         addressarray[0] = UInt8((sender.indexOfSelectedItem))
+         teensy.write_byteArray[8] = UInt8((sender.indexOfSelectedItem))
+         break;
+      case "1101":
+         print("Robot report_Address1 index: \(sender.indexOfSelectedItem)")
+         lokarray[1] = UInt8((sender.indexOfSelectedItem))
+         addressarray[1] = UInt8((sender.indexOfSelectedItem))
+         teensy.write_byteArray[9] = UInt8((sender.indexOfSelectedItem))
+         break;
+      case "1102":
+         print("Robot report_Address1 index: \(sender.indexOfSelectedItem)")
+         lokarray[2] = UInt8((sender.indexOfSelectedItem))
+         addressarray[2] = UInt8((sender.indexOfSelectedItem))
+         teensy.write_byteArray[10] = UInt8((sender.indexOfSelectedItem))
+         break;
+      case "1103":
+         print("Robot report_Address1 index: \(sender.indexOfSelectedItem)")
+         lokarray[3] = UInt8((sender.indexOfSelectedItem))
+         addressarray[3] = UInt8((sender.indexOfSelectedItem))
+         teensy.write_byteArray[11] = UInt8((sender.indexOfSelectedItem))
+         break;
+      default:
+         break;
+      }
+      print("lokarray: \(lokarray)")
+      print("addressarray: \(addressarray)")
+      
+      //      teensy.write_byteArray[9] = UInt8((sender.indexOfSelectedItem))
+      //      teensy.write_byteArray[10] = UInt8((sender.indexOfSelectedItem))
+      //      teensy.write_byteArray[11] = UInt8((sender.indexOfSelectedItem))
+      
+      //      teensy.write_byteArray[16] = 0 // Richtung
+      //      teensy.write_byteArray[17] = 0 // speed
+      
+      if (usbstatus > 0)
+      {
+         let senderfolg = teensy.send_USB()
+         print("Robot report_Address0 senderfolg: \(senderfolg)")
+      }
+   }
+
    
  /*
    @IBAction  func report_x1_Slider(_ sender: NSSlider)
@@ -743,7 +892,7 @@ class rRobot: rViewController
       
  //     setAchse1(pos: (pos  * LOK_FAKTOR1)) // intpos
     }
-   
+/*
    @IBAction func report_Address1(_ sender: NSSegmentedControl)
    {
       teensy.write_byteArray[0] = UInt8(LOK_1) // Code 
@@ -775,7 +924,7 @@ class rRobot: rViewController
          break;
       }
    }
-   
+  */ 
    
    // MARK:Slider 2
    @IBAction override func report_Slider2(_ sender: NSSlider)
