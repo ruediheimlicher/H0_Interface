@@ -43,6 +43,23 @@ let LOK2_START:UInt16 = 0 // Startwert Slider 1
 let LOK2_OFFSET:UInt16 = 8 // starteinstellung
 let LOK_FAKTOR2:Float = 1
 
+let LOK_3_ADDRESS:UInt8 = 0xA3
+let LOK_3_SPEED:UInt8 = 0xB3
+let LOK_3_DIR:UInt8 = 0xC3
+let LOK_3_FUNKTION:UInt8 = 0xD3
+let LOK_3_PAUSE:UInt8 = 0xE3
+
+
+let ANZLOKS:Int = 4
+
+
+
+var addresscodearray = [LOK_0_ADDRESS,LOK_1_ADDRESS,LOK_2_ADDRESS,LOK_3_ADDRESS]
+var speedcodearray = [LOK_0_SPEED,LOK_1_SPEED,LOK_2_SPEED,LOK_3_SPEED]
+var dircodearray = [LOK_0_DIR,LOK_1_DIR,LOK_2_DIR,LOK_3_DIR]
+var funktioncoderray = [LOK_0_FUNKTION,LOK_1_FUNKTION,LOK_2_FUNKTION,LOK_3_FUNKTION]
+
+
 class rRobot: rViewController 
 {
 
@@ -123,7 +140,11 @@ class rRobot: rViewController
    var address2array:[UInt8] = [UInt8](repeating: 0x00, count: 4)
    var address3array:[UInt8] = [UInt8](repeating: 0x00, count: 4)
    
-   var addressarray = Array(repeating: Array(repeating: UInt8(0x00), count: 4), count: 3)
+   var addressarray = Array(repeating: Array(repeating: UInt8(0x00), count: ANZLOKS), count: 3)
+   
+   var speedarray:[UInt8] = [UInt8](repeating: 0x00, count: ANZLOKS)
+   
+   
    
    var pause:UInt8 = 5
    
@@ -679,53 +700,75 @@ class rRobot: rViewController
    
    @objc func loadLokAddress(lok:Int)
    {
+      print("loadLokAddress lok: \(lok)")
       for i in 0...3
       {
          teensy.write_byteArray[8 + i] = addressarray[lok][i]
+         //print(addressarray[lok][i])
       }
-      /*
-      switch lok
+    } // loadLokAddress
+   
+   @objc func loadSpeed(lok:Int)
+   {
+      
+         teensy.write_byteArray[17] = speedarray[lok]
+      
+   }
+   
+   //MARK: Slider 
+   @IBAction  func report_Slider(_ sender: NSSlider)
+   {
+      let loktag = sender.tag - 1000
+ //     teensy.write_byteArray[0] = LOK_0_SPEED // Code 
+      teensy.write_byteArray[0] = speedcodearray[loktag]
+      print("Robot report_Slider loktag \(loktag) IntVal: \(sender.intValue) ")
+ //     lok0array[12] = LOK_0_SPEED
+      
+      let pos = sender.floatValue
+      
+  //    let intpos = UInt8(pos * LOK_FAKTOR0)
+       let intpos = UInt8(pos)
+  //    let Ustring = formatter.string(from: NSNumber(value: intpos))
+  //    var speed:UInt8 =  intpos
+      var speed:UInt8 =  UInt8(sender.intValue)
+      
+      print("report_Slider pos: \(pos) intpos: \(intpos)  speed: \(speed)")
+      //      print("report_Slider0 speed: \(speed) richtung: \(richtung)")
+      if speed > 0
       {
-      case 0:
-         
-         // Lokadresse 0 schicken
-         teensy.write_byteArray[8] = address0array[0]
-         teensy.write_byteArray[9] = address0array[1]
-         teensy.write_byteArray[10] = address0array[2]
-         teensy.write_byteArray[11] = address0array[3]
-         break
- 
-      case 1:
-         // Lokadresse 1 schicken
-         teensy.write_byteArray[8] = address1array[0]
-         teensy.write_byteArray[9] = address1array[1]
-         teensy.write_byteArray[10] = address1array[2]
-         teensy.write_byteArray[11] = address1array[3]
-         break
-
-      case 2:
-         // Lokadresse 2 schicken
-         teensy.write_byteArray[8] = address2array[0]
-         teensy.write_byteArray[9] = address2array[1]
-         teensy.write_byteArray[10] = address2array[2]
-         teensy.write_byteArray[11] = address2array[3]
-         break
-
-         
-      default:
-         break
+         speed += 1 // speed 1 ist Richtungsumschaltung
       }
- */
-   } // loadLokAddress
-   
-   
-   
+      
+      speedarray[loktag] = speed
+      
+   //   print("spee0darray: \(spee0darray)")
+  //    print("lok0array: \(lok0array)")
+      
+      loadLokAddress(lok: loktag)
+      
+      teensy.write_byteArray[17] = speed
+      
+            
+ //     print("teensy.write_byteArray: \(teensy.write_byteArray)")
+      
+      
+      (self.view.viewWithTag(2000 + loktag) as! NSTextField).intValue = Int32(pos)
+      
+      print("usbstatus: \(usbstatus)")
+      
+      if (usbstatus > 0)
+      {
+         let senderfolg = teensy.send_USB()
+         print("Robot report_Slider senderfolg: \(senderfolg)")
+      }
+   }
+
       
    //MARK: Slider 0
    @IBAction override func report_Slider0(_ sender: NSSlider)
    {
       teensy.write_byteArray[0] = LOK_0_SPEED // Code 
-      print("Robot report_Slider0 IntVal: \(sender.intValue)")
+      print("Robot report_Slider0 IntVal: \(sender.intValue) ")
       lok0array[12] = LOK_0_SPEED
       let pos = sender.floatValue
       
@@ -741,9 +784,13 @@ class rRobot: rViewController
       }
       spee0darray[1] = speed
       lok0array[6] = speed
+      
+      speedarray[0] = speed
+      
       print("spee0darray: \(spee0darray)")
       print("lok0array: \(lok0array)")
       
+      loadLokAddress(lok: sender.tag)
       /*
        // Lokadresse 0 schicken
        teensy.write_byteArray[8] = UInt8(a0seg ?? 0)
@@ -752,9 +799,7 @@ class rRobot: rViewController
        teensy.write_byteArray[11] = UInt8(a3seg ?? 0)
        
        teensy.write_byteArray[16] = 0 // Funktion
-
  */
-      
       
       teensy.write_byteArray[17] = UInt8(speed) // speed
       
@@ -766,15 +811,19 @@ class rRobot: rViewController
          let senderfolg = teensy.send_USB()
          print("Robot report_Slider0 senderfolg: \(senderfolg)")
       }
- 
    }
    
    @IBAction  func report_Richtung(_ sender: NSButton)
    {
-      print("report_Richtung state: \(sender.state)")
-      teensy.write_byteArray[0] = LOK_0_DIR // Code 
+      let loktag = sender.tag - 4000
+      print("report_Richtung state: \(sender.state) tag: \(sender.tag) loktag: \(loktag)")
+      
+      teensy.write_byteArray[0] = dircodearray[loktag] // Code 
       teensy.write_byteArray[17] = 1 // speed 1: Richtung togglen
-      Pot0_Slider.integerValue = 0
+      
+      (self.view.viewWithTag(loktag + 2000) as! NSTextField).intValue = 0
+     (self.view.viewWithTag(loktag + 1000) as! NSSlider).intValue = 0
+
       
       if (usbstatus > 0)
       {
@@ -784,33 +833,50 @@ class rRobot: rViewController
             print("report_Richtung: %d",senderfolg)
          }
       }
+      let userinformation = ["tag": loktag] as! [String : Int]
       var timer : Timer? = nil
-     timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(resetfunktion(_:)), userInfo: nil, repeats: false)
-
-   }
-   
-   
+      timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(resetfunktion(_:)), userInfo: userinformation, repeats: false)
+   }   
    
    @objc open func resetfunktion(_ timer: Timer) // Richtung-Bit resetten
    {
-      print("resetfunktion")
-      teensy.write_byteArray[0] = LOK_0_DIR // Code 
+      print("resetfunktion userInfo: \(timer.userInfo ?? "")")
+      var loktag = 0xFF
+      
+      if  var dic = timer.userInfo as? [String : Int] 
+      {
+         // if var count:Int = dic["tag"]
+         if dic["tag"] != nil
+         {
+            loktag = dic["tag"] ?? 0xFF
+         }
+      }
+       if loktag == 0xFF
+      {
+         print("resetfunktion krin tag")
+         return
+      }
+      print("resetfunktion userInfo: \(timer.userInfo ?? "") tag: \(loktag) dircode: \(dircodearray[loktag])")
+
+      teensy.write_byteArray[0] = dircodearray[loktag]
+      
       teensy.write_byteArray[17] = 0 // Richtungimpuls resetten
       if (usbstatus > 0)
       {
          let senderfolg = teensy.send_USB()
          if (senderfolg <= BUFFER_SIZE)
          {
-            print("resetfunktion: %d",senderfolg)
+            print("resetfunktion: \(senderfolg)")
          }
       }
-
    }
    
    @IBAction  func report_Funktion(_ sender: NSButton)
    {
-      print("report_Funktion state: \(sender.state)")
-      teensy.write_byteArray[0] = LOK_0_FUNKTION // Code 
+      print("report_Funktion state: \(sender.state) tag: \(sender.tag)")
+      let loktag = sender.tag - 3000
+      
+      teensy.write_byteArray[0] = funktioncoderray[loktag] // Code 
       var funktion:UInt8 = 0
       if sender.state == .on
       {
@@ -825,7 +891,6 @@ class rRobot: rViewController
             print("report_Funktion: %d",senderfolg)
          }
       }
-
    }
    
    

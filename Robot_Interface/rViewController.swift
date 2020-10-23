@@ -694,8 +694,10 @@ class rViewController: NSViewController, NSWindowDelegate
    
    @IBAction func report_Slider1(_ sender: NSSlider)
    {
-
-      teensy.write_byteArray[0] = SET_1 // Code
+      let loktag = sender.tag
+      teensy.write_byteArray[0] = addresscodearray[loktag]// Code
+      
+     
       print("report_Slider1 IntVal: \(sender.intValue)")
       
       let pos = sender.floatValue
