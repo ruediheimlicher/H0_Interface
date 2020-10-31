@@ -112,6 +112,9 @@ class rRobot: rViewController
    @IBOutlet weak var c2: NSSegmentedControl!
    @IBOutlet weak var c3: NSSegmentedControl!
    
+   
+   @IBOutlet weak var loknummer: NSSegmentedControl!
+   
    var hintergrundfarbe = NSColor()
    
    var lastwinkel:CGFloat = 3272
@@ -325,6 +328,7 @@ class rRobot: rViewController
       DrehknopfFeld.hgfarbe = hgfarbe
       print("Robot globalusbstatus: \(globalusbstatus)")
       
+      loknummer.selectSegment(withTag: 0)
 
    }
    
@@ -624,7 +628,8 @@ class rRobot: rViewController
    
    @IBAction  func report_checkadresse(_ sender: NSButton)
    {
-       lok0array[12] = LOK_0_ADDRESS
+      lok0array[12] = LOK_0_ADDRESS
+      teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
       for i in 0...3
       {
          for k in 0...3
@@ -710,7 +715,8 @@ class rRobot: rViewController
    
    @objc func loadSpeed(lok:Int)
    {
-      
+      teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
+
          teensy.write_byteArray[17] = speedarray[lok]
       
    }
@@ -755,14 +761,21 @@ class rRobot: rViewController
       (self.view.viewWithTag(2000 + loktag) as! NSTextField).intValue = Int32(pos)
       
       print("usbstatus: \(usbstatus)")
-      
+      print("loknummer: \(loknummer.indexOfSelectedItem)")
+      teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
       if (usbstatus > 0)
       {
          let senderfolg = teensy.send_USB()
          print("Robot report_Slider senderfolg: \(senderfolg)")
       }
    }
-
+   
+   
+   @IBAction  func report_loknummer(_ sender: NSSegmentedControl)
+   {
+      let loknummer = sender.indexOfSelectedItem
+      print("report_loknummer lok: \(loknummer)")
+   }
       
    //MARK: Slider 0
    @IBAction override func report_Slider0(_ sender: NSSlider)
@@ -773,7 +786,7 @@ class rRobot: rViewController
       let pos = sender.floatValue
       
       let intpos = UInt8(pos * LOK_FAKTOR0)
-      let Ustring = formatter.string(from: NSNumber(value: intpos))
+      //let Ustring = formatter.string(from: NSNumber(value: intpos))
       var speed:UInt8 =  intpos
       print("report_Slider0 pos: \(pos) intpos: \(intpos)  speed: \(speed)")
       
@@ -833,7 +846,7 @@ class rRobot: rViewController
             print("report_Richtung: %d",senderfolg)
          }
       }
-      let userinformation = ["tag": loktag] as! [String : Int]
+      let userinformation = ["tag": loktag] //as! [String : Int]
       var timer : Timer? = nil
       timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(resetfunktion(_:)), userInfo: userinformation, repeats: false)
    }   
@@ -851,9 +864,9 @@ class rRobot: rViewController
             loktag = dic["tag"] ?? 0xFF
          }
       }
-       if loktag == 0xFF
+      if loktag == 0xFF
       {
-         print("resetfunktion krin tag")
+         print("resetfunktion kein tag")
          return
       }
       print("resetfunktion userInfo: \(timer.userInfo ?? "") tag: \(loktag) dircode: \(dircodearray[loktag])")
@@ -873,7 +886,7 @@ class rRobot: rViewController
    
    @IBAction  func report_Funktion(_ sender: NSButton)
    {
-      print("report_Funktion state: \(sender.state) tag: \(sender.tag)")
+ //     print("report_Funktion state: \(sender.state) tag: \(sender.tag)")
       let loktag = sender.tag - 3000
       
       teensy.write_byteArray[0] = funktioncoderray[loktag] // Code 
