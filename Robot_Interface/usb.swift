@@ -79,7 +79,8 @@ open class usb_teensy: NSObject
          let prod = get_prod();
          //fprintf(stderr,"prod: %s\n",prod);
          let prodstr:String = String(cString: prod!)
-         if (prodstr == nil)
+         let anyprodstr : Any? = prodstr
+         if (anyprodstr == nil)
          {
             prodstring = "-"
          }
@@ -87,7 +88,7 @@ open class usb_teensy: NSObject
          {
             prodstring = String(cString: UnsafePointer<CChar>(prod!))
          }
-         var USBDatenDic = ["prod": prod, "manu":manu]
+   //      var USBDatenDic = ["prod": prod, "manu":manu]
          
       }
       
@@ -249,7 +250,7 @@ open class usb_teensy: NSObject
    
    @objc open func cont_read_USB(_ timer: Timer)
    {
-      print("*cont_read_USB read_OK: \(read_OK)")
+      //print("*cont_read_USB read_OK: \(read_OK)")
       if (read_OK).boolValue
       {
          //var tempbyteArray = [UInt8](count: 32, repeatedValue: 0x00)
@@ -310,19 +311,19 @@ open class usb_teensy: NSObject
             new_Data = true
             datatruecounter += 1
             let codehex = read_byteArray[0]
-            
+            /*
             print("+++ new read_byteArray in Timer:", terminator: "")
             for  i in 0...16
             {
                print(" \(read_byteArray[i])", terminator: "")
             }
-            print("32-36")
+            print("\n32-36")
             for  i in 32...36
             {
                print(" \(read_byteArray[i])", terminator: "")
             }
             print("")
-
+*/
             // http://dev.iachieved.it/iachievedit/notifications-and-userinfo-with-swift-3-0/
             
             //let usbdic = ["message":"neue Daten", "data":read_byteArray] as [String : UInt8]

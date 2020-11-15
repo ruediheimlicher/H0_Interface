@@ -366,14 +366,14 @@ class rBasis: rViewController
    @objc override func newDataAktion(_ notification:Notification) 
    {
       let lastData = teensy.getlastDataRead()
-      print("lastData:\t \(lastData[1])\t\(lastData[2])   ")
+//      print("rBasis lastData:\t \(lastData[1])\t\(lastData[2])   ")
       var ii = 0
       while ii < 10
       {
          //print("ii: \(ii)  wert: \(lastData[ii])\t")
          ii = ii+1
       }
-      
+      return;
       let u = ((Int32(lastData[1])<<8) + Int32(lastData[2]))
       //print("hb: \(lastData[1]) lb: \(lastData[2]) u: \(u)")
       let info = notification.userInfo
@@ -401,7 +401,7 @@ class rBasis: rViewController
          
          //print("element: \(d[1])\n")
          
-         print("d as string: \(String(describing: d))\n")
+         //print("d as string: \(String(describing: d))\n")
          if d != nil
          {
             //print("d not nil\n")

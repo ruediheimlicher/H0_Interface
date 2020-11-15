@@ -484,21 +484,21 @@ class rViewController: NSViewController, NSWindowDelegate
    @objc func newDataAktion(_ notification:Notification) 
    {
       let lastData = teensy.getlastDataRead()
-      print("lastData:\t \(lastData[1])\t\(lastData[2])   ")
+      //print("lastData:\t \(lastData[1])\t\(lastData[2])   ")
       var ii = 0
       while ii < 10
       {
          //print("ii: \(ii)  wert: \(lastData[ii])\t")
          ii = ii+1
       }
-      
+      return;
       let u = ((Int32(lastData[1])<<8) + Int32(lastData[2]))
       //print("hb: \(lastData[1]) lb: \(lastData[2]) u: \(u)")
       let info = notification.userInfo
       
       //print("info: \(String(describing: info))")
       //print("new Data")
-      let data = notification.userInfo?["data"]
+      let data = notification.userInfo?["data"] as! [UInt8]
       //print("data: \(String(describing: data)) \n") // data: Optional([0, 9, 51, 0,....
       
       
@@ -506,10 +506,13 @@ class rViewController: NSViewController, NSWindowDelegate
       var i = 0
       while i < 10
       {
-         print("i: \(i)  wert: \(lastDataRead[i])\t")
+//         print("i: \(i)  wert: \(lastDataRead[i])\t")
          i = i+1
       }
-
+      var emitter = UInt16(data[13]) << 8  | UInt16(data[12])
+      
+         print("emitteradresse: \(lastDataRead[10]) emitterwerte: \(lastDataRead[12]) \(lastDataRead[13]) emitter: \(emitter)")
+      //emitterFeld.integerValue = Int(emitter)
       if let d = notification.userInfo!["usbdata"]
       {
             
@@ -519,7 +522,7 @@ class rViewController: NSViewController, NSWindowDelegate
          
          //print("element: \(d[1])\n")
          
-         print("d as string: \(String(describing: d))\n")
+  //       print("d as string: \(String(describing: d))\n")
          if d != nil
          {
             //print("d not nil\n")
@@ -1319,7 +1322,7 @@ class rViewController: NSViewController, NSWindowDelegate
    @IBOutlet weak var Joystickfeld: rJoystickView!
    
    @IBOutlet weak var clear_Ring: NSButton!
-   
+   @IBOutlet weak var emitterFeld: NSTextField!
    
 }
 
