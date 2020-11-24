@@ -59,6 +59,7 @@ var speedcodearray = [LOK_0_SPEED,LOK_1_SPEED,LOK_2_SPEED,LOK_3_SPEED]
 var dircodearray = [LOK_0_DIR,LOK_1_DIR,LOK_2_DIR,LOK_3_DIR]
 var funktioncoderray = [LOK_0_FUNKTION,LOK_1_FUNKTION,LOK_2_FUNKTION,LOK_3_FUNKTION]
 
+var rng = SystemRandomNumberGenerator()
 
 class rRobot: rViewController 
 {
@@ -120,6 +121,13 @@ class rRobot: rViewController
    
    @IBOutlet weak var loknummer: NSSegmentedControl!
    
+   @IBOutlet weak var autospeedtaste: NSButton!
+   @IBOutlet weak var autospeedmaxstepper: NSStepper!
+   @IBOutlet weak var autospeedmaxfeld: NSTextField!
+   @IBOutlet weak var autospeedminstepper: NSStepper!
+   @IBOutlet weak var autospeedminfeld: NSTextField!
+    @IBOutlet weak var autospeedrandomfeld: NSTextField!
+   
      
    var hintergrundfarbe = NSColor()
    
@@ -153,7 +161,7 @@ class rRobot: rViewController
    
    var speedarray:[UInt8] = [UInt8](repeating: 0x00, count: ANZLOKS)
    
-   
+   var speedautocounter = 0
    
    var pause:UInt8 = 5
    
@@ -335,6 +343,13 @@ class rRobot: rViewController
       print("Robot globalusbstatus: \(globalusbstatus)")
       
       loknummer.selectSegment(withTag: 0)
+      
+      autospeedmaxstepper.integerValue = 5
+      autospeedmaxfeld.integerValue = autospeedmaxstepper.integerValue
+
+      autospeedminstepper.integerValue = 1
+      autospeedminfeld.integerValue = autospeedminstepper.integerValue
+      
 
    }
    
@@ -782,7 +797,7 @@ class rRobot: rViewController
          teensy.write_byteArray[8 + i] = addressarray[lok][i]
          //print(addressarray[lok][i])
       }
-      print("loadLokAddress\(teensy.write_byteArray[8...18])")
+      //print("loadLokAddress\(teensy.write_byteArray[8...18])")
     } // loadLokAddress
    
    @objc func loadFunktion(lok:Int)
@@ -807,6 +822,94 @@ class rRobot: rViewController
       teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
 
          teensy.write_byteArray[17] = speedarray[lok]
+      
+   }
+   
+   @IBAction  func report_Speed_auto(_ sender: NSButton)
+   {
+      let autospeed = sender.state.rawValue
+      
+      Pot0_Slider.intValue = 0
+      speedautocounter = 0 
+      if autospeed == 1
+      {
+         var minspeed = 0
+         var maxspeed = 14
+         var step = 1
+         var interval:Double = 2
+         
+         var userinformation:NSMutableDictionary = ["minspeed": minspeed, "maxspeed": maxspeed, "step": step, "speedautocounter":speedautocounter] //as! [String : Int]
+         var timer : Timer? = nil
+         
+         timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(speed_auto(_:)), userInfo: userinformation, repeats: true)
+      }
+      else 
+      {
+         print("auto off")
+      }
+ 
+   
+   }
+   
+   @objc func speed_auto(_ timer: Timer)
+   {
+      if (autospeedtaste.state.rawValue == 1)
+      {
+         // print("speed_auto : \( timer.userInfo)")
+  //       if  var dic = timer.userInfo as? NSMutableDictionary
+  //       {
+            //print("step: \(dic["step"])")
+            speedautocounter += 1
+            
+      //      var tempmin:Int = dic["minspeed"] as! Int
+      //      var tempmax:Int = dic["maxspeed"] as! Int
+     //       var tempspeedautocounter = dic["speedautocounter"] as! Int
+            
+     var       tempmin = autospeedminstepper.integerValue
+     var       tempmax = autospeedmaxstepper.integerValue
+            
+            var randomInt = Int.random(in: tempmin..<tempmax)
+            if randomInt > 0 
+            {
+               randomInt += 1
+            }
+            
+            
+            teensy.write_byteArray[0] = speedcodearray[0]
+            if speedautocounter % 5 == 0
+            {
+               teensy.write_byteArray[17] = 0
+               autospeedrandomfeld.integerValue = 0
+            }
+            else
+            {
+               teensy.write_byteArray[17] = UInt8(randomInt)
+               autospeedrandomfeld.integerValue = randomInt
+         //      dic["step"] = randomInt
+            }
+            print("speed_auto : \( autospeedrandomfeld.integerValue)")
+
+            loadLokAddress(lok: 0)
+            //teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
+            if (usbstatus > 0)
+            {
+               let senderfolg = teensy.send_USB()
+               //print("Robot report_Slider senderfolg: \(senderfolg)")
+            }
+   //      }
+      }
+      else 
+      {
+         timer.invalidate()
+         teensy.write_byteArray[17] = 0
+         loadLokAddress(lok: 0)
+         //teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
+         if (usbstatus > 0)
+         {
+            let senderfolg = teensy.send_USB()
+            //print("Robot report_Slider senderfolg: \(senderfolg)")
+         }
+      }
       
    }
    
@@ -838,7 +941,7 @@ class rRobot: rViewController
       speedarray[loktag] = speed
       
    //   print("spee0darray: \(spee0darray)")
-      print("lok0array vor loadLokAddress: \(lok0array)")
+   //   print("lok0array vor loadLokAddress: \(lok0array)")
       
       loadLokAddress(lok: loktag)
       
@@ -846,7 +949,7 @@ class rRobot: rViewController
       teensy.write_byteArray[17] = speed
       
 //      print("teensy.write_byteArray:")
-      print("\(teensy.write_byteArray[8...18])")
+//      print("\(teensy.write_byteArray[8...18])")
        
       (self.view.viewWithTag(2000 + loktag) as! NSTextField).intValue = Int32(pos)
       
@@ -866,7 +969,24 @@ class rRobot: rViewController
       let loknummer = sender.indexOfSelectedItem
       print("report_loknummer lok: \(loknummer)")
    }
-      
+   
+   @IBAction  func report_maxstep(_ sender: NSStepper)
+   {
+      autospeedmaxfeld.integerValue = sender.integerValue
+   }
+
+   @IBAction  func report_minstep(_ sender: NSStepper)
+   {
+      var minstep = sender.integerValue
+      if minstep > autospeedmaxfeld.integerValue
+      {
+         minstep = autospeedmaxfeld.integerValue
+         sender.integerValue = minstep
+      }
+
+      autospeedminfeld.integerValue = sender.integerValue
+   }
+
    //MARK: Slider 0
    @IBAction override func report_Slider0(_ sender: NSSlider)
    {
@@ -1033,7 +1153,6 @@ class rRobot: rViewController
       var lok:Int = Int(ident)!
       lok /= 100
       lok %= 10
-       
       
       let subs = self.view.subviews
       let lokseg = 1000 + 100 * lok
