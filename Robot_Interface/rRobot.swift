@@ -92,7 +92,12 @@ class rRobot: rViewController
    @IBOutlet weak var intpos0Feld: NSTextField!
    @IBOutlet weak var intpos1Feld: NSTextField!
    @IBOutlet weak var intpos2Feld: NSTextField!
-   
+  
+   @IBOutlet weak var TeensyPot0Feld: NSTextField!
+   @IBOutlet weak var TeensyPot1Feld: NSTextField!
+   @IBOutlet weak var TeensyPot2Feld: NSTextField!
+   @IBOutlet weak var TeensyPot3Feld: NSTextField!
+
    
    @IBOutlet weak var Lok_0_RichtungTaste: NSButton!
    @IBOutlet weak var Lok_1_RichtungTaste: NSButton!
@@ -139,6 +144,7 @@ class rRobot: rViewController
    
     var timerintervall:UInt8 = 13
    
+   var startzeit:Int64 = 0
    
    var spee0darray:[UInt8] = [UInt8](repeating: 0x00, count: 5)
    var spee1darray:[UInt8] = [UInt8](repeating: 0x00, count: 5)
@@ -165,6 +171,8 @@ class rRobot: rViewController
    
    var pause:UInt8 = 5
    
+   var firstrun = 1; // Task in Startloop
+   
    override func viewDidAppear() 
    {
       //print ("Robot viewDidAppear selectedDevice: \(selectedDevice)")
@@ -187,8 +195,6 @@ class rRobot: rViewController
       formatter.minimumIntegerDigits = 1
       //formatter.roundingMode = .down
       
-      
-       
       //USB_OK.backgroundColor = NSColor.greenColor()
       // Do any additional setup after loading the view.
       let newdataname = Notification.Name("newdata")
@@ -214,6 +220,7 @@ class rRobot: rViewController
       a2.selectSegment(withTag:  a2seg ?? 0)
       a3.selectSegment(withTag:  a3seg ?? 0)
 
+      
       
       let b0seg  = Int(UserDefaults.standard.string(forKey: "b0index") ?? "0")
       let b1seg  = Int(UserDefaults.standard.string(forKey: "b1index") ?? "0")
@@ -258,11 +265,13 @@ class rRobot: rViewController
       
       //print("UserDefaults a0seg: \(a0seg)")
       
-      
+     /* 
       address0array[0] = UInt8(a0seg ?? 0)
       address0array[1] = UInt8(a1seg ?? 0)
       address0array[2] = UInt8(a2seg ?? 0)
       address0array[3] = UInt8(a3seg ?? 0)
+      */
+      
       
       addressarray[0][0] = UInt8(a0seg ?? 0)
       addressarray[0][1] = UInt8(a1seg ?? 0)
@@ -286,12 +295,13 @@ class rRobot: rViewController
       teensy.write_byteArray[18] = timerintervall // step speed
       teensy.write_byteArray[19] = 5 // pause
       
-      
+     /* 
       address1array[0] = UInt8(b0seg ?? 0)
       address1array[1] = UInt8(b1seg ?? 0)
       address1array[2] = UInt8(b2seg ?? 0)
       address1array[3] = UInt8(b3seg ?? 0)
-
+       */
+      
       addressarray[1][0] = UInt8(b0seg ?? 0)
       addressarray[1][1] = UInt8(b1seg ?? 0)
       addressarray[1][2] = UInt8(b2seg ?? 0)
@@ -394,18 +404,24 @@ class rRobot: rViewController
       
       //print("lastDataRead: \(lastDataRead)   ")
       var i = 0
-      while i < 15
+      var teensypotwerte:[UInt8] = [UInt8](repeating: 0x00, count: 20)
+      while i < 20
       {
-    //     print("i: \(i)  wert: \(data[i])\t")
+         teensypotwerte[i] = data[i]
+      //   print("i: \(i)  wert: \(data[i])\t")
          i = i+1
       }
+      print("teensypotwerte: \(teensypotwerte[16])")
+      TeensyPot0Feld.integerValue = Int(teensypotwerte[16])
+      
       var emitter = UInt16(data[13]) << 8  | UInt16(data[12])
       
-      //print("emitteradresse: \(lastDataRead[10]) emitterwerte: \(lastDataRead[12]) \(lastDataRead[13]) emitter: \(emitter)")
-      print("emitter: \(emitter)")
+//      print("emitteradresse: \(data[10]) emitterwerte: \(data[12]) \(data[13]) emitter: \(emitter)")
+//      print("emitter: \(emitter)")
 
       emitterFeld.integerValue = Int(emitter)
-      if let d = notification.userInfo!["usbdata"]
+      /*
+      if let d:[UInt8] = (notification.userInfo!["usbdata"] as! [UInt8]) 
       {
          
          //print("d: \(d)\n") // d: [0, 9, 56, 0, 0,... 
@@ -419,9 +435,10 @@ class rRobot: rViewController
          {
             //print("d not nil\n")
             var i = 0
-            while i < 10
+            while i < 20
             {
-               // print("i: \(i)  wert: \(d![i])\t")
+               let dd = d[i] as uint8
+               print("i: \(i)  wert: \(dd)\t")
                i = i+1
             }
             
@@ -430,6 +447,7 @@ class rRobot: rViewController
          
          //print("dic end\n")
       }
+ */
       
       //let dic = notification.userInfo as? [String:[UInt8]]
       //print("dic: \(dic ?? ["a":[123]])\n")
@@ -806,7 +824,6 @@ class rRobot: rViewController
       let loktag = Lok_2_FunktionTaste.tag - 3000
       if loktag == lok
       {
-         // teensy.write_byteArray[0] = funktioncoderray[loktag] // Code 
          var funktion:UInt8 = 0
          if Lok_2_FunktionTaste.state == .on
          {
@@ -820,9 +837,7 @@ class rRobot: rViewController
    @objc func loadSpeed(lok:Int)
    {
       teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
-
-         teensy.write_byteArray[17] = speedarray[lok]
-      
+      teensy.write_byteArray[17] = speedarray[lok]
    }
    
    @IBAction  func report_Speed_auto(_ sender: NSButton)
@@ -831,6 +846,8 @@ class rRobot: rViewController
       
       Pot0_Slider.intValue = 0
       speedautocounter = 0 
+      
+      startzeit = Int64(NSDate().timeIntervalSince1970)
       if autospeed == 1
       {
          var minspeed = 0
@@ -847,8 +864,6 @@ class rRobot: rViewController
       {
          print("auto off")
       }
- 
-   
    }
    
    @objc func speed_auto(_ timer: Timer)
@@ -867,7 +882,10 @@ class rRobot: rViewController
             
      var       tempmin = autospeedminstepper.integerValue
      var       tempmax = autospeedmaxstepper.integerValue
-            
+     if !(tempmax > tempmin)
+     {
+      tempmax = tempmin + 1
+      }
             var randomInt = Int.random(in: tempmin..<tempmax)
             if randomInt > 0 
             {
@@ -887,7 +905,10 @@ class rRobot: rViewController
                autospeedrandomfeld.integerValue = randomInt
          //      dic["step"] = randomInt
             }
-            print("speed_auto : \( autospeedrandomfeld.integerValue)")
+        var date = Int64(NSDate().timeIntervalSince1970) - startzeit            
+         
+          
+         print("speed_auto : \( autospeedrandomfeld.integerValue) time: \(date)")
 
             loadLokAddress(lok: 0)
             //teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
@@ -1396,10 +1417,10 @@ class rRobot: rViewController
       address2array[2] = UInt8(c2.indexOfSelectedItem)
       address2array[3] = UInt8(c3.indexOfSelectedItem)
  
-      addressarray[2][0] = UInt8(b0.indexOfSelectedItem)
-      addressarray[2][1] = UInt8(b1.indexOfSelectedItem)
-      addressarray[2][2] = UInt8(b2.indexOfSelectedItem)
-      addressarray[2][3] = UInt8(b3.indexOfSelectedItem)
+      addressarray[2][0] = UInt8(c0.indexOfSelectedItem)
+      addressarray[2][1] = UInt8(c1.indexOfSelectedItem)
+      addressarray[2][2] = UInt8(c2.indexOfSelectedItem)
+      addressarray[2][3] = UInt8(c3.indexOfSelectedItem)
 
       print("\nlok2array nach: \(lok2array)")
       print("address2array nach: \(address2array)")
@@ -1428,6 +1449,44 @@ class rRobot: rViewController
          print("Robot report_Address2 senderfolg: \(senderfolg)")
       }
    } 
+   
+   // alle Adressen senden
+   @IBAction func loadAdresse(_ sender: NSButton)
+   {
+      addressarray[0][0] = UInt8(a0.indexOfSelectedItem)
+      addressarray[0][1] = UInt8(a1.indexOfSelectedItem)
+      addressarray[0][2] = UInt8(a2.indexOfSelectedItem)
+      addressarray[0][3] = UInt8(a3.indexOfSelectedItem)
+
+      addressarray[1][0] = UInt8(b0.indexOfSelectedItem)
+      addressarray[1][1] = UInt8(b1.indexOfSelectedItem)
+      addressarray[1][2] = UInt8(b2.indexOfSelectedItem)
+      addressarray[1][3] = UInt8(b3.indexOfSelectedItem)
+
+   
+      addressarray[2][0] = UInt8(c0.indexOfSelectedItem)
+      addressarray[2][1] = UInt8(c1.indexOfSelectedItem)
+      addressarray[2][2] = UInt8(c2.indexOfSelectedItem)
+      addressarray[2][3] = UInt8(c3.indexOfSelectedItem)
+
+      for lok in 0...2
+      {
+         teensy.write_byteArray[0] = addresscodearray[lok]
+         
+         for i in 0...3
+         {
+            teensy.write_byteArray[8 + i] = addressarray[lok][i]
+         }
+         if (usbstatus > 0)
+         {
+            let senderfolg = teensy.send_USB()
+            print("Robot loadAdresse lok: \(lok)  senderfolg: \(senderfolg)")
+         }
+
+      }
+     
+      
+   }
     // MARK:Slider 1
    @IBAction override func report_Slider1(_ sender: NSSlider)
    {

@@ -1,6 +1,6 @@
 //
 //  HID.c
-//  USB_Stepper
+//  H0_Interface
 //
 //  Created by Ruedi Heimlicher on 30.Juli.11.
 //  Copyright 2011 Skype. All rights reserved.
