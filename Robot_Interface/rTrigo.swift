@@ -439,7 +439,7 @@ class rTrigo: rViewController
           double *xi_prime, double *yi_prime)
 
           */
-      //   var resultat = circle_circle_intersection(0, 0, arm0, x, y, arm1, &xi1, &yi1, &xi11, &yi11)
+         //var resultat = circle_circle_intersection(0, 0, arm0, x, y, arm1, &xi1, &yi1, &xi11, &yi11)
          
          var robotarmwinkel:(Double,Double) = geometrie.armwinkel(absz0: x0 , ord0: y0, rad0: r0, absz1: x1, ord1: y1, rad1: r1)
          print("robotarmwinkel: \(robotarmwinkel)")

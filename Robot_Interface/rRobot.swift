@@ -168,7 +168,7 @@ class rRobot: rViewController
    var speedarray:[UInt8] = [UInt8](repeating: 0x00, count: ANZLOKS)
    
    var speedautocounter = 0
-   
+   var sinarray:[UInt8] = [10,11,12,13,14,14,13,12,11,10,8,7,6,5,5,6,7,8,9]
    var pause:UInt8 = 5
    
    var firstrun = 1; // Task in Startloop
@@ -293,7 +293,7 @@ class rRobot: rViewController
       teensy.write_byteArray[16] = 0 // Funktion
       teensy.write_byteArray[17] = 0 // speed
       teensy.write_byteArray[18] = timerintervall // step speed
-      teensy.write_byteArray[19] = 5 // pause
+      teensy.write_byteArray[19] = pause // pause
       
      /* 
       address1array[0] = UInt8(b0seg ?? 0)
@@ -875,7 +875,10 @@ class rRobot: rViewController
   //       {
             //print("step: \(dic["step"])")
             speedautocounter += 1
-            
+         if speedautocounter > sinarray.count - 1
+         {
+            speedautocounter = 0
+         }
       //      var tempmin:Int = dic["minspeed"] as! Int
       //      var tempmax:Int = dic["maxspeed"] as! Int
      //       var tempspeedautocounter = dic["speedautocounter"] as! Int
@@ -886,7 +889,14 @@ class rRobot: rViewController
      {
       tempmax = tempmin + 1
       }
-            var randomInt = Int.random(in: tempmin..<tempmax)
+         
+         var sinint = sinarray[speedautocounter]
+         print("speedautocounter : \( speedautocounter) sinint: \(sinint)")
+         teensy.write_byteArray[0] = speedcodearray[0]
+         teensy.write_byteArray[17] = sinint
+         //return
+         
+         var randomInt = Int.random(in: tempmin..<tempmax)
             if randomInt > 0 
             {
                randomInt += 1
