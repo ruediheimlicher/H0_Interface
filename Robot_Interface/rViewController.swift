@@ -1006,7 +1006,7 @@ class rViewController: NSViewController, NSWindowDelegate
          warnung.messageText = "USB-Device ist schon da"
          warnung.addButton(withTitle: "OK")
          warnung.runModal()
-        // return
+         return
 
       }
       let erfolg = teensy.USBOpen()
@@ -1183,6 +1183,7 @@ class rViewController: NSViewController, NSWindowDelegate
    @nonobjc func windowShouldClose(_ sender: Any) 
    {
       print("windowShouldClose")
+      
       NSApplication.shared.terminate(self)
    }
    

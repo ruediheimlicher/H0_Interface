@@ -372,6 +372,7 @@ class rRobot: rViewController
    @nonobjc override func 
       windowShouldClose(_ sender: Any) 
    {
+      
       print("Robot windowShouldClose")
       NSApplication.shared.terminate(self)
    }
@@ -1693,12 +1694,20 @@ class rRobot: rViewController
    
     @objc override func beendenAktion(_ notification:Notification) 
     {
+      let local:UInt8 = (1<<LOCAL)
+      teensy.write_byteArray[21] = local
+      if (usbstatus > 0)
+      {
+         let senderfolg = teensy.send_USB()
+         print("Robot beendenAktion senderfolg: \(senderfolg)")
+      }
+
       UserDefaults.standard.set(a0.indexOfSelectedItem, forKey: "a0index")
       UserDefaults.standard.set(a1.indexOfSelectedItem, forKey: "a1index")
       UserDefaults.standard.set(a2.indexOfSelectedItem, forKey: "a2index")
       UserDefaults.standard.set(a3.indexOfSelectedItem, forKey: "a3index")
       
-      print("*** UserDefaults b: \(b0.indexOfSelectedItem) \(b1.indexOfSelectedItem) \(b2.indexOfSelectedItem) \(b3.indexOfSelectedItem)")
+      print("*** Robot UserDefaults b: \(b0.indexOfSelectedItem) \(b1.indexOfSelectedItem) \(b2.indexOfSelectedItem) \(b3.indexOfSelectedItem)")
       
       
       UserDefaults.standard.set(b0.indexOfSelectedItem, forKey: "b0index")
