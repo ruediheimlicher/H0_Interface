@@ -430,7 +430,7 @@ int rawhid_status(void)
 
 int get_hid_usbstatus(void)
 {
-   //fprintf(stderr,"get_hid_usbstatus: %d\n",hid_usbstatus);
+   fprintf(stderr,"get_hid_usbstatus: %d\n",hid_usbstatus);
    return hid_usbstatus;
 }
 

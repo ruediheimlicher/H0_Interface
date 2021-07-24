@@ -331,17 +331,28 @@ class rViewController: NSViewController, NSWindowDelegate
    override func viewDidAppear() 
    {
       print("viewDidAppear")
+      let nc = NotificationCenter.default
+      var userinformation:[String : Any]
+      var manufactorername = "-"
+      
       self.view.window?.delegate = self as? NSWindowDelegate 
       let erfolg = teensy.USBOpen()
       if erfolg == 1
       {
          USB_OK_Feld.image = okimage
+         manufactorername = teensy.manustring
+         usbstatus = Int32(1)
       }
       else
       {
          USB_OK_Feld.image = notokimage
+         usbstatus = Int32(0)
       }
-      
+      userinformation = ["message":"usb", "usbstatus": usbstatus,"manufactorer": manufactorername] as [String : Any]
+      nc.post(name:Notification.Name(rawValue:"usb_status"),
+              object: nil,
+              userInfo: userinformation)
+
    }
 
    @objc func beendenAktion(_ notification:Notification) 
@@ -1030,7 +1041,7 @@ class rViewController: NSViewController, NSWindowDelegate
          Start_Knopf.isEnabled = true
          Send_Knopf.isEnabled = true
          
-         userinformation = ["message":"usb", "usbstatus": 1] as [String : Any]
+         userinformation = ["message":"usb", "usbstatus": 1,"manufactorer": manufactorername] as [String : Any]
          nc.post(name:Notification.Name(rawValue:"usb_status"),
                  object: nil,
                  userInfo: userinformation)

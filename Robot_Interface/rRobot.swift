@@ -52,6 +52,8 @@ let LOK_3_PAUSE:UInt8 = 0xE3
 
 let ANZLOKS:Int = 4
 
+let LOCAL = 0
+let USB = 1
 
 
 var addresscodearray = [LOK_0_ADDRESS,LOK_1_ADDRESS,LOK_2_ADDRESS,LOK_3_ADDRESS]
@@ -98,6 +100,7 @@ class rRobot: rViewController
    @IBOutlet weak var TeensyPot2Feld: NSTextField!
    @IBOutlet weak var TeensyPot3Feld: NSTextField!
 
+   @IBOutlet weak var LocalTaste: NSButton!
    
    @IBOutlet weak var Lok_0_RichtungTaste: NSButton!
    @IBOutlet weak var Lok_1_RichtungTaste: NSButton!
@@ -171,8 +174,9 @@ class rRobot: rViewController
    var sinarray:[UInt8] = [10,11,12,13,14,14,13,12,11,10,8,7,6,5,5,6,7,8,9]
    var pause:UInt8 = 5
    
-   var firstrun = 1; // Task in Startloop
+   var firstrun = 1 // Task in Startloop
    
+   var sourcestatus = 0
    override func viewDidAppear() 
    {
       //print ("Robot viewDidAppear selectedDevice: \(selectedDevice)")
@@ -376,8 +380,9 @@ class rRobot: rViewController
    @objc func usbstatusAktion(_ notification:Notification) 
    {
       let info = notification.userInfo
-      let status:Int = info?["usbstatus"] as! Int // 
-     print("Robot usbstatusAktion:\t \(status) ")
+      let status = info?["usbstatus"] as! Int32 // 
+      let manufactorer = info?["manufactorer"] as! String
+     print("Robot usbstatusAktion:\t \(status) manufactorer: \(manufactorer)")
       usbstatus = Int32(status)
    }
    
@@ -840,6 +845,29 @@ class rRobot: rViewController
       teensy.write_byteArray[17] = speedarray[lok]
    }
    
+   @IBAction  func report_Local(_ sender: NSButton)
+   {
+      print("report_Local status: \(sender.state.rawValue)")
+      let status:UInt8 = UInt8(sender.state.rawValue)
+      if status == 0
+          {
+            sourcestatus |= (1<<LOCAL)
+            sourcestatus &= ~(1<<USB)
+          }
+      else
+            {
+            sourcestatus &= ~(1<<LOCAL)
+            sourcestatus |= (1<<USB)
+            }
+      teensy.write_byteArray[21] = UInt8(sourcestatus)
+      if (usbstatus > 0)
+      {
+         let senderfolg = teensy.send_USB()
+         print("Robot report_Local senderfolg: \(senderfolg)")
+      }
+
+   }
+   
    @IBAction  func report_Speed_auto(_ sender: NSButton)
    {
       let autospeed = sender.state.rawValue
@@ -984,8 +1012,8 @@ class rRobot: rViewController
        
       (self.view.viewWithTag(2000 + loktag) as! NSTextField).intValue = Int32(pos)
       
- //     print("usbstatus: \(usbstatus)")
-//      print("loknummer: \(loknummer.indexOfSelectedItem)")
+      print("report_Slider usbstatus: \(usbstatus)")
+      print("report_Slider loknummer: \(loknummer.indexOfSelectedItem)")
       teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
       if (usbstatus > 0)
       {

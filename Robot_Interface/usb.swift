@@ -48,6 +48,19 @@ open class usb_teensy: NSObject
    {
       var r:Int32 = 0
       
+      if (hid_usbstatus > 0)
+      {
+         print("func usb_teensy.USBOpen USB schon offen")
+         let alert = NSAlert()
+         alert.messageText = "USB Device"
+         alert.informativeText = "USB ist schon offen"
+         alert.alertStyle = .warning
+         alert.addButton(withTitle: "OK")
+        // alert.addButton(withTitle: "Cancel")
+         let antwort =  alert.runModal() == .alertFirstButtonReturn
+         
+         return 1;
+      }
       let    out = rawhid_open(1, 0x16C0, 0x0486, 0xFFAB, 0x0200)
       print("func usb_teensy.USBOpen out: \(out)")
       
@@ -61,32 +74,34 @@ open class usb_teensy: NSObject
       else
       {
          NSLog("USBOpen: found rawhid device hid_usbstatus: %d",hid_usbstatus)
-         let manu   = get_manu()
+         let manu   = get_manu() 
          let manustr:String = String(cString: manu!)
          
-         if (manustr == nil)
+         if (manustr.isEmpty)
          {
             manustring = "-"
          }
          else
          {
-            manustring = String(cString: UnsafePointer<CChar>(manustr))
+            manustring = manustr //String(cString: UnsafePointer<CChar>(manustr))
          }
          
          
          
          
          let prod = get_prod();
+         
          //fprintf(stderr,"prod: %s\n",prod);
          let prodstr:String = String(cString: prod!)
-         let anyprodstr : Any? = prodstr
-         if (anyprodstr == nil)
+         
+         //let anyprodstr : Any? = prodstr
+         if (prodstr.isEmpty)
          {
             prodstring = "-"
          }
          else
          {
-            prodstring = String(cString: UnsafePointer<CChar>(prod!))
+            prodstring = prodstr //String(cString: UnsafePointer<CChar>(prod!))
          }
    //      var USBDatenDic = ["prod": prod, "manu":manu]
          
