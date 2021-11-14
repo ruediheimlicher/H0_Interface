@@ -31,7 +31,8 @@ open class usb_teensy: NSObject
    var testArray: Array<UInt8>  = [0xAB,0xDC,0x69,0x66,0x74,0x73,0x6f,0x64,0x61]
    
    var read_OK:ObjCBool = false
-   
+   var new_Data:ObjCBool = false
+ 
    var datatruecounter = 0
    var datafalsecounter = 0
    
@@ -85,10 +86,7 @@ open class usb_teensy: NSObject
          {
             manustring = manustr //String(cString: UnsafePointer<CChar>(manustr))
          }
-         
-         
-         
-         
+
          let prod = get_prod();
          
          //fprintf(stderr,"prod: %s\n",prod);
@@ -400,46 +398,6 @@ open class usb_teensy: NSObject
       // http://www.swiftsoda.com/swift-coding/get-bytes-from-nsdata/
       // Test Array to generate some Test Data
       //var testData = Data(bytes: UnsafePointer<UInt8>(testArray),count: testArray.count)
-  /*    
-      write_byteArray[0] = testArray[0]
-      write_byteArray[1] = testArray[1]
-      write_byteArray[2] = testArray[2]
-      
-      if (testArray[0] < 0xFF)
-      {
-         testArray[0] += 1
-      }
-      else
-      {
-         testArray[0] = 0;
-      }
-      if (testArray[1] < 0xFF)
-      {
-         testArray[1] += 1
-      }
-      else
-      {
-         testArray[1] = 0;
-      }
-      if (testArray[2] < 0xFF)
-      {
-         testArray[2] += 1
-      }
-      else
-      {
-         testArray[2] = 0;
-      }
-      
-      //println("write_byteArray: \(write_byteArray)")
-//      print("write_byteArray in send_USB: ", terminator: "")
-      
-      for  i in 0...16
-      {
-//         print(" \(write_byteArray[i])", terminator: "\t")
-      }
-      print("")
-  */    
-      
          let senderfolg = rawhid_send(0,&write_byteArray, Int32(BUFFER_SIZE), 50)
          
          if hid_usbstatus == 0

@@ -251,7 +251,6 @@ class rViewController: NSViewController, NSWindowDelegate
 //      robotPList.set(name, forKey: "name")
       robotPList.set(robot1, forKey: "robot1")
       
-      
       var preferences = Preferences(webserviceURL: "https://api.twitter.com", itemsPerPage: 12, backupEnabled: false,robot1_offset: 300)
       
       preferences.robot1_offset = 400
