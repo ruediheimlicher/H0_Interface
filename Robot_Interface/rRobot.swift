@@ -991,7 +991,7 @@ class rRobot: rViewController
   //    var speed:UInt8 =  intpos
       var speed:UInt8 =  UInt8(sender.intValue)
       
-//      print("report_Slider pos: \(pos) intpos: \(intpos)  speed: \(speed)")
+      print("report_Slider pos: \(pos) intpos: \(intpos)  speed: \(speed)")
       //      print("report_Slider0 speed: \(speed) richtung: \(richtung)")
       if speed > 0
       {
