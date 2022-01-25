@@ -1,7 +1,6 @@
 Images.*
 *Tests*
 *.lproj
-*.xcodeproj
 Makefile
 build/*
 *.eep
@@ -14,5 +13,4 @@ build/*
 *.hex
 *.o
 .dep/
-*.xcodeproj/
 DerivedData/
