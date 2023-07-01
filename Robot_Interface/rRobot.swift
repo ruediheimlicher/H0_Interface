@@ -821,7 +821,7 @@ class rRobot: rViewController
          teensy.write_byteArray[8 + i] = addressarray[lok][i]
          //print(addressarray[lok][i])
       }
-      //print("loadLokAddress\(teensy.write_byteArray[8...18])")
+      print("loadLokAddress\(teensy.write_byteArray[8...11])")
     } // loadLokAddress
    
    @objc func loadFunktion(lok:Int)
@@ -979,7 +979,7 @@ class rRobot: rViewController
       let loktag = sender.tag - 1000
  //     teensy.write_byteArray[0] = LOK_0_SPEED // Code 
       teensy.write_byteArray[0] = speedcodearray[loktag]
- //     print("Robot report_Slider loktag \(loktag) IntVal: \(sender.intValue) ")
+      print("\nRobot report_Slider loktag \(loktag) IntVal: \(sender.intValue) ")
  //     lok0array[12] = LOK_0_SPEED
    //   print("report_Slider funktioncoderray: \(funktioncoderray) ")
       
@@ -1206,7 +1206,7 @@ class rRobot: rViewController
          }
       }
    }
-   
+   // NOT
     @IBAction func report_Address(_ sender: NSSegmentedControl)
     {
       let ident:String = ((sender.identifier)!.rawValue)
@@ -1226,7 +1226,7 @@ class rRobot: rViewController
             let lok = id!%1000/100
             let pos = id!%1000%100
             let seg = addressview as! NSSegmentedControl
-            let ind = seg.indexOfSelectedItem
+            let ind = seg.indexOfSelectedItem // 
             print("ident da: \(id) lok: \(lok) pos: \(pos) ind: \(ind)")
             addressarray[lok][pos] = UInt8(ind) 
          }
@@ -1277,6 +1277,7 @@ class rRobot: rViewController
          break;
       }
       print("lok0array: \(lok0array)")
+      // aktualisieren nach Aenderung
       address0array[0] = UInt8(a0.indexOfSelectedItem)
       address0array[1] = UInt8(a1.indexOfSelectedItem)
       address0array[2] = UInt8(a2.indexOfSelectedItem)
@@ -1570,6 +1571,8 @@ class rRobot: rViewController
       print("lok1array: \(lok1array)")
 
       teensy.write_byteArray[17] = UInt8(speed) // speed
+      
+      
       
       Pot1_Feld.integerValue = Int(pos)
       

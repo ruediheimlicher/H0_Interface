@@ -272,7 +272,7 @@ open class usb_teensy: NSObject
          
          
          //print("*cont_read_USB result: \(result)")
-         //print("tempbyteArray in Timer: *\(read_byteArray)*")
+         print("tempbyteArray in Timer: *\(read_byteArray)*")
         // var timerdic: [String: Int]
          
          
