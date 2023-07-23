@@ -12,19 +12,19 @@ let LOK_0_ADDRESS:UInt8 = 0xA0
 let LOK_0_SPEED:UInt8 = 0xB0
 let LOK_0_DIR:UInt8 = 0xC0
 let LOK_0_FUNKTION:UInt8 = 0xD0
-let LOK_0_PAUSE:UInt8 = 0xE0
+let PAKET_PAUSE:UInt8 = 0xE0
+let TIMER_INTERVALL:UInt8 = 0xE1
 
 let LOK_FAKTOR0:Float = 1
 let LOK0_START:UInt16 = 0  // Startwert Slider 1
 let LOK0_OFFSET:UInt16 = 8 // Startwert low
 
-
+let PAKETTIMERINTERVALL:UInt8 = 13
 // 
 let LOK_1_ADDRESS:UInt8 = 0xA1
 let LOK_1_SPEED:UInt8 = 0xB1
 let LOK_1_DIR:UInt8 = 0xC1
 let LOK_1_FUNKTION:UInt8 = 0xD1
-let LOK_1_PAUSE:UInt8 = 0xE1
 
 let LOK_1:UInt8 = 0xA1
 let LOK1_START:UInt16 = 0 // Startwert Slider 1
@@ -36,7 +36,6 @@ let LOK_2_ADDRESS:UInt8 = 0xA2
 let LOK_2_SPEED:UInt8 = 0xB2
 let LOK_2_DIR:UInt8 = 0xC2
 let LOK_2_FUNKTION:UInt8 = 0xD2
-let LOK_2_PAUSE:UInt8 = 0xE2
 
 let LOK_2:UInt8 = 0xA2
 let LOK2_START:UInt16 = 0 // Startwert Slider 1
@@ -47,7 +46,6 @@ let LOK_3_ADDRESS:UInt8 = 0xA3
 let LOK_3_SPEED:UInt8 = 0xB3
 let LOK_3_DIR:UInt8 = 0xC3
 let LOK_3_FUNKTION:UInt8 = 0xD3
-let LOK_3_PAUSE:UInt8 = 0xE3
 
 
 let ANZLOKS:Int = 4
@@ -145,7 +143,7 @@ class rRobot: rViewController
    
    var wegmarke:UInt16 = 0
    
-    var timerintervall:UInt8 = 13
+    var timerintervall:UInt8 = PAKETTIMERINTERVALL
    
    var startzeit:Int64 = 0
    
@@ -261,7 +259,7 @@ class rRobot: rViewController
 
       
       
-      timerintervall = UInt8(UserDefaults.standard.string(forKey: "timerintervall") ?? "13") ?? 13
+      timerintervall = UInt8(UserDefaults.standard.string(forKey: "timerintervall") ?? String(PAKETTIMERINTERVALL)) ?? PAKETTIMERINTERVALL
       
       Intervalltimer_Feld.integerValue = Int((timerintervall));
       Intervalltimer_Stepper.integerValue = Int((timerintervall));
@@ -704,7 +702,7 @@ class rRobot: rViewController
    @IBAction  func report_Intervalltimer_Stepper(_ sender: NSStepper) // untere Grenze
    {
       print("report_Intervalltimer_Stepper IntVal: \(sender.integerValue)")
-      teensy.write_byteArray[0] = LOK_0_ADDRESS 
+      teensy.write_byteArray[0] = TIMER_INTERVALL 
       let intpos = sender.integerValue 
       Intervalltimer_Feld.integerValue = intpos
       teensy.write_byteArray[18] = UInt8(intpos)
@@ -722,7 +720,7 @@ class rRobot: rViewController
    @IBAction  func report_Pause_Stepper(_ sender: NSStepper) // untere Grenze
    {
       print("report_Pause_Stepper IntVal: \(sender.integerValue)")
-      teensy.write_byteArray[0] = LOK_0_PAUSE 
+      teensy.write_byteArray[0] = PAKET_PAUSE 
       let intpos = sender.integerValue 
       Pause_Feld.integerValue = intpos
       teensy.write_byteArray[19] = UInt8(intpos)
@@ -852,14 +850,15 @@ class rRobot: rViewController
       let status:UInt8 = UInt8(sender.state.rawValue)
       if status == 0
           {
-            sourcestatus |= (1<<LOCAL)
-            sourcestatus &= ~(1<<USB)
+            sourcestatus |= (1<<LOCAL) // 0
+            sourcestatus &= ~(1<<USB) // 1
           }
       else
             {
             sourcestatus &= ~(1<<LOCAL)
             sourcestatus |= (1<<USB)
             }
+      print("report_Local status: \(sourcestatus)")
       teensy.write_byteArray[21] = UInt8(sourcestatus)
       if (usbstatus > 0)
       {
@@ -1007,6 +1006,8 @@ class rRobot: rViewController
       
       
       teensy.write_byteArray[17] = speed
+      teensy.write_byteArray[18] = timerintervall // step speed
+      teensy.write_byteArray[19] = pause // pause
       
 //      print("teensy.write_byteArray:")
 //      print("\(teensy.write_byteArray[8...18])")
@@ -1085,7 +1086,7 @@ class rRobot: rViewController
  */
       
       teensy.write_byteArray[17] = UInt8(speed) // speed
-      
+      teensy.write_byteArray[21] = UInt8(sourcestatus)
       Pot0_Feld.integerValue = Int(pos)
       
       print("usbstatus: \(usbstatus)")
@@ -1571,7 +1572,8 @@ class rRobot: rViewController
       print("lok1array: \(lok1array)")
 
       teensy.write_byteArray[17] = UInt8(speed) // speed
-      
+      teensy.write_byteArray[19] = pause // pause
+      teensy.write_byteArray[21] = UInt8(sourcestatus)
       
       
       Pot1_Feld.integerValue = Int(pos)
