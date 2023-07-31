@@ -1,6 +1,7 @@
 Images.*
 *Tests*
 *.lproj
+*.xcuserdata/*
 Makefile
 build/*
 *.eep
@@ -9,7 +10,7 @@ build/*
 *.lst
 *.map
 *.sym
-/H0:Interface.xcodeproj/*
+/H0_Interface.xcodeproj/*
 *.hex
 *.o
 .dep/

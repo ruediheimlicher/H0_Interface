@@ -99,6 +99,8 @@ class rRobot: rViewController
    @IBOutlet weak var TeensyPot1Feld: NSTextField!
    @IBOutlet weak var TeensyPot2Feld: NSTextField!
    @IBOutlet weak var TeensyPot3Feld: NSTextField!
+   
+   @IBOutlet weak var reverscountFeld: NSTextField!
 
    @IBOutlet weak var LocalTaste: NSButton!
    
@@ -900,63 +902,83 @@ class rRobot: rViewController
       if (autospeedtaste.state.rawValue == 1)
       {
          // print("speed_auto : \( timer.userInfo)")
-  //       if  var dic = timer.userInfo as? NSMutableDictionary
-  //       {
-            //print("step: \(dic["step"])")
-            speedautocounter += 1
+         //       if  var dic = timer.userInfo as? NSMutableDictionary
+         //       {
+         //print("step: \(dic["step"])")
+         speedautocounter += 1
          if speedautocounter > sinarray.count - 1
          {
-            speedautocounter = 0
+            speedautocounter = 0 // neu beginnen
          }
-      //      var tempmin:Int = dic["minspeed"] as! Int
-      //      var tempmax:Int = dic["maxspeed"] as! Int
-     //       var tempspeedautocounter = dic["speedautocounter"] as! Int
-            
-     var       tempmin = autospeedminstepper.integerValue
-     var       tempmax = autospeedmaxstepper.integerValue
-     if !(tempmax > tempmin)
-     {
-      tempmax = tempmin + 1
-      }
+         //      var tempmin:Int = dic["minspeed"] as! Int
+         //      var tempmax:Int = dic["maxspeed"] as! Int
+         //       var tempspeedautocounter = dic["speedautocounter"] as! Int
+         
+         var       tempmin = autospeedminstepper.integerValue
+         var       tempmax = autospeedmaxstepper.integerValue
+         if !(tempmax > tempmin)
+         {
+            tempmax = tempmin + 1
+         }
          
          var sinint = sinarray[speedautocounter]
-         print("speedautocounter : \( speedautocounter) sinint: \(sinint)")
+         
+         // https://deepbluembedded.com/map-function-embedded-c/#:~:text=The%20map%20function%20is%20commonly,certain%20domain%20to%20another%20domain.
+         //return ((((IN - INmin)*(OUTmax - OUTmin))/(INmax - INmin)) + OUTmin);
+         
+         
+         var INint = Int(sinint)
+         var INmin = Int(sinarray.min() ?? 1)
+         var INmax = Int(sinarray.max() ?? 2)
+         
+         var OUTmin = tempmin
+         var OUTmax = tempmax
+         
+         var outint = (((INint - INmin)*(OUTmax - OUTmin)) / (INmax - INmin)) + OUTmin
+         
+         print("speedautocounter : \( speedautocounter) sinint: \(sinint) outint: \(outint)")
          teensy.write_byteArray[0] = speedcodearray[0]
-         teensy.write_byteArray[17] = sinint
+         teensy.write_byteArray[17] = UInt8(outint)
+         autospeedrandomfeld.integerValue = outint
+         
+         
          //return
          
          var randomInt = Int.random(in: tempmin..<tempmax)
-            if randomInt > 0 
-            {
-               randomInt += 1
-            }
-            
-            
-            teensy.write_byteArray[0] = speedcodearray[0]
-            if speedautocounter % 5 == 0
-            {
-               teensy.write_byteArray[17] = 0
-               autospeedrandomfeld.integerValue = 0
-            }
-            else
-            {
-               teensy.write_byteArray[17] = UInt8(randomInt)
-               autospeedrandomfeld.integerValue = randomInt
-         //      dic["step"] = randomInt
-            }
-        var date = Int64(NSDate().timeIntervalSince1970) - startzeit            
+         if randomInt > 0 
+         {
+            randomInt += 1
+         }
          
-          
-         print("speed_auto : \( autospeedrandomfeld.integerValue) time: \(date)")
-
-            loadLokAddress(lok: 0)
-            //teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
-            if (usbstatus > 0)
-            {
-               let senderfolg = teensy.send_USB()
-               //print("Robot report_Slider senderfolg: \(senderfolg)")
-            }
-   //      }
+         
+         teensy.write_byteArray[0] = speedcodearray[0]
+         
+         /*
+         if speedautocounter % 5 == 0
+         {
+            teensy.write_byteArray[17] = 0
+            autospeedrandomfeld.integerValue = 0
+         }
+         else
+         {
+            teensy.write_byteArray[17] = UInt8(randomInt)
+            autospeedrandomfeld.integerValue = randomInt
+            //      dic["step"] = randomInt
+         }
+          */
+         var date = Int64(NSDate().timeIntervalSince1970) - startzeit            
+         
+         
+         //print("speed_auto : \( autospeedrandomfeld.integerValue) time: \(date)")
+         
+         loadLokAddress(lok: 0)
+         //teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
+         if (usbstatus > 0)
+         {
+            let senderfolg = teensy.send_USB()
+            //print("Robot report_Slider senderfolg: \(senderfolg)")
+         }
+         //      }
       }
       else 
       {
@@ -1105,8 +1127,8 @@ class rRobot: rViewController
       teensy.write_byteArray[17] = 1 // speed 1: Richtung togglen
       
       (self.view.viewWithTag(loktag + 2000) as! NSTextField).intValue = 0
-     (self.view.viewWithTag(loktag + 1000) as! NSSlider).intValue = 0
-
+      (self.view.viewWithTag(loktag + 1000) as! NSSlider).intValue = 0
+      
       
       if (usbstatus > 0)
       {
@@ -1116,13 +1138,14 @@ class rRobot: rViewController
             print("report_Richtung: %d",senderfolg)
          }
       }
-      let userinformation = ["tag": loktag] //as! [String : Int]
+      let userinformation = ["tag": loktag, "rep": 1] //as! [String : Int]
       var timer : Timer? = nil
       timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(resetfunktion(_:)), userInfo: userinformation, repeats: false)
    }   
    
    @objc open func resetfunktion(_ timer: Timer) // Richtung-Bit resetten
    {
+      
       print("resetfunktion userInfo: \(timer.userInfo ?? "")")
       var loktag = 0xFF
       
