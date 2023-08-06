@@ -881,10 +881,10 @@ class rRobot: rViewController
       startzeit = Int64(NSDate().timeIntervalSince1970)
       if autospeed == 1
       {
-         var minspeed = 0
-         var maxspeed = 14
-         var step = 1
-         var interval:Double = 2
+         let minspeed = 0
+         let maxspeed = 14
+         let step = 1
+         let interval:Double = 2
          
          var userinformation:NSMutableDictionary = ["minspeed": minspeed, "maxspeed": maxspeed, "step": step, "speedautocounter":speedautocounter] //as! [String : Int]
          var timer : Timer? = nil
