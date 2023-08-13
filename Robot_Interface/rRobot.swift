@@ -129,6 +129,7 @@ class rRobot: rViewController
    @IBOutlet weak var c3: NSSegmentedControl!
    
    
+   
    @IBOutlet weak var loknummer: NSSegmentedControl!
    
    @IBOutlet weak var autospeedtaste: NSButton!
@@ -252,6 +253,7 @@ class rRobot: rViewController
       c1.selectSegment(withTag:  c1seg ?? 0)
       c2.selectSegment(withTag:  c2seg ?? 0)
       c3.selectSegment(withTag:  c3seg ?? 0)
+     //  c3.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
 
       print("viewDidLoad c: \(c0.indexOfSelectedItem) \(c1.indexOfSelectedItem) \(c2.indexOfSelectedItem) \(c3.indexOfSelectedItem)")
 
@@ -884,7 +886,7 @@ class rRobot: rViewController
          let minspeed = 0
          let maxspeed = 14
          let step = 1
-         let interval:Double = 2
+         let interval:Double = 1.5
          
          var userinformation:NSMutableDictionary = ["minspeed": minspeed, "maxspeed": maxspeed, "step": step, "speedautocounter":speedautocounter] //as! [String : Int]
          var timer : Timer? = nil
