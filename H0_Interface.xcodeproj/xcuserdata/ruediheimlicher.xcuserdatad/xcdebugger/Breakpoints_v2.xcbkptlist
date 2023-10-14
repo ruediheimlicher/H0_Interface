@@ -865,8 +865,8 @@
             timestampString = "628185805.400804"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "101"
-            endingLineNumber = "101"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
             landmarkName = "mouseDown(with:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -882,8 +882,8 @@
             timestampString = "629035962.5282609"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "468"
-            endingLineNumber = "468"
+            startingLineNumber = "514"
+            endingLineNumber = "514"
             landmarkName = "drehknopfAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -950,8 +950,8 @@
             timestampString = "629035962.540314"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1760"
-            endingLineNumber = "1760"
+            startingLineNumber = "1971"
+            endingLineNumber = "1971"
             landmarkName = "beendenAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -967,8 +967,8 @@
             timestampString = "629035962.5407799"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1570"
-            endingLineNumber = "1570"
+            startingLineNumber = "1783"
+            endingLineNumber = "1783"
             landmarkName = "report_Slider1(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1069,8 +1069,8 @@
             timestampString = "628185805.401039"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
             landmarkName = "mouseDown(with:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1086,8 +1086,8 @@
             timestampString = "629035962.541283"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "535"
-            endingLineNumber = "535"
+            startingLineNumber = "581"
+            endingLineNumber = "581"
             landmarkName = "joystickAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1103,8 +1103,8 @@
             timestampString = "628185805.401111"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "mouseDown(with:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1120,8 +1120,8 @@
             timestampString = "629035962.541695"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "570"
-            endingLineNumber = "570"
+            startingLineNumber = "616"
+            endingLineNumber = "616"
             landmarkName = "joystickAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1137,8 +1137,8 @@
             timestampString = "629035962.542074"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "585"
-            endingLineNumber = "585"
+            startingLineNumber = "631"
+            endingLineNumber = "631"
             landmarkName = "joystickAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1154,8 +1154,8 @@
             timestampString = "629035962.54245"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "631"
-            endingLineNumber = "631"
+            startingLineNumber = "677"
+            endingLineNumber = "677"
             landmarkName = "joystickAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1222,8 +1222,8 @@
             timestampString = "629035962.5428849"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1350"
-            endingLineNumber = "1350"
+            startingLineNumber = "1561"
+            endingLineNumber = "1561"
             landmarkName = "report_Address0(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1239,8 +1239,8 @@
             timestampString = "629035962.54327"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "337"
-            endingLineNumber = "337"
+            startingLineNumber = "378"
+            endingLineNumber = "378"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1273,8 +1273,8 @@
             timestampString = "629035962.543672"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "389"
-            endingLineNumber = "389"
+            startingLineNumber = "429"
+            endingLineNumber = "429"
             landmarkName = "usbstatusAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1290,8 +1290,8 @@
             timestampString = "629035962.544049"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1756"
-            endingLineNumber = "1756"
+            startingLineNumber = "1967"
+            endingLineNumber = "1967"
             landmarkName = "beendenAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1307,8 +1307,8 @@
             timestampString = "629035962.544444"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
+            startingLineNumber = "280"
+            endingLineNumber = "280"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1324,8 +1324,8 @@
             timestampString = "629035962.544794"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1082"
-            endingLineNumber = "1082"
+            startingLineNumber = "1293"
+            endingLineNumber = "1293"
             landmarkName = "report_Slider0(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1341,8 +1341,8 @@
             timestampString = "629035962.54515"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1171"
-            endingLineNumber = "1171"
+            startingLineNumber = "1382"
+            endingLineNumber = "1382"
             landmarkName = "resetfunktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1358,8 +1358,8 @@
             timestampString = "629035962.545505"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1741"
-            endingLineNumber = "1741"
+            startingLineNumber = "1952"
+            endingLineNumber = "1952"
             landmarkName = "beendenAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1375,8 +1375,8 @@
             timestampString = "629035962.545862"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1738"
-            endingLineNumber = "1738"
+            startingLineNumber = "1949"
+            endingLineNumber = "1949"
             landmarkName = "beendenAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1392,8 +1392,8 @@
             timestampString = "629035962.5462199"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1099"
-            endingLineNumber = "1099"
+            startingLineNumber = "1310"
+            endingLineNumber = "1310"
             landmarkName = "report_Slider0(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1409,8 +1409,8 @@
             timestampString = "629035962.546573"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1098"
-            endingLineNumber = "1098"
+            startingLineNumber = "1309"
+            endingLineNumber = "1309"
             landmarkName = "report_Slider0(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1426,8 +1426,8 @@
             timestampString = "629035962.5469249"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1027"
-            endingLineNumber = "1027"
+            startingLineNumber = "1228"
+            endingLineNumber = "1228"
             landmarkName = "report_Slider(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1443,8 +1443,8 @@
             timestampString = "629035962.547302"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1126"
-            endingLineNumber = "1126"
+            startingLineNumber = "1337"
+            endingLineNumber = "1337"
             landmarkName = "report_Richtung(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1477,8 +1477,8 @@
             timestampString = "629035962.547682"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1478"
-            endingLineNumber = "1478"
+            startingLineNumber = "1689"
+            endingLineNumber = "1689"
             landmarkName = "report_Address2(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1494,8 +1494,8 @@
             timestampString = "629035962.548041"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1500"
-            endingLineNumber = "1500"
+            startingLineNumber = "1711"
+            endingLineNumber = "1711"
             landmarkName = "report_Address2(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1511,8 +1511,8 @@
             timestampString = "629035962.548427"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1037"
-            endingLineNumber = "1037"
+            startingLineNumber = "1238"
+            endingLineNumber = "1238"
             landmarkName = "report_Slider(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1528,8 +1528,8 @@
             timestampString = "629035962.548768"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1311"
-            endingLineNumber = "1311"
+            startingLineNumber = "1522"
+            endingLineNumber = "1522"
             landmarkName = "report_Address0(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1545,8 +1545,8 @@
             timestampString = "629035962.549103"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1329"
-            endingLineNumber = "1329"
+            startingLineNumber = "1540"
+            endingLineNumber = "1540"
             landmarkName = "report_Address0(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1562,8 +1562,8 @@
             timestampString = "629035962.549441"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1318"
-            endingLineNumber = "1318"
+            startingLineNumber = "1529"
+            endingLineNumber = "1529"
             landmarkName = "report_Address0(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1579,8 +1579,8 @@
             timestampString = "629035962.549776"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "908"
-            endingLineNumber = "908"
+            startingLineNumber = "1109"
+            endingLineNumber = "1109"
             landmarkName = "speed_auto(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1658,8 +1658,8 @@
             filePath = "Robot_Interface/rRobot.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "387"
-            endingLineNumber = "387"
+            startingLineNumber = "427"
+            endingLineNumber = "427"
             landmarkName = "usbstatusAktion(_:)"
             landmarkType = "7">
             <Locations>
@@ -1786,8 +1786,8 @@
             filePath = "Robot_Interface/rRobot.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "385"
-            endingLineNumber = "385"
+            startingLineNumber = "425"
+            endingLineNumber = "425"
             landmarkName = "usbstatusAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1828,14 +1828,14 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "09F36A3B-68FA-45BD-A0F4-7B15926E3450"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Robot_Interface/rRobot.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "394"
-            endingLineNumber = "394"
+            startingLineNumber = "434"
+            endingLineNumber = "434"
             landmarkName = "newDataAktion(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1882,8 +1882,8 @@
             filePath = "Robot_Interface/rRobot.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1599"
-            endingLineNumber = "1599"
+            startingLineNumber = "1812"
+            endingLineNumber = "1812"
             landmarkName = "report_Slider1(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1898,8 +1898,8 @@
             filePath = "Robot_Interface/rRobot.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1559"
-            endingLineNumber = "1559"
+            startingLineNumber = "1772"
+            endingLineNumber = "1772"
             landmarkName = "report_Slider1(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1914,8 +1914,8 @@
             filePath = "Robot_Interface/rRobot.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1403"
-            endingLineNumber = "1403"
+            startingLineNumber = "1614"
+            endingLineNumber = "1614"
             landmarkName = "report_Address1(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1930,8 +1930,8 @@
             filePath = "Robot_Interface/rRobot.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "866"
-            endingLineNumber = "866"
+            startingLineNumber = "912"
+            endingLineNumber = "912"
             landmarkName = "report_Local(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1946,9 +1946,121 @@
             filePath = "Robot_Interface/rRobot.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "855"
-            endingLineNumber = "855"
+            startingLineNumber = "901"
+            endingLineNumber = "901"
             landmarkName = "report_Local(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7FB702FD-EACD-4A4B-A475-42225F055042"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Robot_Interface/rRobot.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "868"
+            endingLineNumber = "868"
+            landmarkName = "loadLokAddress(lok:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5A72078B-E101-4A93-A4F8-AE3E0AF6A9A3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Robot_Interface/rAdresstastenView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "init?(coder:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "89ED4945-BA36-4533-8DD8-B92ABA9EFA3E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Robot_Interface/rRobot.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "12599FAC-F082-4333-AB70-4B95A45D43C0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Robot_Interface/rAdresstastenView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
+            landmarkName = "setAction()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E0813C63-D227-49BD-A9BC-CB16B0A97DAE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Robot_Interface/rAdresstastenView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
+            landmarkName = "setAction()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "682393AA-76EE-49B0-9396-17D03C9AFFE2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Robot_Interface/rAdresstastenView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "tastenaktion(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5167768F-144A-4F65-B922-08F4FFDA50AD"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Robot_Interface/rRobot.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "259"
+            endingLineNumber = "259"
+            landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

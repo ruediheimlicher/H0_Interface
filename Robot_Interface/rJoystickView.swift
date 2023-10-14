@@ -17,6 +17,7 @@ class rJoystickView: NSView
    var winkel:CGFloat = 0
    var hyp:CGFloat = 0
    var hgfarbe:NSColor = NSColor()
+   
    required init?(coder  aDecoder : NSCoder) 
    {
       super.init(coder: aDecoder)

@@ -25,6 +25,10 @@
 		BD3E630E2305DDE60096AC70 /* geom.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3E630D2305DDE60096AC70 /* geom.swift */; };
 		BD3E63112309A96D0096AC70 /* rJoystickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3E63102309A96D0096AC70 /* rJoystickView.swift */; };
 		BD3E63132309AA600096AC70 /* rDrehknopfView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3E63122309AA600096AC70 /* rDrehknopfView.swift */; };
+		BD3EE24E2AD9916D008DCF8D /* rAdresstastenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3EE24D2AD9916D008DCF8D /* rAdresstastenView.swift */; };
+		BD3EE2502AD9B93C008DCF8D /* green.png in Resources */ = {isa = PBXBuildFile; fileRef = BD3EE24F2AD9B93C008DCF8D /* green.png */; };
+		BD3EE2522AD9BA7A008DCF8D /* leer.png in Resources */ = {isa = PBXBuildFile; fileRef = BD3EE2512AD9BA7A008DCF8D /* leer.png */; };
+		BD3EE2542AD9BBAF008DCF8D /* grey.png in Resources */ = {isa = PBXBuildFile; fileRef = BD3EE2532AD9BBAF008DCF8D /* grey.png */; };
 		BD4D7FF22A3C5E0300D08EA7 /* Lok512_inv.png in Resources */ = {isa = PBXBuildFile; fileRef = BD4D7FF12A3C5E0300D08EA7 /* Lok512_inv.png */; };
 		BD6A989122EDE8CE001FBADA /* defines.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6A989022EDE8CE001FBADA /* defines.swift */; };
 		BD6A98C522FA07BA001FBADA /* rBasis.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6A98C322FA07BA001FBADA /* rBasis.swift */; };
@@ -63,6 +67,10 @@
 		BD3E630F2305E9BB0096AC70 /* kreisschnittpunkt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kreisschnittpunkt.h; sourceTree = "<group>"; };
 		BD3E63102309A96D0096AC70 /* rJoystickView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rJoystickView.swift; sourceTree = "<group>"; };
 		BD3E63122309AA600096AC70 /* rDrehknopfView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rDrehknopfView.swift; sourceTree = "<group>"; };
+		BD3EE24D2AD9916D008DCF8D /* rAdresstastenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rAdresstastenView.swift; sourceTree = "<group>"; };
+		BD3EE24F2AD9B93C008DCF8D /* green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green.png; sourceTree = "<group>"; };
+		BD3EE2512AD9BA7A008DCF8D /* leer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leer.png; sourceTree = "<group>"; };
+		BD3EE2532AD9BBAF008DCF8D /* grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grey.png; sourceTree = "<group>"; };
 		BD4D7FF12A3C5E0300D08EA7 /* Lok512_inv.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Lok512_inv.png; sourceTree = "<group>"; };
 		BD6A989022EDE8CE001FBADA /* defines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = defines.swift; sourceTree = "<group>"; };
 		BD6A98C322FA07BA001FBADA /* rBasis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rBasis.swift; sourceTree = "<group>"; };
@@ -118,6 +126,9 @@
 		BD7369B322FE9A9800341443 /* Bilder */ = {
 			isa = PBXGroup;
 			children = (
+				BD3EE2532AD9BBAF008DCF8D /* grey.png */,
+				BD3EE2512AD9BA7A008DCF8D /* leer.png */,
+				BD3EE24F2AD9B93C008DCF8D /* green.png */,
 				BD33FAFF257E93F400B11D1E /* Icon */,
 				BDACB33C2537021D00BF7361 /* drehscheibe.jpg */,
 				BD94A9062507958900D815E2 /* lok_inv.png */,
@@ -155,6 +166,7 @@
 				BD6A989022EDE8CE001FBADA /* defines.swift */,
 				BD8702611A06852A00F2C77B /* rViewController.swift */,
 				BD3E63102309A96D0096AC70 /* rJoystickView.swift */,
+				BD3EE24D2AD9916D008DCF8D /* rAdresstastenView.swift */,
 				BD1407402337F6DD00EDC163 /* rRobotarm.swift */,
 				BD3E63122309AA600096AC70 /* rDrehknopfView.swift */,
 				BD8702631A06852A00F2C77B /* Images.xcassets */,
@@ -245,11 +257,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD2ED5DB256FAB97008D1E16 /* Lok512.png in Resources */,
+				BD3EE2502AD9B93C008DCF8D /* green.png in Resources */,
+				BD3EE2542AD9BBAF008DCF8D /* grey.png in Resources */,
 				BD94A9072507958900D815E2 /* lok_inv.png in Resources */,
 				BD2ED5DE256FAB97008D1E16 /* Lok256.png in Resources */,
 				BD140748233A93A900EDC163 /* notok_image.png in Resources */,
 				BD8702641A06852A00F2C77B /* Images.xcassets in Resources */,
 				BDD71BFC26AC40B400213B2E /* usb.png in Resources */,
+				BD3EE2522AD9BA7A008DCF8D /* leer.png in Resources */,
 				BD2ED5DA256FAB97008D1E16 /* Lok32.png in Resources */,
 				BD140749233A93A900EDC163 /* ok_image.png in Resources */,
 				BDACB33D2537021D00BF7361 /* drehscheibe.jpg in Resources */,
@@ -281,6 +296,7 @@
 				BDE9397A232AC32B005A1A29 /* rRobot.swift in Sources */,
 				BDFCF9B722DCFD4400335B2B /* hid.c in Sources */,
 				BD6A98C922FA07EB001FBADA /* rTrigo.swift in Sources */,
+				BD3EE24E2AD9916D008DCF8D /* rAdresstastenView.swift in Sources */,
 				BD8702621A06852A00F2C77B /* rViewController.swift in Sources */,
 				BD1407412337F6DD00EDC163 /* rRobotarm.swift in Sources */,
 				BD6A98C522FA07BA001FBADA /* rBasis.swift in Sources */,
