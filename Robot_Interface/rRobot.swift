@@ -114,17 +114,18 @@ class rRobot: rViewController
    @IBOutlet weak var Lok_1_FunktionTaste: NSButton!
    @IBOutlet weak var Lok_2_FunktionTaste: NSButton!
 
-   
+   /*
    @IBOutlet weak var a0: NSSegmentedControl!
    @IBOutlet weak var a1: NSSegmentedControl!
    @IBOutlet weak var a2: NSSegmentedControl!
    @IBOutlet weak var a3: NSSegmentedControl!
-
+*/
+   /*
    @IBOutlet weak var b0: NSSegmentedControl!
    @IBOutlet weak var b1: NSSegmentedControl!
    @IBOutlet weak var b2: NSSegmentedControl!
    @IBOutlet weak var b3: NSSegmentedControl!
-
+*/
    @IBOutlet weak var c0: NSSegmentedControl!
    @IBOutlet weak var c1: NSSegmentedControl!
    @IBOutlet weak var c2: NSSegmentedControl!
@@ -134,9 +135,11 @@ class rRobot: rViewController
    
    @IBOutlet weak var addressbox: NSBox!
    
-   @IBOutlet  var addresstastenfeld: rAdresstastenView!
+   @IBOutlet  var addresstastenfeld0: rAdresstastenView!
    
    @IBOutlet  var addresstastenfeld1: rAdresstastenView!
+   
+   @IBOutlet  var addresstastenfeld2: rAdresstastenView!
  
    
    
@@ -224,8 +227,8 @@ class rRobot: rViewController
       formatter.minimumFractionDigits = 2
       formatter.minimumIntegerDigits = 1
       //formatter.roundingMode = .down
-       //self.addresstastenfeld.lok = 1
-       //print("viewDidLoad addresstastenfeld: *\(self.addresstastenfeld.lok)*")
+       //self.addresstastenfeld0.lok = 1
+       //print("viewDidLoad addresstastenfeld0: *\(self.addresstastenfeld0.lok)*")
       //USB_OK.backgroundColor = NSColor.greenColor()
       // Do any additional setup after loading the view.
       let newdataname = Notification.Name("newdata")
@@ -236,10 +239,7 @@ class rRobot: rViewController
  
        NotificationCenter.default.addObserver(self, selector:#selector(tastenstatusAktion(_:)),name:NSNotification.Name(rawValue: "tastenstatus"),object:nil)
 
-       
-  //    UserDefaults.standard.removeObject(forKey: "robot1_min")
-  //    UserDefaults.standard.removeObject(forKey: "robot2_min")
-
+ 
       Pot0_Slider.integerValue = Int(LOK0_START)
       Pot0_Feld.integerValue = 0 //Int(Pot0_Slider.floatValue * LOK_FAKTOR0)
       
@@ -249,25 +249,18 @@ class rRobot: rViewController
       let a3seg  = Int(UserDefaults.standard.string(forKey: "a3index") ?? "0")
       
       // Adresse einstellen
-      a0.selectSegment(withTag:  a0seg ?? 0)
-      a1.selectSegment(withTag:  a1seg ?? 0)
-      a2.selectSegment(withTag:  a2seg ?? 0)
-      a3.selectSegment(withTag:  a3seg ?? 0)
-       
        var loktastenstatus:[Int] = [Int(a0seg ?? 0),Int(a1seg ?? 0),Int(a2seg ?? 0),Int(a3seg ?? 0)]
        print(" loktastenstatus: \( loktastenstatus)")
-       /*
-       addresstastenfeld.tastenstatus[0]  = Int(a0seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
-       addresstastenfeld.tastenstatus[1]  = Int(a1seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
-       addresstastenfeld.tastenstatus[2]  = Int(a2seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
-       addresstastenfeld.tastenstatus[3]  = Int(a3seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
        
-       print(" addresstastenfeld.tastenstatus: \( addresstastenfeld.tastenstatus)")
-       */
+       addresstastenfeld0.tastenstatus[0]  = Int(a0seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
+       addresstastenfeld0.tastenstatus[1]  = Int(a1seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
+       addresstastenfeld0.tastenstatus[2]  = Int(a2seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
+       addresstastenfeld0.tastenstatus[3]  = Int(a3seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
        
+       print(" addresstastenfeld0.tastenstatus: \( addresstastenfeld0.tastenstatus)")
        
-       addresstastenfeld.setTasten(tastenarray:loktastenstatus)
-       addresstastenfeld.needsDisplay = true
+       addresstastenfeld0.setTasten(tastenarray:loktastenstatus)
+       addresstastenfeld0.needsDisplay = true
 
        //a0.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
 
@@ -278,27 +271,35 @@ class rRobot: rViewController
       let b2seg  = Int(UserDefaults.standard.string(forKey: "b2index") ?? "0")
       let b3seg  = Int(UserDefaults.standard.string(forKey: "b3index") ?? "0")
       
+       var loktastenstatus1:[Int] = [Int(b0seg ?? 0),Int(b1seg ?? 0),Int(b2seg ?? 0),Int(b3seg ?? 0)]
+       addresstastenfeld1.setTasten(tastenarray:loktastenstatus1)
  //     print("viewDidLoad b seg: \(b0seg) \(b1seg) \(b2seg) \(b3seg)")
 
-      
-      b0.selectSegment(withTag:  b0seg ?? 0)
-      b1.selectSegment(withTag:  b1seg ?? 0)
-      b2.selectSegment(withTag:  b2seg ?? 0)
-      b3.selectSegment(withTag:  b3seg ?? 0)
-
+       addresstastenfeld1.tastenstatus[0]  = Int(b0seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
+       addresstastenfeld1.tastenstatus[1]  = Int(b1seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
+       addresstastenfeld1.tastenstatus[2]  = Int(b2seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
+       addresstastenfeld1.tastenstatus[3]  = Int(b3seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
+       
+       print(" addresstastenfeld0.tastenstatus: \( addresstastenfeld0.tastenstatus)")
+       
       //print("viewDidLoad b: \(b0.indexOfSelectedItem) \(b1.indexOfSelectedItem) \(b2.indexOfSelectedItem) \(b3.indexOfSelectedItem)")
 
       let c0seg  = Int(UserDefaults.standard.string(forKey: "c0index") ?? "0")
       let c1seg  = Int(UserDefaults.standard.string(forKey: "c1index") ?? "0")
       let c2seg  = Int(UserDefaults.standard.string(forKey: "c2index") ?? "0")
       let c3seg  = Int(UserDefaults.standard.string(forKey: "c3index") ?? "0")
-      
-      c0.selectSegment(withTag:  c0seg ?? 0)
-      c1.selectSegment(withTag:  c1seg ?? 0)
-      c2.selectSegment(withTag:  c2seg ?? 0)
-      c3.selectSegment(withTag:  c3seg ?? 0)
+       
+       var loktastenstatus2:[Int] = [Int(c0seg ?? 0),Int(c1seg ?? 0),Int(c2seg ?? 0),Int(c3seg ?? 0)]
+       addresstastenfeld2.setTasten(tastenarray:loktastenstatus2)
+  
+       addresstastenfeld2.tastenstatus[0]  = Int(c0seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
+       addresstastenfeld2.tastenstatus[1]  = Int(c1seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
+       addresstastenfeld2.tastenstatus[2]  = Int(c2seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
+       addresstastenfeld2.tastenstatus[3]  = Int(c3seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
+       
+       print(" addresstastenfeld0.tastenstatus: \( addresstastenfeld0.tastenstatus)")
 
-      print("viewDidLoad c: \(c0.indexOfSelectedItem) \(c1.indexOfSelectedItem) \(c2.indexOfSelectedItem) \(c3.indexOfSelectedItem)")
+//      print("viewDidLoad c: \(c0.indexOfSelectedItem) \(c1.indexOfSelectedItem) \(c2.indexOfSelectedItem) \(c3.indexOfSelectedItem)")
 
       
       
@@ -315,7 +316,7 @@ class rRobot: rViewController
      
       
       //print("UserDefaults a0seg: \(a0seg)")
- //      addresstastenfeld.setAction()
+ //      addresstastenfeld0.setAction()
      /* 
       address0array[0] = UInt8(a0seg ?? 0)
       address0array[1] = UInt8(a1seg ?? 0)
@@ -346,17 +347,13 @@ class rRobot: rViewController
       teensy.write_byteArray[18] = timerintervall // step speed
       teensy.write_byteArray[19] = pause // pause
       
-     /* 
-      address1array[0] = UInt8(b0seg ?? 0)
-      address1array[1] = UInt8(b1seg ?? 0)
-      address1array[2] = UInt8(b2seg ?? 0)
-      address1array[3] = UInt8(b3seg ?? 0)
-       */
-      
+       
       addressarray[1][0] = UInt8(b0seg ?? 0)
       addressarray[1][1] = UInt8(b1seg ?? 0)
       addressarray[1][2] = UInt8(b2seg ?? 0)
       addressarray[1][3] = UInt8(b3seg ?? 0)
+       
+       
   
       addressarray[2][0] = UInt8(c0seg ?? 0)
       addressarray[2][1] = UInt8(c1seg ?? 0)
@@ -1555,11 +1552,12 @@ class rRobot: rViewController
       print("lok0array: \(lok0array)")
       // aktualisieren nach Aenderung
       
+      /*
       address0array[0] = UInt8(a0.indexOfSelectedItem)
       address0array[1] = UInt8(a1.indexOfSelectedItem)
       address0array[2] = UInt8(a2.indexOfSelectedItem)
       address0array[3] = UInt8(a3.indexOfSelectedItem)
-      
+      */
       /*
       let subs = self.view.subviews
       let range = 1000...1203
@@ -1579,11 +1577,16 @@ class rRobot: rViewController
       
       }
       */
-       
+      /* 
       addressarray[0][0] = UInt8(a0.indexOfSelectedItem)
       addressarray[0][1] = UInt8(a1.indexOfSelectedItem)
       addressarray[0][2] = UInt8(a2.indexOfSelectedItem)
       addressarray[0][3] = UInt8(a3.indexOfSelectedItem)
+*/
+      addressarray[0][0] = UInt8(addresstastenfeld0.tastenstatus[0] )
+      addressarray[0][1] = UInt8(addresstastenfeld0.tastenstatus[1] )
+      addressarray[0][2] = UInt8(addresstastenfeld0.tastenstatus[2] )
+      addressarray[0][3] = UInt8(addresstastenfeld0.tastenstatus[3] )
 
       print("address0array: \(address0array)")
       print("lok0 write_byteArray: \(teensy.write_byteArray)")
@@ -1612,7 +1615,7 @@ class rRobot: rViewController
    {
       teensy.write_byteArray[0] = LOK_1 // Code 
       print("Robot report_Address1 ident: \(sender.identifier!.rawValue) ")
-      lok0array[12] = LOK_1
+      lok1array[12] = LOK_1
       let ident:String = ((sender.identifier)!.rawValue)
       var lok:Int = Int(ident)!
       lok /= 100
@@ -1620,47 +1623,12 @@ class rRobot: rViewController
       lok %= 10
       print("Robot report_Address1 lok 1: \(lok) ident: \(ident)")
       
-      /*
-      switch ident
-      {
-      case "1100":
-         print("Robot report_Address1 index: \(sender.indexOfSelectedItem)")
-         lok1array[0] = UInt8((sender.indexOfSelectedItem))
-         address1array[0] = UInt8((sender.indexOfSelectedItem))
-         teensy.write_byteArray[8] = UInt8((sender.indexOfSelectedItem))
-         break;
-      case "1101":
-         print("Robot report_Address1 index: \(sender.indexOfSelectedItem)")
-         lok1array[1] = UInt8((sender.indexOfSelectedItem))
-         address1array[1] = UInt8((sender.indexOfSelectedItem))
-         teensy.write_byteArray[9] = UInt8((sender.indexOfSelectedItem))
-         break;
-      case "1102":
-         print("Robot report_Address1 index: \(sender.indexOfSelectedItem)")
-         lok1array[2] = UInt8((sender.indexOfSelectedItem))
-         address1array[2] = UInt8((sender.indexOfSelectedItem))
-         teensy.write_byteArray[10] = UInt8((sender.indexOfSelectedItem))
-         break;
-      case "1103":
-         print("Robot report_Address1 index: \(sender.indexOfSelectedItem)")
-         lok1array[3] = UInt8((sender.indexOfSelectedItem))
-         address1array[3] = UInt8((sender.indexOfSelectedItem))
-         teensy.write_byteArray[11] = UInt8((sender.indexOfSelectedItem))
-         break;
-      default:
-         break;
-      }
- */
-      print("report_Address1 b0: \(b0.indexOfSelectedItem)  b1: \(b1.indexOfSelectedItem)  b2: \(b2.indexOfSelectedItem)  b3: \(b3.indexOfSelectedItem)")
-      address1array[0] = UInt8(b0.indexOfSelectedItem)
-      address1array[1] = UInt8(b1.indexOfSelectedItem)
-      address1array[2] = UInt8(b2.indexOfSelectedItem)
-      address1array[3] = UInt8(b3.indexOfSelectedItem)
-
-      addressarray[1][0] = UInt8(b0.indexOfSelectedItem)
-      addressarray[1][1] = UInt8(b1.indexOfSelectedItem)
-      addressarray[1][2] = UInt8(b2.indexOfSelectedItem)
-      addressarray[1][3] = UInt8(b3.indexOfSelectedItem)
+   //    print("report_Address1 b0: \(b0.indexOfSelectedItem)  b1: \(b1.indexOfSelectedItem)  b2: \(b2.indexOfSelectedItem)  b3: \(b3.indexOfSelectedItem)")
+      
+      addressarray[1][0] = UInt8(addresstastenfeld1.tastenstatus[0])
+      addressarray[1][1] = UInt8(addresstastenfeld1.tastenstatus[1])
+      addressarray[1][2] = UInt8(addresstastenfeld1.tastenstatus[2])
+      addressarray[1][3] = UInt8(addresstastenfeld1.tastenstatus[3])
 
       print("lok1array: \(lok1array)")
       print("address1array: \(address1array)")
@@ -1771,15 +1739,15 @@ class rRobot: rViewController
    // alle Adressen senden
    @IBAction func loadAdresse(_ sender: NSButton)
    {
-      addressarray[0][0] = UInt8(a0.indexOfSelectedItem)
-      addressarray[0][1] = UInt8(a1.indexOfSelectedItem)
-      addressarray[0][2] = UInt8(a2.indexOfSelectedItem)
-      addressarray[0][3] = UInt8(a3.indexOfSelectedItem)
+      addressarray[0][0] = UInt8(addresstastenfeld0.tastenstatus[0] )
+      addressarray[0][1] = UInt8(addresstastenfeld0.tastenstatus[1] )
+      addressarray[0][2] = UInt8(addresstastenfeld0.tastenstatus[2] )
+      addressarray[0][3] = UInt8(addresstastenfeld0.tastenstatus[3] )
 
-      addressarray[1][0] = UInt8(b0.indexOfSelectedItem)
-      addressarray[1][1] = UInt8(b1.indexOfSelectedItem)
-      addressarray[1][2] = UInt8(b2.indexOfSelectedItem)
-      addressarray[1][3] = UInt8(b3.indexOfSelectedItem)
+      addressarray[1][0] = UInt8(addresstastenfeld1.tastenstatus[0])
+      addressarray[1][1] = UInt8(addresstastenfeld1.tastenstatus[1])
+      addressarray[1][2] = UInt8(addresstastenfeld1.tastenstatus[2])
+      addressarray[1][3] = UInt8(addresstastenfeld1.tastenstatus[3])
 
    
       addressarray[2][0] = UInt8(c0.indexOfSelectedItem)
@@ -1983,28 +1951,23 @@ class rRobot: rViewController
          print("Robot beendenAktion senderfolg: \(senderfolg)")
       }
 
-      UserDefaults.standard.set(a0.indexOfSelectedItem, forKey: "a0index")
-      UserDefaults.standard.set(a1.indexOfSelectedItem, forKey: "a1index")
-      UserDefaults.standard.set(a2.indexOfSelectedItem, forKey: "a2index")
-      UserDefaults.standard.set(a3.indexOfSelectedItem, forKey: "a3index")
-      
-      print("*** Robot UserDefaults b: \(b0.indexOfSelectedItem) \(b1.indexOfSelectedItem) \(b2.indexOfSelectedItem) \(b3.indexOfSelectedItem)")
-      
-      
-      UserDefaults.standard.set(b0.indexOfSelectedItem, forKey: "b0index")
-      UserDefaults.standard.set(b1.indexOfSelectedItem, forKey: "b1index")
-      UserDefaults.standard.set(b2.indexOfSelectedItem, forKey: "b2index")
-      UserDefaults.standard.set(b3.indexOfSelectedItem, forKey: "b3index")
-      
+       UserDefaults.standard.set(addresstastenfeld0.tastenstatus[0], forKey: "a0index")
+       UserDefaults.standard.set(addresstastenfeld0.tastenstatus[1], forKey: "a1index")
+       UserDefaults.standard.set(addresstastenfeld0.tastenstatus[2], forKey: "a2index")
+       UserDefaults.standard.set(addresstastenfeld0.tastenstatus[3], forKey: "a3index")
 
-      UserDefaults.standard.set(c0.indexOfSelectedItem, forKey: "c0index")
-      UserDefaults.standard.set(c1.indexOfSelectedItem, forKey: "c1index")
-      UserDefaults.standard.set(c2.indexOfSelectedItem, forKey: "c2index")
-      UserDefaults.standard.set(c3.indexOfSelectedItem, forKey: "c3index")
-      
-      print("*** UserDefaults c: \(c0.indexOfSelectedItem) \(c1.indexOfSelectedItem) \(c2.indexOfSelectedItem) \(c3.indexOfSelectedItem)")
-      
-      
+
+       UserDefaults.standard.set(addresstastenfeld1.tastenstatus[0], forKey: "b0index")
+       UserDefaults.standard.set(addresstastenfeld1.tastenstatus[1], forKey: "b1index")
+       UserDefaults.standard.set(addresstastenfeld1.tastenstatus[2], forKey: "b2index")
+       UserDefaults.standard.set(addresstastenfeld1.tastenstatus[3], forKey: "b3index")
+
+       UserDefaults.standard.set(addresstastenfeld2.tastenstatus[0], forKey: "c0index")
+       UserDefaults.standard.set(addresstastenfeld2.tastenstatus[1], forKey: "c1index")
+       UserDefaults.standard.set(addresstastenfeld2.tastenstatus[2], forKey: "c2index")
+       UserDefaults.standard.set(addresstastenfeld2.tastenstatus[3], forKey: "c3index")
+
+       
       
       
       UserDefaults.standard.set(pause, forKey: "pause")
