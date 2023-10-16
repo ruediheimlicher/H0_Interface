@@ -136,6 +136,8 @@ class rRobot: rViewController
    
    @IBOutlet  var addresstastenfeld: rAdresstastenView!
    
+   @IBOutlet  var addresstastenfeld1: rAdresstastenView!
+ 
    
    
    
@@ -222,8 +224,8 @@ class rRobot: rViewController
       formatter.minimumFractionDigits = 2
       formatter.minimumIntegerDigits = 1
       //formatter.roundingMode = .down
-       self.addresstastenfeld.lok = 1
-       print("viewDidLoad addresstastenfeld: *\(self.addresstastenfeld.lok)*")
+       //self.addresstastenfeld.lok = 1
+       //print("viewDidLoad addresstastenfeld: *\(self.addresstastenfeld.lok)*")
       //USB_OK.backgroundColor = NSColor.greenColor()
       // Do any additional setup after loading the view.
       let newdataname = Notification.Name("newdata")
@@ -241,7 +243,7 @@ class rRobot: rViewController
       Pot0_Slider.integerValue = Int(LOK0_START)
       Pot0_Feld.integerValue = 0 //Int(Pot0_Slider.floatValue * LOK_FAKTOR0)
       
-       let a0seg  = Int(UserDefaults.standard.string(forKey: "a0index") ?? "0")
+      let a0seg  = Int(UserDefaults.standard.string(forKey: "a0index") ?? "0")
       let a1seg  = Int(UserDefaults.standard.string(forKey: "a1index") ?? "0")
       let a2seg  = Int(UserDefaults.standard.string(forKey: "a2index") ?? "0")
       let a3seg  = Int(UserDefaults.standard.string(forKey: "a3index") ?? "0")
@@ -253,15 +255,15 @@ class rRobot: rViewController
       a3.selectSegment(withTag:  a3seg ?? 0)
        
        var loktastenstatus:[Int] = [Int(a0seg ?? 0),Int(a1seg ?? 0),Int(a2seg ?? 0),Int(a3seg ?? 0)]
-       
-       
+       print(" loktastenstatus: \( loktastenstatus)")
+       /*
        addresstastenfeld.tastenstatus[0]  = Int(a0seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
        addresstastenfeld.tastenstatus[1]  = Int(a1seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
        addresstastenfeld.tastenstatus[2]  = Int(a2seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
        addresstastenfeld.tastenstatus[3]  = Int(a3seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
        
        print(" addresstastenfeld.tastenstatus: \( addresstastenfeld.tastenstatus)")
-       
+       */
        
        
        addresstastenfeld.setTasten(tastenarray:loktastenstatus)
@@ -284,7 +286,7 @@ class rRobot: rViewController
       b2.selectSegment(withTag:  b2seg ?? 0)
       b3.selectSegment(withTag:  b3seg ?? 0)
 
-      print("viewDidLoad b: \(b0.indexOfSelectedItem) \(b1.indexOfSelectedItem) \(b2.indexOfSelectedItem) \(b3.indexOfSelectedItem)")
+      //print("viewDidLoad b: \(b0.indexOfSelectedItem) \(b1.indexOfSelectedItem) \(b2.indexOfSelectedItem) \(b3.indexOfSelectedItem)")
 
       let c0seg  = Int(UserDefaults.standard.string(forKey: "c0index") ?? "0")
       let c1seg  = Int(UserDefaults.standard.string(forKey: "c1index") ?? "0")
@@ -508,6 +510,37 @@ class rRobot: rViewController
    {
       let info = notification.userInfo
       print("tastenstatusAktion info: \(info)")
+      guard let tastenstatus = notification.userInfo?["tastenstatus"]as? [Int] else {return}
+
+      guard var loknummer  = notification.userInfo?["lok"]as? Int else 
+      {
+         print("tastenstatusAktion lok ist nil")
+         return
+         
+      }
+      loknummer -= 1110
+      print("tastenstatusAktion tastenstatus: \(tastenstatus) loknummer: \(loknummer)")
+      
+      // von report_Adresse0
+      teensy.write_byteArray[0] = addresscodearray[loknummer] // code
+      
+      addressarray[loknummer][0] = UInt8(tastenstatus[0])
+      addressarray[loknummer][1] = UInt8(tastenstatus[1])
+      addressarray[loknummer][2] = UInt8(tastenstatus[2])
+      addressarray[loknummer][3] = UInt8(tastenstatus[3])
+      print("addressarray lok \(loknummer): \(addressarray[loknummer])")
+      
+      for i in 0...3
+      {
+         teensy.write_byteArray[8 + i] = addressarray[loknummer][i]
+      }
+
+      if (usbstatus > 0)
+      {
+         let senderfolg = teensy.send_USB()
+         print("Robot report_Address0 senderfolg: \(senderfolg)")
+      }
+
    }// adresstastenAktion
    
    @objc  func drehknopfAktion(_ notification:Notification) 
@@ -936,6 +969,12 @@ class rRobot: rViewController
       address2array = [UInt8](repeating: 0x00, count: 4)
       address3array = [UInt8](repeating: 0x00, count: 4)
 
+      addressarray[0][0] = 0
+      addressarray[0][1] = 0
+      addressarray[0][2] = 0
+      addressarray[0][3] = 0
+
+      
       scanaddress = 0
       
       
@@ -948,33 +987,6 @@ class rRobot: rViewController
       
       
    }// report_Scan_auto
-   
-   
-   @IBAction  func report_Speed_auto(_ sender: NSButton)
-   {
-      let autospeed = sender.state.rawValue
-      
-      Pot0_Slider.intValue = 0
-      speedautocounter = 0 
-      
-      startzeit = Int64(NSDate().timeIntervalSince1970)
-      if autospeed == 1
-      {
-         let minspeed = 0
-         let maxspeed = 14
-         let step = 1
-         let interval:Double = 2
-         
-         var userinformation:NSMutableDictionary = ["minspeed": minspeed, "maxspeed": maxspeed, "step": step, "speedautocounter":speedautocounter] //as! [String : Int]
-         var timer : Timer? = nil
-         
-         timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(speed_auto(_:)), userInfo: userinformation, repeats: true)
-      }
-      else 
-      {
-         print("auto off")
-      }
-   }
    
    @objc func adress_scan(_ timer: Timer)
    {
@@ -1070,18 +1082,15 @@ class rRobot: rViewController
             }
          }
 
-         
-         
-         
-         
+          
          
          
          scanautocounter += 1;
          
          if(scanautocounter > 15)
          {
-            
             timer.invalidate()
+            autoscantaste.state = .off
          }
          else
          {
@@ -1099,7 +1108,35 @@ class rRobot: rViewController
       
    }// end adress_scan
    
+
    
+   @IBAction  func report_Speed_auto(_ sender: NSButton)
+   {
+      let autospeed = sender.state.rawValue
+      
+      Pot0_Slider.intValue = 0
+      speedautocounter = 0 
+      
+      startzeit = Int64(NSDate().timeIntervalSince1970)
+      if autospeed == 1
+      {
+         let minspeed = 0
+         let maxspeed = 14
+         let step = 1
+         let interval:Double = 2
+         
+         var userinformation:NSMutableDictionary = ["minspeed": minspeed, "maxspeed": maxspeed, "step": step, "speedautocounter":speedautocounter] //as! [String : Int]
+         var timer : Timer? = nil
+         
+         timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(speed_auto(_:)), userInfo: userinformation, repeats: true)
+      }
+      else 
+      {
+         print("auto off")
+      }
+   }
+   
+    
    @objc func speed_auto(_ timer: Timer)
    {
       if (autospeedtaste.state.rawValue == 1)
@@ -1442,6 +1479,7 @@ class rRobot: rViewController
          }
       }
    }
+   
    // NOT
     @IBAction func report_Address(_ sender: NSSegmentedControl)
     {
@@ -1478,11 +1516,12 @@ class rRobot: rViewController
       
       let ident:String = ((sender.identifier)!.rawValue)
       var lok:Int = Int(ident)!
-      lok /= 100
+      lok /= 100 //
       //print("Robot report_Address0 lok A: \(lok) ")
       lok %= 10
       print("Robot report_Address0 lok 0: \(lok)  ident: \(ident) ")
       print("Robot report_Address0 lok0array: \(lok0array)  address0array: \(address0array) ")
+      /*
       switch ident
       {
       case "1000":
@@ -1512,8 +1551,10 @@ class rRobot: rViewController
       default:
          break;
       }
+       */
       print("lok0array: \(lok0array)")
       // aktualisieren nach Aenderung
+      
       address0array[0] = UInt8(a0.indexOfSelectedItem)
       address0array[1] = UInt8(a1.indexOfSelectedItem)
       address0array[2] = UInt8(a2.indexOfSelectedItem)
@@ -1538,7 +1579,7 @@ class rRobot: rViewController
       
       }
       */
-
+       
       addressarray[0][0] = UInt8(a0.indexOfSelectedItem)
       addressarray[0][1] = UInt8(a1.indexOfSelectedItem)
       addressarray[0][2] = UInt8(a2.indexOfSelectedItem)
@@ -1578,6 +1619,7 @@ class rRobot: rViewController
       //print("Robot report_Address0 lok A: \(lok) ")
       lok %= 10
       print("Robot report_Address1 lok 1: \(lok) ident: \(ident)")
+      
       /*
       switch ident
       {

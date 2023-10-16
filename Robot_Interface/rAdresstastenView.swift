@@ -23,7 +23,7 @@ class rAdresstaste:NSButton
    {
       super.init(coder: aDecoder)
       let t = self.tag
-      Swift.print("rAdresstaste init tag: \(t)")
+      //Swift.print("rAdresstaste init tag: \(t)")
       self.action = #selector(self.report_taste)
    }
    
@@ -44,7 +44,7 @@ class rAdresstaste:NSButton
 class rAdresstastenView:NSView
 {
     
-   var lok = 0
+   var lok:Int = 0
    //var tag = 0
    
    var hintergrundfarbe = NSColor()
@@ -55,13 +55,23 @@ class rAdresstastenView:NSView
       super.init(coder: aDecoder)
       Swift.print("rAdresstastenView init")
       self.wantsLayer = true
-      hintergrundfarbe  = NSColor.init(red: 0.85, 
+      hintergrundfarbe  = NSColor.init(red: 0.45, 
                                        green: 0.45, 
                                        blue: 0.45, 
                                        alpha: 0.25)
       self.layer?.backgroundColor =  hintergrundfarbe.cgColor
       
-      print("subviews: : \(self.subviews)")
+      
+      if let lokident = self.identifier {
+         //var lokstring:String =  lokident.rawValue
+         lok = Int(lokident.rawValue) ?? 0
+          // do something with viewIdent
+      } else {
+          // view.identifier was nil
+         return
+      }
+
+      //print("subviews: : \(self.subviews)")
       //   NSColor.blue.set() // choose color
       // let achsen = NSBezierPath() // container for line(s)
       let w:Double = bounds.size.width
@@ -76,12 +86,12 @@ class rAdresstastenView:NSView
             let tastenrect = NSMakeRect(Double(col)*w,Double(row)*w, w,h)
             let ident = 1000 + 10 * row + col
             
-            print("adresstastenview row: \(row) col: \(col) ident: \(ident)")
+            //print("adresstastenview row: \(row) col: \(col) ident: \(ident)")
             
             var taste:rAdresstaste = self.viewWithTag(ident) as! rAdresstaste
             
             let tastetag = taste.tag
-            print("tastetag: \(tastetag)")
+            //print("tastetag: \(tastetag)")
             taste.target = self
             taste.action = #selector(self.tastenaktion)
          }
@@ -93,30 +103,56 @@ class rAdresstastenView:NSView
     
    @IBAction func tastenaktion(_ sender: NSButton)
    {
-      print("tastenaktion tag: \(sender.tag) state: \(sender.state)")
+      
+      print("tastenaktion tastenstatus vor: \(tastenstatus)")
+      
+      /*
+      var lokstring:String
+      
+      if let lokident = self.identifier {
+         lokstring = lokident.rawValue
+         lok = Int(lokident.rawValue) ?? 0
+          // do something with viewIdent
+      } else {
+          // view.identifier was nil
+         return
+      }
+      
+    //  let lokident:Int = Int(self.identifier?.rawValue ?? "1111")
+      
+      print("tastenaktion tag: \(sender.tag) state: \(sender.state) lok: \(lok) identifier: \(Int(lokstring))")
+      */
       // let ident = 1000 + 10 * row + col
       let row = (sender.tag - 1000) / 10
       let col = (sender.tag - 1000) % 10
       print("tastenaktion row: \(row) col: \(col)")
       
+      if sender.state == .off // Taste war on, nichts aendern
+      {
+         sender.state = .on
+         return
+      }
+      
+      // var checkedtaste
       for checkrow in 0..<3
       {
          let colident = 1000 + 10 * checkrow + col
+         var checktaste:NSButton = self.viewWithTag(colident) as! NSButton
+         print("checkrow: \(checkrow) colident: \(colident) state: \(sender.state)")
          
          if checkrow != row
          {
-            var checktaste:NSButton = self.viewWithTag(colident) as! NSButton
             
             checktaste.state = .off
-            
+         
          }
          else
          {
             tastenstatus[col] = checkrow
          }
-                  
+         
       } // for checkrow
-      print("tastenaktion tastenstatus: \(tastenstatus)")
+      print("tastenaktion tastenstatus nach: \(tastenstatus)")
       let userinformation = ["message":"tastenaktion", "tastenstatus": tastenstatus, "lok": lok] as [String : Any]
        
       let nc = NotificationCenter.default
@@ -128,14 +164,15 @@ class rAdresstastenView:NSView
 
    func setTasten(tastenarray:[Int])
    {
-      print("Original array: \(tastenarray)")
+      print("*** Original array: \(tastenarray)")
       tastenstatus = tastenarray
       
       for col in 0..<numcols
       {
-         let tastenwert = tastenstatus[col]
+         //let tastenwert = temptastenstatus[col]
          for row in 0..<numrows
          {
+            let tastenwert = tastenstatus[col]
             let ident = 1000 + 10 * row + col
             var taste:NSButton = self.viewWithTag(ident) as! NSButton
             if (row == tastenwert)
@@ -148,14 +185,8 @@ class rAdresstastenView:NSView
             }
          }
          
-            
-            
-         
-         
-         
-      }
+       }
        
-      //self.needsDisplay = true
    }
    
    
@@ -175,12 +206,12 @@ class rAdresstastenView:NSView
             let ident = 1000 + 10 * row + col
             
             
-            print("adresstastenview row: \(row) col: \(col) ident: \(ident)")
+            //print("adresstastenview row: \(row) col: \(col) ident: \(ident)")
             
             var taste:NSButton = self.viewWithTag(ident) as! NSButton
             
             let tastetag = taste.tag
-            print("tastetag: \(tastetag)")
+            //print("tastetag: \(tastetag)")
             taste.target = self
             taste.action = #selector(self.tastenaktion)
             //var taste = NSButton.init(checkboxWithTitle: "", target: self,  action: #selector(scanAktion(_:)))
