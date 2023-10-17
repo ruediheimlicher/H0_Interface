@@ -7,6 +7,8 @@
 //
 
 import Cocoa
+import AppKit
+import QuartzCore
 
 let LOK_0_ADDRESS:UInt8 = 0xA0
 let LOK_0_SPEED:UInt8 = 0xB0
@@ -211,6 +213,10 @@ class rRobot: rViewController
       //print ("Robot viewDidAppear selectedDevice: \(selectedDevice)")
    }
    
+   func CGAffineTransformCGAffineTransformFromString(string:String)
+   {
+    }
+
 
     override func viewDidLoad() 
     {
@@ -262,9 +268,7 @@ class rRobot: rViewController
        addresstastenfeld0.setTasten(tastenarray:loktastenstatus)
        addresstastenfeld0.needsDisplay = true
 
-       //a0.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
-
-      
+        
       
       let b0seg  = Int(UserDefaults.standard.string(forKey: "b0index") ?? "0")
       let b1seg  = Int(UserDefaults.standard.string(forKey: "b1index") ?? "0")
@@ -303,7 +307,6 @@ class rRobot: rViewController
        
        
        //      print("viewDidLoad c: \(c0.indexOfSelectedItem) \(c1.indexOfSelectedItem) \(c2.indexOfSelectedItem) \(c3.indexOfSelectedItem)")
-
       
       
       pause = UInt8(UserDefaults.standard.string(forKey: "pause") ?? "5" ) ?? 5
