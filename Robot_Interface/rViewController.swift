@@ -1364,17 +1364,34 @@ extension NSBezierPath
       
    }
    
+   
+   
    // https://stackoverflow.com/questions/50012606/how-to-rotate-uibezierpath-around-center-of-its-own-bounds
    func rotateAroundCenterB(angle: CGFloat)
    {
       let midh = NSMidX(self.bounds)
       let midv = NSMidY(self.bounds)
       let center = NSMakePoint(midh, midv)
-
+      
       var transform = NSAffineTransform()
       transform.translateX(by: center.x, yBy: center.y)
       transform.rotate(byDegrees: angle)
       transform.translateX(by: -center.x, yBy: -center.y)
       self.transform(using:transform as AffineTransform)
    }
+   
+   func rotateAroundCenter(center: NSPoint, angle: CGFloat)
+   {
+      let midh = center.x
+      let midv = center.y
+      let center = NSMakePoint(midh, midv)
+      
+      var transform = NSAffineTransform()
+      transform.translateX(by: center.x, yBy: center.y)
+      transform.rotate(byDegrees: angle)
+      transform.translateX(by: -center.x, yBy: -center.y)
+      self.transform(using:transform as AffineTransform)
+   }
+
+   
 }

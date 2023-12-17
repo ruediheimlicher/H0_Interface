@@ -26,12 +26,18 @@ class rDrehknopfView: rJoystickView
    var abdeckpfad: NSBezierPath = NSBezierPath()
    var mitterect:NSRect = NSZeroRect
    var mittepfad: NSBezierPath = NSBezierPath()
-   
+   var symm = 1 // Zeiger in Mitte // 0: Zeiger links
    // Winkelbereich Drehknopf
-   var maxwinkel:CGFloat = 90
-   var minwinkel:CGFloat = -90
-   
+   var maxwinkel:CGFloat = 0
+   var minwinkel:CGFloat = 0
+   var minarc:CGFloat = 0
+      var anzticks:Int = 14;
    var lastwinkelpunkt: NSPoint = NSZeroPoint
+   
+   
+   
+   
+   
    
    required init?(coder  aDecoder : NSCoder) 
    {
@@ -48,6 +54,24 @@ class rDrehknopfView: rJoystickView
       let mittex:CGFloat = knopfrect.size.width / 2
       let mittey:CGFloat = knopfrect.size.height / 2
       mittelpunkt = NSMakePoint(mittex, mittey)
+      
+      let radius:CGFloat = knopfrect.size.width / 2
+
+      var symm = 1 // Zeiger in Mitte
+      minwinkel = -70
+      maxwinkel = 70
+      let leftarcpointx = mittex - radius * cos(self.minwinkel)
+      let leftarcpointy = mittey - radius * sin(self.minwinkel)
+      
+      let rightarcpointx = mittex + radius * cos(self.minwinkel)
+      let rightarcpointy = mittey + radius * sin(self.minwinkel)
+      
+      let leftarcpoint = NSMakePoint(leftarcpointx, leftarcpointy)
+      var digiarc:CGFloat = 0;
+      
+      mittelpunkt = NSMakePoint(mittex, mittey)
+      
+      
       achsen.move(to: NSMakePoint(0, mittey)) // start point
       achsen.line(to: NSMakePoint(w, mittey)) // destination
       achsen.move(to: NSMakePoint(mittex, 0)) // start point
@@ -55,21 +79,24 @@ class rDrehknopfView: rJoystickView
       
       knopfpfad.appendRect(knopfrect)
       // weg.appendOval(in: knopfrect)
-      zeigerpfad.move(to: NSMakePoint(mittex, 12)) // start point
-      zeigerpfad.line(to: NSMakePoint(mittex, h-12)) // destination
-      zeigerpfad.line(to: NSMakePoint(mittex-5, h-18)) // destination
       
-      zeigerpfad.move(to: NSMakePoint(mittex+5, h-18)) // destination
-      zeigerpfad.line(to: NSMakePoint(mittex, h-12)) // destination
+      // Zeiger
+      let knopfradius:CGFloat = 14
+      let lenunten:CGFloat = 32
+      let lenoben:CGFloat = 48
       
-      zeigerpfad.lineWidth = 3 
+      zeigerpfad.append(zeigerknopf(center: mittelpunkt))
+      zeigerpfad.lineWidth = 1
+   
+      // zeigerpfad.fill() // > in draw()
       zeigerbereich = NSMakeRect(zeigerpfad.currentPoint.x - d/2, zeigerpfad.currentPoint.y - d/2,d,d)
       
       abdeckrect = bounds
       abdeckrect.size.height = abdeckrect.size.height / 2
-      abdeckpfad.appendRect(abdeckrect)
+  //    abdeckpfad.appendRect(abdeckrect) // ??
       
-      mitterect = NSMakeRect(mittex-4, mittey-4, 8, 8)
+      
+      mitterect = NSMakeRect(mittex-knopfradius, mittey-knopfradius, 2*knopfradius, 2*knopfradius)
       mittepfad.appendOval(in: mitterect)
       ring.appendOval(in: bounds)
       
@@ -91,6 +118,29 @@ class rDrehknopfView: rJoystickView
       //    zeigerpfad.rotateAroundCenter(angle: 45)
       //weg.rotateAroundCenter(angle: -17)
    }
+   
+   func zeigerknopf(center:NSPoint) ->NSBezierPath
+   {
+      var zeigerpfad:NSBezierPath  = NSBezierPath()
+      // Zeiger
+      let knopfradius:CGFloat = 14
+      let lenunten:CGFloat = 32
+      let lenoben:CGFloat = 48
+      let mittex = center.x
+      let mittey = center.y
+
+       zeigerpfad.move(to: NSMakePoint(mittex, mittey)) // , Drehpunkt
+      zeigerpfad.move(to: NSMakePoint(mittex, mittey+lenoben)) // spitze
+      
+      zeigerpfad.line(to: NSMakePoint(mittex-8, mittey-lenunten)) // breite unten nach links
+      zeigerpfad.line(to: NSMakePoint(mittex+8, mittey-lenunten)) // breite unten rechts
+      zeigerpfad.line(to: NSMakePoint(mittex, mittey+lenoben)) // destination
+      zeigerpfad.move(to: NSMakePoint(mittex, mittey)) // , Drehpunkt
+      
+      return zeigerpfad
+
+   }
+   
    
    override func mouseDown(with theEvent: NSEvent) 
    {
@@ -121,7 +171,7 @@ class rDrehknopfView: rJoystickView
       
       if weg.contains(lokalpunkt)
       {
-         //        Swift.print("contains ok ")
+                 Swift.print("contains ok ")
          let currentx = lokalpunkt.x
          let currenty = lokalpunkt.y
          //let x = pow(Float(lokalpunkt.x) ,2)
@@ -133,8 +183,16 @@ class rDrehknopfView: rJoystickView
          
          var newarc = (lokalpunkt.y - mittelpunkt.y) / newhyp
          
+         var minarc = asin(minwinkel)
+               var winkelbereich = self.maxwinkel - self.minwinkel
+              var winkelschritt = winkelbereich / CGFloat(anzticks-1)
+              
+              Swift.print("Drehknopf winkelbereich: \(winkelbereich)  winkelschritt: \(winkelschritt) minwinkel: \(self.minwinkel) maxwinkel: \(self.maxwinkel)")
+
+
          var newwinkel = asin(newarc) * 180 / CGFloat(Double.pi) //* spiegeln
-         
+         Swift.print("Drehknopf newwinkel: \(newwinkel)")
+
          
          //    Swift.print("md lokalpunkt.x:\t \(lokalpunkt.x)\t lokalpunkt.y: \t\(lokalpunkt.y) \tmittelpunkt.x: \t\(mittelpunkt.x)  \tmittelpunkt.y: \t\(mittelpunkt.y)\t newhyp:\t \(newhyp) \tnewarc: \t\(newarc) \tnewwinkel: \t\(newwinkel) \twinkel: \t\(winkel)")
          //    Swift.print("md newhyp: \(newhyp) winkel: \(winkel) newarc: \(newarc) newwinkel: \(newwinkel)")
@@ -146,15 +204,14 @@ class rDrehknopfView: rJoystickView
          let w:CGFloat = knopfrect.size.width
          let h:CGFloat = knopfrect.size.height
          
+         // Zeiger
+         let knopfradius:CGFloat = 14
+         let lenunten:CGFloat = 32
+         let lenoben:CGFloat = 48
+
+         zeigerpfad.append(zeigerknopf(center: mittelpunkt))
+          zeigerpfad.lineWidth = 1 
          
-         zeigerpfad.move(to: NSMakePoint(mittex, 12)) // start point
-         zeigerpfad.line(to: NSMakePoint(mittex, h-12)) // destination
-         zeigerpfad.line(to: NSMakePoint(mittex-5, h-18)) // destination
-         
-         zeigerpfad.move(to: NSMakePoint(mittex+5, h-18)) // destination
-         zeigerpfad.line(to: NSMakePoint(mittex, h-12)) // destination
-         
-         zeigerpfad.lineWidth = 3 
          if (lokalpunkt.x > mittelpunkt.x)
          {
             // zeigerpfad.rotateAroundCenterB(angle:(newwinkel - 90) )
@@ -177,7 +234,9 @@ class rDrehknopfView: rJoystickView
             }
             
          }
-         zeigerpfad.rotateAroundCenterB(angle:winkelpunkt.x)
+         var zeigermitte = NSMakePoint(mittex, mittey)
+         zeigerpfad.rotateAroundCenter(center:zeigermitte, angle:winkelpunkt.x)
+         
          zeigerbereich = NSMakeRect(zeigerpfad.currentPoint.x - d/2, zeigerpfad.currentPoint.y - d/2,d,d)
          
       }
@@ -206,18 +265,9 @@ class rDrehknopfView: rJoystickView
       zeigerpfad.removeAllPoints()
       let mittex:CGFloat = knopfrect.size.width / 2
       let mittey:CGFloat = knopfrect.size.height / 2
-      let w:CGFloat = knopfrect.size.width
-      let h:CGFloat = knopfrect.size.height
-    
-      
-      zeigerpfad.move(to: NSMakePoint(mittex, 12)) // start point
-      zeigerpfad.line(to: NSMakePoint(mittex, knopfrect.size.height-12)) // destination
-      zeigerpfad.line(to: NSMakePoint(mittex-5, knopfrect.size.height-18)) // destination
-      
-      zeigerpfad.move(to: NSMakePoint(mittex+5, knopfrect.size.height-18)) // destination
-      zeigerpfad.line(to: NSMakePoint(mittex, knopfrect.size.height-12)) // destination
-      
-      zeigerpfad.lineWidth = 3 
+      mittelpunkt = NSMakePoint(mittex, mittey)
+      zeigerpfad.append(zeigerknopf(center: mittelpunkt))
+       zeigerpfad.lineWidth = 3 
      
       if ring.contains( lokalpunkt) // Klick im Kreis
       {
@@ -227,13 +277,7 @@ class rDrehknopfView: rJoystickView
          
          var newwinkel = asin(newarc) * 180 / CGFloat(Double.pi)  //
          Swift.print("Drehknopf newwinkel: \(newwinkel)  maxwinkel: \(maxwinkel) minwinkel: \(minwinkel)")
-         
-         
-         
-          
-         
-         
-         
+            
          if (lokalpunkt.x > mittelpunkt.x)
          {
             //       zeigerpfad.rotateAroundCenterB(angle:(newwinkel - 90) )
@@ -257,7 +301,7 @@ class rDrehknopfView: rJoystickView
             winkelpunkt.y = -1
          }
          lastwinkelpunkt = winkelpunkt
-         zeigerpfad.rotateAroundCenterB(angle:winkelpunkt.x )
+         zeigerpfad.rotateAroundCenter(center:mittelpunkt, angle:winkelpunkt.x )
          
          //winkelpunkt.x = (newwinkel - 90)
          // zeigerbereich = NSMakeRect(zeigerpfad.currentPoint.x - d/2, zeigerpfad.currentPoint.y - d/2,d,d)
@@ -324,6 +368,7 @@ class rDrehknopfView: rJoystickView
       //     ring.stroke()
       NSColor.red.set() // choose color
       zeigerpfad.stroke()
+      zeigerpfad.fill()
       mittepfad.fill()
       NSColor.yellow.set() 
       //bogen.fill()
