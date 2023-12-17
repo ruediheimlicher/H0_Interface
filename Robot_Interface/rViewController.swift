@@ -357,7 +357,7 @@ class rViewController: NSViewController, NSWindowDelegate
    @objc func beendenAktion(_ notification:Notification) 
    {
       
-      print("beendenAktion")
+      print("rViewController beendenAktion")
       
       
       

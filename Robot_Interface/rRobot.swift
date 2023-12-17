@@ -405,6 +405,9 @@ class rRobot: rViewController
       DrehknopfFeld.hgfarbe = hgfarbe
       print("Robot globalusbstatus: \(globalusbstatus)")
       
+       DrehknopfFeld.minwinkel = -80
+       DrehknopfFeld.maxwinkel = 80
+       
       loknummer.selectSegment(withTag: 0)
       
       autospeedmaxstepper.integerValue = 5
@@ -1502,12 +1505,12 @@ class rRobot: rViewController
       addressarray[1][2] = UInt8(addresstastenfeld1.tastenstatus[2])
       addressarray[1][3] = UInt8(addresstastenfeld1.tastenstatus[3])
 
-   
+   /*
       addressarray[2][0] = UInt8(c0.indexOfSelectedItem)
       addressarray[2][1] = UInt8(c1.indexOfSelectedItem)
       addressarray[2][2] = UInt8(c2.indexOfSelectedItem)
       addressarray[2][3] = UInt8(c3.indexOfSelectedItem)
-
+*/
       for lok in 0...2
       {
          teensy.write_byteArray[0] = addresscodearray[lok]
