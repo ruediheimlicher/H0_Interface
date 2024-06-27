@@ -116,6 +116,8 @@ class rRobot: rViewController
    @IBOutlet weak var Lok_1_FunktionTaste: NSButton!
    @IBOutlet weak var Lok_2_FunktionTaste: NSButton!
 
+   @IBOutlet weak var Weiche0_Slider: NSSliderCell!
+
    /*
    @IBOutlet weak var a0: NSSegmentedControl!
    @IBOutlet weak var a1: NSSegmentedControl!
@@ -905,10 +907,11 @@ class rRobot: rViewController
       for i in 0...3
       {
          teensy.write_byteArray[8 + i] = addressarray[lok][i]
-         //print(addressarray[lok][i])
+         print(addressarray[lok][i])
       }
       print("loadLokAddress\(teensy.write_byteArray[8...11])")
     } // loadLokAddress
+   
    
    @objc func loadFunktion(lok:Int)
    {
@@ -950,6 +953,7 @@ class rRobot: rViewController
       {
          loadLokAddress(lok: i);
       }
+      print("report_Local sourcestatus: \(sourcestatus)")
       teensy.write_byteArray[21] = UInt8(sourcestatus)
       if (usbstatus > 0)
       {
@@ -1239,6 +1243,27 @@ class rRobot: rViewController
    }
    
    //MARK: Slider 
+   
+   @IBAction  func report_StellungChanged(_ sender: NSSliderCell)// Weiche
+   {
+      
+      let closest = sender.closestTickMarkValue(toValue: sender.doubleValue)
+      print("report_StellungChanged doubleVal: \(sender.doubleValue) closest: \(closest)")
+      
+      if sender.doubleValue < (sender.maxValue)/2
+      {
+         sender.doubleValue = 0.0
+         
+      }
+      else
+      {
+         sender.doubleValue = 1.0
+      }
+      
+      
+   }
+   
+
    @IBAction  func report_Slider(_ sender: NSSlider)
    {
       let loktag = sender.tag - 1000
@@ -1281,7 +1306,10 @@ class rRobot: rViewController
       print("report_Slider usbstatus: \(usbstatus)")
       print("report_Slider loknummer: \(loknummer.indexOfSelectedItem) ")
       print("report_Slider speed: \(speed)")
-      teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
+      //teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
+      teensy.write_byteArray[20] = UInt8(loktag)
+      
+      print("lok: \(loktag) write_byteArray: \(teensy.write_byteArray)")
       if (usbstatus > 0)
       {
          let senderfolg = teensy.send_USB()

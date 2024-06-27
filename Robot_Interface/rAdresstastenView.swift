@@ -62,7 +62,8 @@ class rAdresstastenView:NSView
       self.layer?.backgroundColor =  hintergrundfarbe.cgColor
       
       
-      if let lokident = self.identifier {
+      if let lokident = self.identifier 
+      {
          //var lokstring:String =  lokident.rawValue
          lok = Int(lokident.rawValue) ?? 0
           // do something with viewIdent

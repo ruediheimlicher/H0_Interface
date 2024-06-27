@@ -959,7 +959,7 @@ class rViewController: NSViewController, NSWindowDelegate
       print("report_Pot3_Stepper_H IntVal: \(sender.integerValue)")
    }
    
-    
+      
    @IBAction func report_start_read_USB(_ sender: AnyObject)
    {
       //myUSBController.startRead(1)
