@@ -107,7 +107,7 @@ class rAdresstastenView:NSView
       
       print("tastenaktion tastenstatus vor: \(tastenstatus)")
       
-      /*
+      
       var lokstring:String
       
       if let lokident = self.identifier {
@@ -120,9 +120,9 @@ class rAdresstastenView:NSView
       }
       
     //  let lokident:Int = Int(self.identifier?.rawValue ?? "1111")
-      
+       
       print("tastenaktion tag: \(sender.tag) state: \(sender.state) lok: \(lok) identifier: \(Int(lokstring))")
-      */
+     
       // let ident = 1000 + 10 * row + col
       let row = (sender.tag - 1000) / 10
       let col = (sender.tag - 1000) % 10
