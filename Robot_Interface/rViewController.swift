@@ -8,6 +8,7 @@
 // Bridging-Header: https://stackoverflow.com/questions/24146677/swift-bridging-header-import-issue/31717280#31717280
 
 import Cocoa
+import Foundation
 
  public var lastDataRead = Data.init(count:64)
 
@@ -166,6 +167,8 @@ class rDeviceTabViewController: NSTabViewController
 //MARK: ViewController
 class rViewController: NSViewController, NSWindowDelegate
 {
+ 
+
    let notokimage :NSImage = NSImage(named:NSImage.Name(rawValue: "notok_image"))!
    let okimage :NSImage = NSImage(named:NSImage.Name(rawValue: "ok_image"))!
    // Robot
@@ -236,7 +239,7 @@ class rViewController: NSViewController, NSWindowDelegate
       NotificationCenter.default.addObserver(self, selector:#selector(joystickAktion(_:)),name:NSNotification.Name(rawValue: "joystick"),object:nil)
       NotificationCenter.default.addObserver(self, selector:#selector(tabviewAktion(_:)),name:NSNotification.Name(rawValue: "tabview"),object:nil)
       NotificationCenter.default.addObserver(self, selector: #selector(beendenAktion), name:NSNotification.Name(rawValue: "beenden"), object: nil)
-
+      
       
       
       defaults.set(25, forKey: "Age")
@@ -363,6 +366,7 @@ class rViewController: NSViewController, NSWindowDelegate
       
    }
    
+  
    @objc func tabviewAktion(_ notification:Notification) 
    {
       let info = notification.userInfo

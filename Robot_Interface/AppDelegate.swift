@@ -13,9 +13,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 
 @IBOutlet weak var window: NSWindow!
 
-   func applicationDidFinishLaunching(_ aNotification: Notification) {
+   func applicationDidFinishLaunching(_ aNotification: Notification) 
+   {
       // Insert code here to initialize your application
        //self.window.acceptsMouseMovedEvents = true
+      //[NSUserDefaults.standardUserDefaults setBool:YES forKey:@"NSDiscardWindowsOnDocumentOpen"];
+
    }
 
    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply

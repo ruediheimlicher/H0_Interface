@@ -52,10 +52,15 @@ let LOK_3_FUNKTION:UInt8 = 0xD3
 let LOK_3_PAUSE:UInt8 = 0xE3
 
 
+let SCAN:UInt8 = 0xF0
+
 let ANZLOKS:Int = 4
 
-let LOCAL = 0
-let USB = 1
+// sourcestatus
+let LOCAL   = 0
+let USB     = 1
+
+let ADDRESS_SCAN    = 4
 
 
 var addresscodearray = [LOK_0_ADDRESS,LOK_1_ADDRESS,LOK_2_ADDRESS,LOK_3_ADDRESS]
@@ -159,8 +164,13 @@ class rRobot: rViewController
    @IBOutlet weak var autospeedminstepper: NSStepper!
    @IBOutlet weak var autospeedminfeld: NSTextField!
    @IBOutlet weak var autospeedrandomfeld: NSTextField!
+   @IBOutlet weak var lookuptablepop: NSPopUpButton!
+   @IBOutlet weak var lookupindexFeld: NSTextField!
    
    @IBOutlet weak var autoscantaste: NSButton!
+   
+   
+   
    var scanautocounter:Int = 0
    var scanstartzeit:Int64 = 0
    
@@ -211,7 +221,13 @@ class rRobot: rViewController
    
    var firstrun = 1 // Task in Startloop
    
-   var sourcestatus = 0
+   var sourcestatus:UInt8 = 0
+   
+   
+   var lookuptable = [String]()
+   var lookupindex:Int = 0
+   var lookuptableArray = [UInt8]()
+   
    override func viewDidAppear() 
    {
       //print ("Robot viewDidAppear selectedDevice: \(selectedDevice)")
@@ -249,7 +265,23 @@ class rRobot: rViewController
       
       NotificationCenter.default.addObserver(self, selector:#selector(tastenstatusAktion(_:)),name:NSNotification.Name(rawValue: "tastenstatus"),object:nil)
       
+      let lookup_path =  "/Users/ruediheimlicher/Documents/H0_Daten/H0_Lookup.txt"
+      lookuptable = getLookupTable(lookupURL:lookup_path) // [String]
       
+      lookupindex = Int(UserDefaults.standard.string(forKey: "lookupindex") ?? "0") ?? 0
+      lookupindexFeld.intValue =  Int32(lookupindex)     
+      print("lookuptable: \n\(lookuptable)")
+      lookuptablepop.removeAllItems()
+      lookuptablepop.addItems(withTitles: lookuptable)
+      
+      lookuptablepop.selectItem(at: lookupindex)
+      let indexstring:String = lookuptablepop.titleOfSelectedItem ?? ""
+      lookuptable = indexstring.components(separatedBy: ",")
+      let last = Int(indexstring.components(separatedBy: ",").last ?? "0") ?? 0
+      print ("last: \(last)")
+      
+      lookuptableArray = lookuptable.compactMap  { UInt8($0)!}
+      print ("viewDidLoad lookuptableArray: \(lookuptableArray)")
       Pot0_Slider.integerValue = Int(LOK0_START)
       Pot0_Feld.integerValue = 0 //Int(Pot0_Slider.floatValue * LOK_FAKTOR0)
       
@@ -288,7 +320,7 @@ class rRobot: rViewController
       addresstastenfeld1.tastenstatus[2]  = Int(b2seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
       addresstastenfeld1.tastenstatus[3]  = Int(b3seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
       
-      print(" addresstastenfeld0.tastenstatus: \( addresstastenfeld0.tastenstatus)")
+      print(" addresstastenfeld1.tastenstatus: \( addresstastenfeld0.tastenstatus)")
       
       //print("viewDidLoad b: \(b0.indexOfSelectedItem) \(b1.indexOfSelectedItem) \(b2.indexOfSelectedItem) \(b3.indexOfSelectedItem)")
       
@@ -305,7 +337,7 @@ class rRobot: rViewController
       addresstastenfeld2.tastenstatus[2]  = Int(c2seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
       addresstastenfeld2.tastenstatus[3]  = Int(c3seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
       
-      print(" addresstastenfeld0.tastenstatus: \( addresstastenfeld0.tastenstatus)")
+      print(" addresstastenfeld2.tastenstatus: \( addresstastenfeld0.tastenstatus)")
       
       
       
@@ -432,6 +464,58 @@ class rRobot: rViewController
       print("Robot windowShouldClose")
       NSApplication.shared.terminate(self)
    }
+   @objc func getLookupTable(lookupURL: String)-> [String]
+   {
+      var lookuptablestringarray = [String]()
+      
+      do {
+        // let fileContents = try String(contentsOfFile: lookupURL, encoding: .utf8)
+        //     print(fileContents)
+         
+         
+        
+         print("getLookupTable lookupURL: \(lookupURL)")
+         var H0_Data = try String(contentsOfFile: lookupURL, encoding: .utf8)
+         H0_Data = H0_Data.replacingOccurrences(of: " ", with: "")
+         print("H0_Data: \(H0_Data)")
+         var rawlookupArray = H0_Data.components(separatedBy: .newlines)
+         print("rawlookupArray: \(rawlookupArray)")
+         //H0_Data = H0_Data.replacingOccurrences(of: "{", with: "")
+         //print("H0_Data: \(H0_Data)")
+         // comments entfernen
+         for rawline in rawlookupArray
+         {
+            if let range = rawline.range(of: "}") 
+            {
+               // Get the substring up to and including the closing bracket
+               let truncatedString = rawline[..<range.upperBound]
+               // Convert the substring back to a String
+               var line = String(truncatedString)
+               line = line.replacingOccurrences(of: "{",with: "")
+               line = line.replacingOccurrences(of: "}",with: "")
+               print(line)
+                 //lookuptable.append(linearray ?? [0x00])
+               
+               lookuptable.append(line)
+               
+            }
+         }
+         
+         
+         
+         
+      }
+         catch 
+         {
+            print("getLookupTable  error: \(error)")
+            
+            /* error handling here */
+            return [String]()
+         }
+
+      return lookuptable
+   }
+   
    
    
    @objc func usbstatusAktion(_ notification:Notification) 
@@ -906,6 +990,20 @@ class rRobot: rViewController
        */
    }
    
+   @IBAction  func report_lookuptable_Pop(_ sender: NSPopUpButton) // lookuptabele Auswahl
+   {
+      print("report_lookuptable_Pop index: \(sender.indexOfSelectedItem) titel: \(sender.titleOfSelectedItem)")
+      lookupindex = sender.indexOfSelectedItem
+      lookupindexFeld.integerValue = lookupindex
+      
+      let lookupstring = sender.titleOfSelectedItem ?? "0"
+      let lookuptableStringArray = lookupstring.components(separatedBy: ",")
+      lookuptableArray = lookuptableStringArray.compactMap  { UInt8($0)!} 
+      print("lookuptableArray: \(String(describing: lookuptableArray))")
+  
+   }
+   
+   
    func showAlertWithTextField() -> String
    {
       var inputText = "*"
@@ -916,7 +1014,7 @@ class rRobot: rViewController
       // Create a text field
       let textField = NSTextField(frame: NSRect(x: 0, y: 0, width: 240, height: 24))
       textField.placeholderString = "Type here..."
-      
+      //Users/ruediheimlicher/Documents/Elektronik/Projekte/H0 Print/H0 Bridge IC/H0 Decoder10_Bridge_A84_Dampf_R_2.ezdraw
       // Set the accessory view to the text field
       alert.accessoryView = textField
       
@@ -938,13 +1036,13 @@ class rRobot: rViewController
    
    @objc func loadLokAddress(lok:Int)
    {
-      print("loadLokAddress lok: \(lok)")
+      //print("loadLokAddress lok: \(lok)")
       for i in 0...3
       {
          teensy.write_byteArray[8 + i] = addressarray[lok][i]
-         print(addressarray[lok][i])
+         //print(addressarray[lok][i])
       }
-      print("loadLokAddress\(teensy.write_byteArray[8...11])")
+      //print("loadLokAddress\(teensy.write_byteArray[8...11])")
    } // loadLokAddress
    
    
@@ -983,8 +1081,8 @@ class rRobot: rViewController
       {
          sourcestatus &= ~(1<<LOCAL)
          sourcestatus |= (1<<USB)
-         let inputadresse = showAlertWithTextField()
-         print("inputadresse: \(inputadresse)")
+         //let inputadresse = showAlertWithTextField()
+         //print("inputadresse: \(inputadresse)")
       }
       for i in 0..<ANZLOKS-1
       {
@@ -1006,6 +1104,8 @@ class rRobot: rViewController
       let step = 1
       let interval:Double = 1.0
       var scanaddress = 0;
+      sourcestatus |= (1<<USB)
+      sourcestatus |= (1<<SCAN)
       
       // adress reset
       address0array = [UInt8](repeating: 0x00, count: 4)
@@ -1023,7 +1123,9 @@ class rRobot: rViewController
       
       
       
-      var userinformation:NSMutableDictionary = [ "step": step, "scanautocounter":scanautocounter, "scanaddress":scanaddress] //as! [String : Int]
+      
+      var userinformation:NSMutableDictionary = [ "step": step, "scanautocounter":scanautocounter, "scanaddress":scanaddress ] //as! [String : Int]
+      
       var timer : Timer? = nil
       
       timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(adress_scan(_:)), userInfo: userinformation, repeats: true)
@@ -1036,6 +1138,7 @@ class rRobot: rViewController
    {
       if (autoscantaste.state.rawValue == 1)
       {
+         
          guard let timerInfo = timer.userInfo as? NSMutableDictionary else 
          { 
             timer.invalidate()
@@ -1116,6 +1219,10 @@ class rRobot: rViewController
          // speed
          teensy.write_byteArray[20] = UInt8(lok)
          teensy.write_byteArray[17] = 5
+         
+         
+         teensy.write_byteArray[21] = sourcestatus
+         
          
          if (usbstatus > 0)
          {
@@ -1306,7 +1413,7 @@ class rRobot: rViewController
       let loktag = sender.tag - 1000
       //     teensy.write_byteArray[0] = LOK_0_SPEED // Code 
       teensy.write_byteArray[0] = speedcodearray[loktag]
-      print("\nRobot report_Slider loktag \(loktag) IntVal: \(sender.intValue) ")
+      //print("\nRobot report_Slider loktag \(loktag) IntVal: \(sender.intValue) ")
       //     lok0array[12] = LOK_0_SPEED
       //   print("report_Slider funktioncoderray: \(funktioncoderray) ")
       
@@ -1318,7 +1425,7 @@ class rRobot: rViewController
       //    var speed:UInt8 =  intpos
       var speed:UInt8 =  UInt8(sender.intValue)
       
-      print("report_Slider pos: \(pos) intpos: \(intpos)  speed: \(speed)")
+      //print("report_Slider pos: \(pos) intpos: \(intpos)  speed: \(speed)")
       //      print("report_Slider0 speed: \(speed) richtung: \(richtung)")
       if speed > 0
       {
@@ -1327,7 +1434,7 @@ class rRobot: rViewController
       
       speedarray[loktag] = speed
       
-      //   print("spee0darray: \(spee0darray)")
+      print("Lok: \(loktag) speedarray: \(speedarray)")
       //   print("lok0array vor loadLokAddress: \(lok0array)")
       
       loadLokAddress(lok: loktag) // lokaddress in write_byteArray
@@ -1335,18 +1442,18 @@ class rRobot: rViewController
       
       teensy.write_byteArray[17] = speed
       
-      //      print("teensy.write_byteArray:")
-      //      print("\(teensy.write_byteArray[8...18])")
+            print("teensy.write_byteArray:")
+            print("\(teensy.write_byteArray[8...18])")
       
       (self.view.viewWithTag(2000 + loktag) as! NSTextField).intValue = Int32(pos)
       
-      print("report_Slider usbstatus: \(usbstatus)")
-      print("report_Slider loknummer: \(loknummer.indexOfSelectedItem) ")
-      print("report_Slider speed: \(speed)")
+      //print("report_Slider usbstatus: \(usbstatus)")
+      //print("report_Slider loknummer: \(loknummer.indexOfSelectedItem) ")
+      //print("report_Slider speed: \(speed)")
       //teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
       teensy.write_byteArray[20] = UInt8(loktag)
       
-      print("lok: \(loktag) write_byteArray: \(teensy.write_byteArray)")
+      //print("lok: \(loktag) write_byteArray: \(teensy.write_byteArray)")
       if (usbstatus > 0)
       {
          let senderfolg = teensy.send_USB()
@@ -1628,7 +1735,8 @@ class rRobot: rViewController
        }
        */
       let pos = sender.floatValue
-      let intpos = UInt8(pos  * LOK_FAKTOR1)
+      //let intpos = UInt8(pos  * LOK_FAKTOR1)
+      let intpos =  UInt8(sender.integerValue)
       print("report_Slider1 pos: \(pos) intpos: \(intpos) ") 
       Pot1_Feld.integerValue  = Int(intpos)
       var speed:UInt8 =  intpos
@@ -1790,7 +1898,7 @@ class rRobot: rViewController
       UserDefaults.standard.set(addresstastenfeld2.tastenstatus[2], forKey: "c2index")
       UserDefaults.standard.set(addresstastenfeld2.tastenstatus[3], forKey: "c3index")
       
-      
+      UserDefaults.standard.set(lookupindex, forKey: "lookupindex")
       
       
       UserDefaults.standard.set(pause, forKey: "pause")
