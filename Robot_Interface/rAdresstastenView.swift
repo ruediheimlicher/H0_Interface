@@ -23,7 +23,7 @@ class rAdresstaste:NSButton
    {
       super.init(coder: aDecoder)
       let t = self.tag
-      //Swift.print("rAdresstaste init tag: \(t)")
+      Swift.print("rAdresstaste init tag: \(t)")
       self.action = #selector(self.report_taste)
    }
    
@@ -87,7 +87,7 @@ class rAdresstastenView:NSView
             let tastenrect = NSMakeRect(Double(col)*w,Double(row)*w, w,h)
             let ident = 1000 + 10 * row + col
             
-            //print("adresstastenview row: \(row) col: \(col) ident: \(ident)")
+            print("adresstastenview row: \(row) col: \(col) ident: \(ident) lok: \(lok)")
             
             var taste:rAdresstaste = self.viewWithTag(ident) as! rAdresstaste
             

@@ -109,7 +109,7 @@ class rRobot: rViewController
    @IBOutlet weak var TeensyPot2Feld: NSTextField!
    @IBOutlet weak var TeensyPot3Feld: NSTextField!
    
-   @IBOutlet weak var reverscountFeld: NSTextField!
+   //@IBOutlet weak var reverscountFeld: NSTextField!
    
    @IBOutlet weak var LocalTaste: NSButton!
    
@@ -1410,7 +1410,7 @@ class rRobot: rViewController
    
    @IBAction  func report_Slider(_ sender: NSSlider)
    {
-      let loktag = sender.tag - 1000
+      let loktag = sender.tag - 11000
       //     teensy.write_byteArray[0] = LOK_0_SPEED // Code 
       teensy.write_byteArray[0] = speedcodearray[loktag]
       //print("\nRobot report_Slider loktag \(loktag) IntVal: \(sender.intValue) ")
@@ -1442,8 +1442,8 @@ class rRobot: rViewController
       
       teensy.write_byteArray[17] = speed
       
-            print("teensy.write_byteArray:")
-            print("\(teensy.write_byteArray[8...18])")
+            //print("teensy.write_byteArray:")
+            print("teensy.write_byteArray: \(teensy.write_byteArray[8...18])")
       
       (self.view.viewWithTag(2000 + loktag) as! NSTextField).intValue = Int32(pos)
       
@@ -1551,8 +1551,11 @@ class rRobot: rViewController
       teensy.write_byteArray[0] = dircodearray[loktag] // Code 
       teensy.write_byteArray[17] = 1 // speed 1: Richtung togglen
       
+      let subviewarray = self.view.subviews;
+     
       (self.view.viewWithTag(loktag + 2000) as! NSTextField).intValue = 0
-      (self.view.viewWithTag(loktag + 1000) as! NSSlider).intValue = 0
+      
+      (self.view.viewWithTag(loktag + 11000) as! NSSlider).intValue = 0
       
       
       if (usbstatus > 0)
