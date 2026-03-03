@@ -1687,7 +1687,12 @@ class rRobot: rViewController
       addressarray[3][1] = UInt8(addresstastenfeld3.tastenstatus[1])
       addressarray[3][2] = UInt8(addresstastenfeld3.tastenstatus[2])
       addressarray[3][3] = UInt8(addresstastenfeld3.tastenstatus[3])
-      
+ 
+      addressarray[3][0] = UInt8(1)
+      addressarray[3][1] = UInt8(2)
+      addressarray[3][2] = UInt8(2)
+      addressarray[3][3] = UInt8(2)
+
       
       for lok in 0..<ANZLOKS
       {
