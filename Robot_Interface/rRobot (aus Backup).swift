@@ -60,7 +60,7 @@ let ANZLOKS:Int = 4
 let LOCAL   = 0
 let USB     = 1
 
-let ADDRESS_SCAN    = 4
+let SCAN    = 4
 
 
 var addresscodearray = [LOK_0_ADDRESS,LOK_1_ADDRESS,LOK_2_ADDRESS,LOK_3_ADDRESS]
@@ -109,7 +109,7 @@ class rRobot: rViewController
    @IBOutlet weak var TeensyPot2Feld: NSTextField!
    @IBOutlet weak var TeensyPot3Feld: NSTextField!
    
-   //@IBOutlet weak var reverscountFeld: NSTextField!
+   @IBOutlet weak var reverscountFeld: NSTextField!
    
    @IBOutlet weak var LocalTaste: NSButton!
    
@@ -122,9 +122,6 @@ class rRobot: rViewController
    @IBOutlet weak var Lok_2_FunktionTaste: NSButton!
    
    @IBOutlet weak var Weiche0_Slider: NSSliderCell!
-   
- //  @IBOutlet weak var Weiche0_Switch: NSSwitch!
-   
    
    /*
     @IBOutlet weak var a0: NSSegmentedControl!
@@ -156,7 +153,7 @@ class rRobot: rViewController
    
    @IBOutlet  var addresstastenfeld3: rAdresstastenView!
    
-   @IBOutlet  var weichentastenfeld0: rWeichentastenView!
+   
    
    
    @IBOutlet weak var loknummer: NSSegmentedControl!
@@ -172,9 +169,7 @@ class rRobot: rViewController
    
    @IBOutlet weak var autoscantaste: NSButton!
    
-   @IBOutlet weak var autosteptaste: NSButton!
    
-   var stepstatus = 0
    
    var scanautocounter:Int = 0
    var scanstartzeit:Int64 = 0
@@ -224,8 +219,6 @@ class rRobot: rViewController
    var sinarray:[UInt8] = [10,11,12,13,14,14,13,12,11,10,8,7,6,5,5,6,7,8,9]
    var pause:UInt8 = 5
    
-   var stepautocounter = 0
-   
    var firstrun = 1 // Task in Startloop
    
    var sourcestatus:UInt8 = 0
@@ -271,12 +264,6 @@ class rRobot: rViewController
       NotificationCenter.default.addObserver(self, selector:#selector(drehknopfAktion(_:)),name:NSNotification.Name(rawValue: "drehknopf"),object:nil)
       
       NotificationCenter.default.addObserver(self, selector:#selector(tastenstatusAktion(_:)),name:NSNotification.Name(rawValue: "tastenstatus"),object:nil)
- 
-      NotificationCenter.default.addObserver(self, selector:#selector(weichenstatusAktion(_:)),name:NSNotification.Name(rawValue: "weichenstatus"),object:nil)
-
-      
-      
-      
       
       let lookup_path =  "/Users/ruediheimlicher/Documents/H0_Daten/H0_Lookup.txt"
       lookuptable = getLookupTable(lookupURL:lookup_path) // [String]
@@ -333,7 +320,7 @@ class rRobot: rViewController
       addresstastenfeld1.tastenstatus[2]  = Int(b2seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
       addresstastenfeld1.tastenstatus[3]  = Int(b3seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
       
-      print(" addresstastenfeld1.tastenstatus: \( addresstastenfeld0.tastenstatus)")
+      print(" addresstastenfeld0.tastenstatus: \( addresstastenfeld0.tastenstatus)")
       
       //print("viewDidLoad b: \(b0.indexOfSelectedItem) \(b1.indexOfSelectedItem) \(b2.indexOfSelectedItem) \(b3.indexOfSelectedItem)")
       
@@ -350,7 +337,7 @@ class rRobot: rViewController
       addresstastenfeld2.tastenstatus[2]  = Int(c2seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
       addresstastenfeld2.tastenstatus[3]  = Int(c3seg ?? 0) //[a0seg,a1seg,a2seg,a3seg]
       
-      print(" addresstastenfeld2.tastenstatus: \( addresstastenfeld0.tastenstatus)")
+      print(" addresstastenfeld0.tastenstatus: \( addresstastenfeld0.tastenstatus)")
       
       
       
@@ -460,8 +447,9 @@ class rRobot: rViewController
       autospeedmaxstepper.integerValue = 5
       autospeedmaxfeld.integerValue = autospeedmaxstepper.integerValue
       
-      autospeedminstepper.integerValue = 0
+      autospeedminstepper.integerValue = 1
       autospeedminfeld.integerValue = autospeedminstepper.integerValue
+      
       
       
       
@@ -648,30 +636,6 @@ class rRobot: rViewController
       }
       
    }// adresstastenAktion
-   
-   @objc  func weichenstatusAktion(_ notification:Notification) 
-   {
-      let info = notification.userInfo
-      print("weichenstatusAktion info: \(info)")
-      guard let weichenstatus = notification.userInfo?["weichenstatus"]as? [Int] else {return}
-      
-      let adresse:[UInt8] = [1,2,2,2]
-      teensy.write_byteArray[0] =  0b10111111// code
-      
-      addressarray[ANZLOKS-1][0] = UInt8(weichenstatus[0])
-      addressarray[ANZLOKS-1][1] = UInt8(weichenstatus[1])
-      addressarray[ANZLOKS-1][2] = UInt8(weichenstatus[2])
-      addressarray[ANZLOKS-1][0] = UInt8(weichenstatus[3])
-       
-      for i in 0...3
-      {
-         teensy.write_byteArray[8 + i] = addressarray[ANZLOKS-1][i]
-      }
-      print("write_byteArray: \(teensy.write_byteArray)")
-
-      
-    }
-   
    
    @objc  func drehknopfAktion(_ notification:Notification) 
    {
@@ -1072,13 +1036,13 @@ class rRobot: rViewController
    
    @objc func loadLokAddress(lok:Int)
    {
-      //print("func loadLokAddress lok: \(lok)")
+      //print("loadLokAddress lok: \(lok)")
       for i in 0...3
       {
          teensy.write_byteArray[8 + i] = addressarray[lok][i]
          //print(addressarray[lok][i])
       }
-      print("loadLokAddress\(teensy.write_byteArray[8...11])")
+      //print("loadLokAddress\(teensy.write_byteArray[8...11])")
    } // loadLokAddress
    
    
@@ -1117,14 +1081,13 @@ class rRobot: rViewController
       {
          sourcestatus &= ~(1<<LOCAL)
          sourcestatus |= (1<<USB)
-         
          //let inputadresse = showAlertWithTextField()
          //print("inputadresse: \(inputadresse)")
       }
-      //for i in 0..<ANZLOKS-1
-      //{
-         //loadLokAddress(lok: i);
-      //}
+      for i in 0..<ANZLOKS-1
+      {
+         loadLokAddress(lok: i);
+      }
       print("report_Local sourcestatus: \(sourcestatus)")
       teensy.write_byteArray[21] = UInt8(sourcestatus)
       if (usbstatus > 0)
@@ -1132,11 +1095,6 @@ class rRobot: rViewController
          let senderfolg = teensy.send_USB()
          print("Robot report_Local senderfolg: \(senderfolg)")
       }
-      if(sourcestatus & (1<<USB) > 0)
-      {
-         loadAdresse(nil)
-      }
-      
       
    }
    
@@ -1302,106 +1260,6 @@ class rRobot: rViewController
    }// end adress_scan
    
    
-   @IBAction func startSteps(_ sender: NSButton?)
- {
-    print("Robot startSteps")
-    var step = 0
-    let anzsteps = 10
-    let autostep = sender?.state.rawValue
-    
-    stepautocounter = 0 
-    
-    if(autostep == 1)   
-    {
-       let minspeed = 0
-       let maxspeed = 14
-       let step = 1
-       let interval:Double = 5
-       
-       var userinformation:NSMutableDictionary = ["minspeed": minspeed, "maxspeed": maxspeed, "step": step, "stepautocounter":stepautocounter] //as! [String : Int]
-       var timer : Timer? = nil
-       
-       timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(step_auto(_:)), userInfo: userinformation, repeats: true)
-    }
-    
- }
-   
-   @objc func step_auto(_ timer: Timer)
-   {
-      let       tempmin = autospeedminstepper.integerValue
-      
-      let       tempmax = autospeedmaxstepper.integerValue
-      if (autosteptaste.state.rawValue == 1)
-      {
-         //print("step_auto : \( timer.userInfo)")
-         stepautocounter += 1
-         var randomInt = Int.random(in: tempmin..<tempmax)
-         
-         if(randomInt == 1)// 1 ist richtungswechsel
-         {
-            print("richtungswechsel")
-            if(stepstatus == 0)
-            {
-               print("stepstatus ein")
-               stepstatus = 1
-               randomInt = 0 // anhalten einleiten
-            }
-            
-         }
-         else if (stepstatus == 1)
-         {
-            randomInt = 1
-            stepstatus = 2
-         }
-         
-         else 
-         {
-            if (stepstatus == 2)
-            {
-               stepstatus = 0
-            }
-            //randomInt += 6 
-            if(randomInt > 14)
-            {
-               randomInt = 14
-            }
-         }
-         
-         
-         print("step_auto : randomInt out: \(randomInt) stepstatus: \(stepstatus)")
-         teensy.write_byteArray[0] = speedcodearray[0]
-         teensy.write_byteArray[17] = UInt8(randomInt)
-         for i in 0...3 // lokadresse laden
-         {
-            teensy.write_byteArray[8 + i] = addressarray[0][i]
-            //print(addressarray[0][i])
-         }
-         if (usbstatus > 0)
-         {
-            let senderfolg = teensy.send_USB()
-            //print("Robot report_Slider senderfolg: \(senderfolg)")
-         }
-         //      }
-      }
-      else 
-      {
-         timer.invalidate()
-         teensy.write_byteArray[17] = 0
-         loadLokAddress(lok: 0)
-         //teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
-         if (usbstatus > 0)
-         {
-            let senderfolg = teensy.send_USB()
-            //print("Robot report_Slider senderfolg: \(senderfolg)")
-         }
-      }
-
-         
-         
-      
-   }
-
-   
    
    @IBAction  func report_Speed_auto(_ sender: NSButton)
    {
@@ -1552,7 +1410,7 @@ class rRobot: rViewController
    
    @IBAction  func report_Slider(_ sender: NSSlider)
    {
-      let loktag = sender.tag - 11000
+      let loktag = sender.tag - 1000
       //     teensy.write_byteArray[0] = LOK_0_SPEED // Code 
       teensy.write_byteArray[0] = speedcodearray[loktag]
       //print("\nRobot report_Slider loktag \(loktag) IntVal: \(sender.intValue) ")
@@ -1584,8 +1442,8 @@ class rRobot: rViewController
       
       teensy.write_byteArray[17] = speed
       
-            //print("teensy.write_byteArray:")
-            print("teensy.write_byteArray: \(teensy.write_byteArray[8...18])")
+            print("teensy.write_byteArray:")
+            print("\(teensy.write_byteArray[8...18])")
       
       (self.view.viewWithTag(2000 + loktag) as! NSTextField).intValue = Int32(pos)
       
@@ -1692,12 +1550,9 @@ class rRobot: rViewController
       
       teensy.write_byteArray[0] = dircodearray[loktag] // Code 
       teensy.write_byteArray[17] = 1 // speed 1: Richtung togglen
-      teensy.write_byteArray[20] = UInt8(loktag)
-      let subviewarray = self.view.subviews;
-     
-      (self.view.viewWithTag(loktag + 2000) as! NSTextField).intValue = 0
       
-      (self.view.viewWithTag(loktag + 11000) as! NSSlider).intValue = 0
+      (self.view.viewWithTag(loktag + 2000) as! NSTextField).intValue = 0
+      (self.view.viewWithTag(loktag + 1000) as! NSSlider).intValue = 0
       
       
       if (usbstatus > 0)
@@ -1807,7 +1662,7 @@ class rRobot: rViewController
    
    
    // alle Adressen senden
-   @IBAction func loadAdresse(_ sender: NSButton?)
+   @IBAction func loadAdresse(_ sender: NSButton)
    {
       addressarray[0][0] = UInt8(addresstastenfeld0.tastenstatus[0] )
       addressarray[0][1] = UInt8(addresstastenfeld0.tastenstatus[1] )
@@ -1850,8 +1705,6 @@ class rRobot: rViewController
       
       
    }
-   
-   
    // MARK:Slider 1
    @IBAction override func report_Slider1(_ sender: NSSlider)
    {

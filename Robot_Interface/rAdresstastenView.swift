@@ -14,6 +14,8 @@ let numrows = 3
 let numcols = 4
 
 
+
+
 class rAdresstaste:NSButton
 {
    var row = 0
@@ -25,6 +27,7 @@ class rAdresstaste:NSButton
       let t = self.tag
       Swift.print("rAdresstaste init tag: \(t)")
       self.action = #selector(self.report_taste)
+      self.controlSize = .mini
    }
    
 
@@ -95,6 +98,7 @@ class rAdresstastenView:NSView
             //print("tastetag: \(tastetag)")
             taste.target = self
             taste.action = #selector(self.tastenaktion)
+           
          }
          
       }// init
@@ -113,7 +117,6 @@ class rAdresstastenView:NSView
       if let lokident = self.identifier {
          lokstring = lokident.rawValue
          lok = Int(lokident.rawValue) ?? 0
-          // do something with viewIdent
       } else {
           // view.identifier was nil
          return
@@ -157,10 +160,13 @@ class rAdresstastenView:NSView
       let userinformation = ["message":"tastenaktion", "tastenstatus": tastenstatus, "lok": lok] as [String : Any]
        
       let nc = NotificationCenter.default
-      nc.post(name:Notification.Name(rawValue:"tastenstatus"),
-              object: nil,
-              userInfo: userinformation)
-
+      
+      if(lok < 3)
+      {
+         nc.post(name:Notification.Name(rawValue:"tastenstatus"),
+                 object: nil,
+                 userInfo: userinformation)
+      }
    }
 
    func setTasten(tastenarray:[Int])
@@ -176,6 +182,7 @@ class rAdresstastenView:NSView
             let tastenwert = tastenstatus[col]
             let ident = 1000 + 10 * row + col
             var taste:NSButton = self.viewWithTag(ident) as! NSButton
+            
             if (row == tastenwert)
             {
                taste.state = .on

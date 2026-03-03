@@ -54,12 +54,16 @@ class rRobotarm: NSView {
    
    func waagrechtelinienzeichnen(schritt:Int)
    {
+      
       let anzneg = Int(fixpunkt0.y / CGFloat(schritt))
       var y:CGFloat = CGFloat(schritt)
-      for index in 1...anzneg
+      if(anzneg > 0)
       {
-         waagrechtelinien.move(to: NSMakePoint(0,fixpunkt0.y - y * CGFloat(index)))
-         waagrechtelinien.line(to: NSMakePoint(bounds.size.width,fixpunkt0.y - y * CGFloat(index)))
+         for index in 1...anzneg
+         {
+            waagrechtelinien.move(to: NSMakePoint(0,fixpunkt0.y - y * CGFloat(index)))
+            waagrechtelinien.line(to: NSMakePoint(bounds.size.width,fixpunkt0.y - y * CGFloat(index)))
+         }
       }
       let anzpos = Int(bounds.size.height - fixpunkt0.y / CGFloat(schritt))
       for index in 1...anzpos
@@ -73,10 +77,13 @@ class rRobotarm: NSView {
    {
       let anzneg = Int(fixpunkt0.x / CGFloat(schritt))
       var x:CGFloat = CGFloat(schritt)
-      for index in 1...anzneg
+      if(anzneg > 0)
       {
-         senkrechtelinien.move(to: NSMakePoint(fixpunkt0.x - x * CGFloat(index),0))
-         senkrechtelinien.line(to: NSMakePoint(fixpunkt0.x - x * CGFloat(index),bounds.size.height))
+         for index in 1...anzneg
+         {
+            senkrechtelinien.move(to: NSMakePoint(fixpunkt0.x - x * CGFloat(index),0))
+            senkrechtelinien.line(to: NSMakePoint(fixpunkt0.x - x * CGFloat(index),bounds.size.height))
+         }
       }
       let anzpos = Int(bounds.size.height - fixpunkt0.y / CGFloat(schritt))
       for index in 1...anzpos

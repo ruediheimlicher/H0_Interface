@@ -41,6 +41,7 @@
 		BD8702671A06852A00F2C77B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD8702651A06852A00F2C77B /* Main.storyboard */; };
 		BD94A905250789CA00D815E2 /* lok.png in Resources */ = {isa = PBXBuildFile; fileRef = BD94A904250789C900D815E2 /* lok.png */; };
 		BD94A9072507958900D815E2 /* lok_inv.png in Resources */ = {isa = PBXBuildFile; fileRef = BD94A9062507958900D815E2 /* lok_inv.png */; };
+		BD94F6CC2F55D9CD006B21BB /* rWeicheSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD94F6CB2F55D9CD006B21BB /* rWeicheSwitchView.swift */; };
 		BDACB33D2537021D00BF7361 /* drehscheibe.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BDACB33C2537021D00BF7361 /* drehscheibe.jpg */; };
 		BDD71BFC26AC40B400213B2E /* usb.png in Resources */ = {isa = PBXBuildFile; fileRef = BDD71BFA26AC40B400213B2E /* usb.png */; };
 		BDD71BFD26AC40B400213B2E /* local.png in Resources */ = {isa = PBXBuildFile; fileRef = BDD71BFB26AC40B400213B2E /* local.png */; };
@@ -87,6 +88,7 @@
 		BD8702661A06852A00F2C77B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BD94A904250789C900D815E2 /* lok.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lok.png; sourceTree = "<group>"; };
 		BD94A9062507958900D815E2 /* lok_inv.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lok_inv.png; sourceTree = "<group>"; };
+		BD94F6CB2F55D9CD006B21BB /* rWeicheSwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rWeicheSwitchView.swift; sourceTree = "<group>"; };
 		BDACB33C2537021D00BF7361 /* drehscheibe.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = drehscheibe.jpg; sourceTree = "<group>"; };
 		BDD71BFA26AC40B400213B2E /* usb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = usb.png; sourceTree = "<group>"; };
 		BDD71BFB26AC40B400213B2E /* local.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = local.png; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				BD8702611A06852A00F2C77B /* rViewController.swift */,
 				BD3E63102309A96D0096AC70 /* rJoystickView.swift */,
 				BD3EE24D2AD9916D008DCF8D /* rAdresstastenView.swift */,
+				BD94F6CB2F55D9CD006B21BB /* rWeicheSwitchView.swift */,
 				BD1407402337F6DD00EDC163 /* rRobotarm.swift */,
 				BD3E63122309AA600096AC70 /* rDrehknopfView.swift */,
 				BD8702631A06852A00F2C77B /* Images.xcassets */,
@@ -305,6 +308,7 @@
 				BDFCF9B722DCFD4400335B2B /* hid.c in Sources */,
 				BD6A98C922FA07EB001FBADA /* rTrigo.swift in Sources */,
 				BD3EE24E2AD9916D008DCF8D /* rAdresstastenView.swift in Sources */,
+				BD94F6CC2F55D9CD006B21BB /* rWeicheSwitchView.swift in Sources */,
 				BD8702621A06852A00F2C77B /* rViewController.swift in Sources */,
 				BD1407412337F6DD00EDC163 /* rRobotarm.swift in Sources */,
 				BD6A98C522FA07BA001FBADA /* rBasis.swift in Sources */,
