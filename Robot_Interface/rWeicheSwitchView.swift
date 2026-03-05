@@ -63,6 +63,7 @@ class rWeichentastenView:NSView
    
    var hintergrundfarbe = NSColor()
    var weichenstatus:[Int] = Array(repeating: 0, count: numtasten) // werte der tastenstellungen
+   var weichenstellung:UInt8 = 0;
    
    required init?(coder  aDecoder : NSCoder) 
    {
@@ -116,8 +117,16 @@ class rWeichentastenView:NSView
       let taste = (sender.tag - 2000) / 10
       print("weichenaktion taste: \(taste)") 
       weichenstatus[taste] ^= 1  
-      print("weichenaktion weichenstatus nach: \(weichenstatus)")
-      let userinformation = ["message":"weichenaktion", "weichenstatus": weichenstatus,"weiche":weiche, "ident":identifier] as [String : Any]
+      
+      for bit in 0..<numtasten
+      {
+         if(weichenstatus[bit] != 0)
+         {
+            weichenstellung |= (1<<bit) 
+         }
+      }
+      print("weichenaktion weichenstatus nach: \(weichenstatus) weichenstellung: \(weichenstellung)")
+      let userinformation = ["message":"weichenaktion", "weichenstatus": weichenstatus,"weichenstellung": weichenstellung,"weiche":3, "ident":identifier] as [String : Any]
       let nc = NotificationCenter.default
       nc.post(name:Notification.Name(rawValue:"weichenstatus"),
               object: nil,

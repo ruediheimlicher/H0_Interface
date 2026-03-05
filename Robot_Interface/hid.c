@@ -243,7 +243,7 @@ int rawhid_send(int num, uint8_t *buf, int len, int timeout)
 	if (!hid || !hid->open) return -1;
    //fprintf(stderr,"rawhid_send A\n");
 //#if 1
-#warning "Send timeout not implemented on MACOSX"
+//#warning "Send timeout not implemented on MACOSX"
 	IOReturn ret = IOHIDDeviceSetReport(hid->ref, kIOHIDReportTypeOutput, 0, buf, (CFIndex)len);
 	result = (ret == kIOReturnSuccess) ? len : -1;
  //  fprintf(stderr,"rawhid_send B result: %d\n",result);

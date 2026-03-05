@@ -117,7 +117,10 @@ class rAdresstastenView:NSView
       if let lokident = self.identifier {
          lokstring = lokident.rawValue
          lok = Int(lokident.rawValue) ?? 0
-      } else {
+         lok -= 1110
+      } 
+      else 
+      {
           // view.identifier was nil
          return
       }
@@ -129,7 +132,7 @@ class rAdresstastenView:NSView
       // let ident = 1000 + 10 * row + col
       let row = (sender.tag - 1000) / 10
       let col = (sender.tag - 1000) % 10
-      print("tastenaktion row: \(row) col: \(col)")
+      print("tastenaktion row: \(row) col: \(col) lok: \(lok)6")
       
       if sender.state == .off // Taste war on, nichts aendern
       {
@@ -152,7 +155,7 @@ class rAdresstastenView:NSView
          }
          else
          {
-            tastenstatus[col] = checkrow
+            tastenstatus[col] = checkrow // wert fuer Taste
          }
          
       } // for checkrow
@@ -161,7 +164,7 @@ class rAdresstastenView:NSView
        
       let nc = NotificationCenter.default
       
-      if(lok < 3)
+      if(lok < ANZLOKS - 1) // letzte fuer Weiche
       {
          nc.post(name:Notification.Name(rawValue:"tastenstatus"),
                  object: nil,

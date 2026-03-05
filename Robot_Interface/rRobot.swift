@@ -624,11 +624,14 @@ class rRobot: rViewController
          return
          
       }
-      loknummer -= 1110
+      //loknummer -= 1110
       print("tastenstatusAktion tastenstatus: \(tastenstatus) loknummer: \(loknummer)")
       
       // von report_Adresse0
       teensy.write_byteArray[0] = addresscodearray[loknummer] // code
+      teensy.write_byteArray[20] = UInt8(loknummer)
+      teensy.write_byteArray[21] = 2 // sourcestatus
+      
       
       addressarray[loknummer][0] = UInt8(tastenstatus[0])
       addressarray[loknummer][1] = UInt8(tastenstatus[1])
@@ -640,13 +643,14 @@ class rRobot: rViewController
       {
          teensy.write_byteArray[8 + i] = addressarray[loknummer][i]
       }
-      print("write_byteArray: \(teensy.write_byteArray)")
+      print("tastenstatusAktion write_byteArray: \(teensy.write_byteArray)")
       if (usbstatus > 0)
       {
          let senderfolg = teensy.send_USB()
-         print("Robot report_Address0 senderfolg: \(senderfolg)")
+         print("Robot tastenstatusAktion loknummer: \(loknummer)  senderfolg: \(senderfolg)")
       }
-      
+      loadLokAddress(lok: loknummer)
+      //loadAdresse(nil)
    }// adresstastenAktion
    
    @objc  func weichenstatusAktion(_ notification:Notification) 
@@ -655,19 +659,51 @@ class rRobot: rViewController
       print("weichenstatusAktion info: \(info)")
       guard let weichenstatus = notification.userInfo?["weichenstatus"]as? [Int] else {return}
       
+      guard var loknummer  = notification.userInfo?["weiche"]as? Int else 
+      {
+         print("tastenstatusAktion lok ist nil")
+         return
+         
+      }
+      guard var weichenstellung  = notification.userInfo?["weichenstellung"]as? UInt8 else 
+      {
+         print("tastenstatusAktion weichenstellung ist nil")
+         return
+         
+      }
+      
       let adresse:[UInt8] = [1,2,2,2]
       teensy.write_byteArray[0] =  0b10111111// code
       
-      addressarray[ANZLOKS-1][0] = UInt8(weichenstatus[0])
-      addressarray[ANZLOKS-1][1] = UInt8(weichenstatus[1])
-      addressarray[ANZLOKS-1][2] = UInt8(weichenstatus[2])
-      addressarray[ANZLOKS-1][0] = UInt8(weichenstatus[3])
+      //loknummer = ANZLOKS-1
+      
+      
+      teensy.write_byteArray[20] = UInt8(loknummer)
+      teensy.write_byteArray[21] = 2 // sourcestatus
+
+      
+      
+      addressarray[loknummer][0] = UInt8(weichenstatus[0])
+      addressarray[loknummer][1] = UInt8(weichenstatus[1])
+      addressarray[loknummer][2] = UInt8(weichenstatus[2])
+      addressarray[loknummer][3] = UInt8(weichenstatus[3])
+      
+      teensy.write_byteArray[17] = weichenstellung // speed
+      
+      
+      
+      
        
       for i in 0...3
       {
          teensy.write_byteArray[8 + i] = addressarray[ANZLOKS-1][i]
       }
-      print("write_byteArray: \(teensy.write_byteArray)")
+      print("weichenstatusAktion write_byteArray: \(teensy.write_byteArray)")
+      if (usbstatus > 0)
+      {
+         let senderfolg = teensy.send_USB()
+         print("Robot weichenstatusAktion senderfolg: \(senderfolg)")
+      }
 
       
     }
@@ -1585,7 +1621,7 @@ class rRobot: rViewController
       teensy.write_byteArray[17] = speed
       
             //print("teensy.write_byteArray:")
-            print("teensy.write_byteArray: \(teensy.write_byteArray[8...18])")
+            print("teensy.write_byteArray: \(teensy.write_byteArray[8...22]) " )
       
       (self.view.viewWithTag(2000 + loktag) as! NSTextField).intValue = Int32(pos)
       
@@ -1829,6 +1865,11 @@ class rRobot: rViewController
       addressarray[3][1] = UInt8(addresstastenfeld3.tastenstatus[1])
       addressarray[3][2] = UInt8(addresstastenfeld3.tastenstatus[2])
       addressarray[3][3] = UInt8(addresstastenfeld3.tastenstatus[3])
+      
+      addressarray[3][0] = UInt8(1)
+      addressarray[3][1] = UInt8(2)
+      addressarray[3][2] = UInt8(2)
+      addressarray[3][3] = UInt8(2)
       
       
       for lok in 0..<ANZLOKS
