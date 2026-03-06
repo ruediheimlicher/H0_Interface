@@ -8,16 +8,17 @@
 
 import Foundation
 
-import Foundation
 import Cocoa
 import AppKit
 
-var numtasten:Int = 4
+var numtasten:Int = 8
+
+
+
 
 class rWeichentaste:NSSwitch
 {
-
-   
+    
    override init(frame frameRect: NSRect) 
    
    {
@@ -56,6 +57,27 @@ class rWeichentaste:NSSwitch
 
 class rWeichentastenView:NSView
 {
+
+   @objc func setWeichentasten()
+   {
+      Swift.print("setWeichentasten \(self.bounds.width)") 
+      
+   }
+   
+   @IBAction func radioChanged(_ sender: NSButton) 
+   {
+      Swift.print("radioChanged")   
+      Swift.print("tag: \(sender.tag) state \(sender.state)") 
+      
+      //gerade.state = (sender == gerade) ? .on : .off
+   }
+   
+  
+   @objc func selectRadio(_ sender: NSButton) 
+   {
+      Swift.print("selectRadio state: \(sender.state.rawValue)") 
+           //radios.forEach { $0.state = ($0 == sender) ? .on : .off }
+      }
    var weiche:Int = 0
    
    var weichengruppe = 0 
@@ -70,9 +92,9 @@ class rWeichentastenView:NSView
       super.init(coder: aDecoder)
       Swift.print("rWeichentastenView init")
       self.wantsLayer = true
-      hintergrundfarbe  = NSColor.init(red: 0.85, 
-                                       green: 0, 
-                                       blue: 0, 
+      hintergrundfarbe  = NSColor.init(red: 0, 
+                                       green: 0.2, 
+                                       blue: 1.0, 
                                        alpha: 0.25)
       self.layer?.backgroundColor =  hintergrundfarbe.cgColor
       
@@ -92,6 +114,7 @@ class rWeichentastenView:NSView
       for row in 0..<numtasten
       {
          let tastenrect = NSMakeRect(5,Double(row)*switchH , tasteW,switchH)
+
          let ident = 2000 + 10 * row 
          print("weichentastenview row: \(row)  ident: \(ident) weiche: \(weiche)")
 
@@ -103,7 +126,10 @@ class rWeichentastenView:NSView
          weichentaste.tag = ident
          weichentaste.target = self 
          weichentaste.action = #selector(self.weichenaktion)
+         
       }
+      
+      
       
    } // required init
    
@@ -116,13 +142,17 @@ class rWeichentastenView:NSView
       }
       let taste = (sender.tag - 2000) / 10
       print("weichenaktion taste: \(taste)") 
-      weichenstatus[taste] ^= 1  
+      weichenstatus[taste] ^= 1   // invertieren
       
       for bit in 0..<numtasten
       {
          if(weichenstatus[bit] != 0)
          {
             weichenstellung |= (1<<bit) 
+         }
+         else
+         {
+            
          }
       }
       print("weichenaktion weichenstatus nach: \(weichenstatus) weichenstellung: \(weichenstellung)")

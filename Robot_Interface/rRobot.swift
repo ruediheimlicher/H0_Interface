@@ -158,6 +158,8 @@ class rRobot: rViewController
    
    @IBOutlet  var weichentastenfeld0: rWeichentastenView!
    
+   @IBOutlet  var weichentastenfeldB: rWeichenradioView!
+   
    
    @IBOutlet weak var loknummer: NSSegmentedControl!
    
