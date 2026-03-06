@@ -49,7 +49,7 @@ class rWeichenradio: NSButton
    
    @objc func report_weichentaste(_ sender: NSButton)
    {
-      Swift.print("report_weichentaste  ident: \(self.radionummer) name: \(self.name) ")  
+      Swift.print("report_weichentaste  ident: \(self.radionummer) name: \(self.name) tag: \(self.tag)")  
       let status = sender.state
      // let ident = self.identifier
       //let tastetag = self.tag
@@ -64,6 +64,7 @@ class rWeichenradio: NSButton
 
 class rWeichenradiogruppe:NSView
 {
+   
    var weichengruppenummer:Int = 0
    var weichen: [rWeichenradio] = []
   
@@ -112,6 +113,7 @@ class rWeichenradiogruppe:NSView
       radio0 = rWeichenradio(frame:tastenrect)
       //radio0.setValue(10)
       radio0.name = "radio0"
+      
  
       addSubview(radio0)
       var tastenrect1 : NSRect = NSMakeRect(30 ,0 , tasteW,tasteH)
@@ -208,11 +210,13 @@ class rWeichenradioView:NSView
          let weichenradiogruppe = rWeichenradiogruppe(frame:(tastenrect))
          weichenradiogruppe.wantsLayer = true
          weichenradiogruppe.layer?.backgroundColor =  NSColor.gray.cgColor
-         let nr = 20 + 2*row
+         var nr = 20 + 2*row
          weichenradiogruppe.weichengruppenummer = 20 + row
          weichenradiogruppe.radio0.setValue(nr)
-         weichenradiogruppe.radio1.setValue(nr + 1)
-         
+         weichenradiogruppe.radio0.tag = 2000+nr
+         nr += 1
+         weichenradiogruppe.radio1.setValue(nr)
+         weichenradiogruppe.radio1.tag = 2000+nr
          addSubview(weichenradiogruppe)
          weichenarray.append(weichenradiogruppe)      
          Swift.print("rWeichenradioView row: \(row) nr: \(nr)")

@@ -2483,8 +2483,8 @@
             filePath = "Robot_Interface/rWeicheView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "126"
-            endingLineNumber = "126"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
             landmarkName = "init(frame:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2563,10 +2563,10 @@
             filePath = "Robot_Interface/rWeicheView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "rWeichenradiogruppe"
-            landmarkType = "3">
+            startingLineNumber = "120"
+            endingLineNumber = "120"
+            landmarkName = "init(frame:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
