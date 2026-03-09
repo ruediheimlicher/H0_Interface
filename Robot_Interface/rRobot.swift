@@ -251,7 +251,7 @@ class rRobot: rViewController
    {
       super.viewDidLoad()
       self.view.window?.acceptsMouseMovedEvents = true
-      //let view = view[0] as! NSView
+      //let view = view[0] as! NSViewNotificationCenter.
       self.view.wantsLayer = true
       hintergrundfarbe  = NSColor.init(red: 0.25, 
                                        green: 0.45, 
@@ -272,7 +272,7 @@ class rRobot: rViewController
       NotificationCenter.default.addObserver(self, selector:#selector(usbstatusAktion(_:)),name:NSNotification.Name(rawValue: "usb_status"),object:nil)
       NotificationCenter.default.addObserver(self, selector:#selector(drehknopfAktion(_:)),name:NSNotification.Name(rawValue: "drehknopf"),object:nil)
       
-      NotificationCenter.default.addObserver(self, selector:#selector(tastenstatusAktion(_:)),name:NSNotification.Name(rawValue: "tastenstatus"),object:nil)
+  //    NotificationCenter.default.addObserver(self, //selector:#selector(tastenstatusAktion(_:)),name:NSNotification.Name(rawValue: "tastenstatus"),object:nil)
  
       NotificationCenter.default.addObserver(self, selector:#selector(weichenstatusAktion(_:)),name:NSNotification.Name(rawValue: "weichenstatus"),object:nil)
 
@@ -617,7 +617,7 @@ class rRobot: rViewController
    @objc  func tastenstatusAktion(_ notification:Notification) 
    {
       let info = notification.userInfo
-      print("tastenstatusAktion info: \(info)")
+      print("Robot tastenstatusAktion info: \(info)")
       guard let tastenstatus = notification.userInfo?["tastenstatus"]as? [Int] else {return}
       
       guard var loknummer  = notification.userInfo?["lok"]as? Int else 
@@ -658,28 +658,41 @@ class rRobot: rViewController
    @objc  func weichenstatusAktion(_ notification:Notification) 
    {
       let info = notification.userInfo
-      print("weichenstatusAktion info: \(info)")
-      guard let weichenstatus = notification.userInfo?["weichenstatus"]as? [Int] else {return}
+      print("Robot weichenstatusAktion info: \(info)")
+      //guard var  weichenstatusint = notification.userInfo?["weichenstatus"]as? [Int] else {return}
       
-      guard var loknummer  = notification.userInfo?["weiche"]as? Int else 
+      guard var weichendata   = notification.userInfo?["data"]as? UInt8 else 
       {
-         print("tastenstatusAktion lok ist nil")
+         print("weichetag tag ist nil")
          return
          
       }
-      guard var weichenstellung  = notification.userInfo?["weichenstellung"]as? UInt8 else 
+      guard var weiche   = notification.userInfo?["weiche"]as? UInt8 else 
       {
-         print("tastenstatusAktion weichenstellung ist nil")
+         print("weiche tag ist nil")
          return
          
       }
-      
-      let adresse:[UInt8] = [1,2,2,2]
+      print("Robot weichenstatusAktion weiche: \(weiche)")
+
+      guard var ablenkung   = notification.userInfo?["ablenkung"]as? UInt8 else 
+      {
+         print("ablenkung tag ist nil")
+         return
+         
+      }
+      print("Robot weichenstatusAktion ablenkung: \(ablenkung)")
+          
+      let weichenstatus:[UInt8] = [1,2,2,2]
       teensy.write_byteArray[0] =  0b10111111// code
       
       //loknummer = ANZLOKS-1
       
+      let code = 0xBF
       
+      let loknummer = ANZLOKS-1
+      
+      teensy.write_byteArray[20] = UInt8(code)
       teensy.write_byteArray[20] = UInt8(loknummer)
       teensy.write_byteArray[21] = 2 // sourcestatus
 
@@ -689,13 +702,10 @@ class rRobot: rViewController
       addressarray[loknummer][1] = UInt8(weichenstatus[1])
       addressarray[loknummer][2] = UInt8(weichenstatus[2])
       addressarray[loknummer][3] = UInt8(weichenstatus[3])
-      
-      teensy.write_byteArray[17] = weichenstellung // speed
-      
-      
-      
-      
        
+      teensy.write_byteArray[16] = ablenkung // funktion
+      teensy.write_byteArray[17] = weiche // speed
+        
       for i in 0...3
       {
          teensy.write_byteArray[8 + i] = addressarray[ANZLOKS-1][i]
@@ -1623,7 +1633,7 @@ class rRobot: rViewController
       teensy.write_byteArray[17] = speed
       
             //print("teensy.write_byteArray:")
-            print("teensy.write_byteArray: \(teensy.write_byteArray[8...22]) " )
+            print("report_Slider teensy.write_byteArray: \(teensy.write_byteArray[8...22]) " )
       
       (self.view.viewWithTag(2000 + loktag) as! NSTextField).intValue = Int32(pos)
       
