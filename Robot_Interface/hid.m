@@ -900,7 +900,7 @@ int findHIDDevicesWithVendorAndProductID(uint32_t vendorID , uint32_t productID)
            anzahl++;
             char name[256];
             CFStringGetCString(productName, name, sizeof(name), kCFStringEncodingUTF8);
-            printf("Found Device: %s\n", name);
+            printf("findHIDDevicesWithVendorAndProductID Found Device: %s\n", name);
             CFRelease(productName);
         }
 
@@ -1078,7 +1078,7 @@ int usb_present(void)
                    snprintf(productName, sizeof(productName), "Unknown");
                }
 
-               printf("Found device: PID=0x%04x, Product=%s\n", deviceVID, productName);
+               printf("hid usb_present Found device: PID=0x%04x, Product=%s\n", deviceVID, productName);
            }
        }
       

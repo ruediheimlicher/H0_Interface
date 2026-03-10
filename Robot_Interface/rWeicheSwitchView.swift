@@ -18,14 +18,14 @@ var numtasten:Int = 8
 
 class rWeichentaste:NSSwitch
 {
-    
+   
    override init(frame frameRect: NSRect) 
    
    {
       Swift.print("rWeichetaste init frame")
-          super.init(frame: frameRect)
-          configure()
-      }
+      super.init(frame: frameRect)
+      configure()
+   }
    
    func configure()
    {
@@ -57,7 +57,7 @@ class rWeichentaste:NSSwitch
 
 class rWeichentastenView:NSView
 {
-
+   
    @objc func setWeichentasten()
    {
       Swift.print("setWeichentasten \(self.bounds.width)") 
@@ -72,12 +72,12 @@ class rWeichentastenView:NSView
       //gerade.state = (sender == gerade) ? .on : .off
    }
    
-  
+   
    @objc func selectRadio(_ sender: NSButton) 
    {
       Swift.print("selectRadio state: \(sender.state.rawValue)") 
-           //radios.forEach { $0.state = ($0 == sender) ? .on : .off }
-      }
+      //radios.forEach { $0.state = ($0 == sender) ? .on : .off }
+   }
    var weiche:Int = 0
    
    var weichengruppe = 0 
@@ -114,10 +114,10 @@ class rWeichentastenView:NSView
       for row in 0..<numtasten
       {
          let tastenrect = NSMakeRect(5,Double(row)*switchH , tasteW,switchH)
-
+         
          let ident = 2000 + 10 * row 
          //print("weichentastenview row: \(row)  ident: \(ident) weiche: \(weiche)")
-
+         
          var weichentaste:rWeichentaste = rWeichentaste(frame: tastenrect)
          addSubview(weichentaste)
          //var weichentaste:rWeichentaste = self.viewWithTag(ident) as! rWeichentaste
@@ -161,10 +161,10 @@ class rWeichentastenView:NSView
       nc.post(name:Notification.Name(rawValue:"weichenstatus"),
               object: nil,
               userInfo: userinformation)
-
+      
       
    }
-
+   
 }
 
 

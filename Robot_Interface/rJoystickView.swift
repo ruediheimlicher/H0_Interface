@@ -21,6 +21,9 @@ class rJoystickView: NSView
    required init?(coder  aDecoder : NSCoder) 
    {
       super.init(coder: aDecoder)
+      self.wantsLayer = true
+      self.layer?.backgroundColor =  NSColor.green.cgColor
+      
       //Swift.print("JoystickView init")
       //   NSColor.blue.set() // choose color
       // let achsen = NSBezierPath() // container for line(s)
@@ -39,7 +42,7 @@ class rJoystickView: NSView
       //achsen.stroke()  // draw line(s) in color
       if let joystickident = self.identifier
       {
-       //  Swift.print("JoystickView ident: \(joystickident) raw: \(joystickident.rawValue)")
+         //  Swift.print("JoystickView ident: \(joystickident) raw: \(joystickident.rawValue)")
          
       }
       else
@@ -57,7 +60,7 @@ class rJoystickView: NSView
       
       // dash customization parameters
       let dashHeight: CGFloat = 1
-      let dashColor: NSColor = .gray
+      let dashColor: NSColor = .red
       
       // setup the context
       let currentContext = NSGraphicsContext.current!.cgContext
@@ -97,7 +100,7 @@ class rJoystickView: NSView
       
       super.mouseDown(with: theEvent)
       //let ident  = self.identifier as! String
-       let ident  = self.identifier
+      let ident  = self.identifier
       
       Swift.print("left mouse ident: \(ident)")
       var identstring = ""
@@ -108,7 +111,7 @@ class rJoystickView: NSView
       else
       {
          identstring = "13"
-      
+         
       }
       
       let location = theEvent.locationInWindow
@@ -140,7 +143,7 @@ class rJoystickView: NSView
          kreuz.line(to: lokalpunkt)
          kreuz.line(to: NSMakePoint(lokalpunkt.x-5, lokalpunkt.y))
          kreuz.line(to: lokalpunkt)
-      
+         
          // zurueck zu localpunkt
          weg.move(to: lokalpunkt)
          

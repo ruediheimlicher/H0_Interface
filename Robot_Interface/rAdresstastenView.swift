@@ -30,7 +30,7 @@ class rAdresstaste:NSButton
       self.controlSize = .mini
    }
    
-
+   
    
    
    @IBAction  func report_taste(_ sender: NSButton)
@@ -46,13 +46,13 @@ class rAdresstaste:NSButton
 
 class rAdresstastenView:NSView
 {
-    
+   
    var lok:Int = 0
    //var tag = 0
    
    var hintergrundfarbe = NSColor()
    var tastenstatus:[Int] = Array(repeating: 0, count: numcols) // werte eines adressdip
-
+   
    required init?(coder  aDecoder : NSCoder) 
    {
       super.init(coder: aDecoder)
@@ -69,12 +69,12 @@ class rAdresstastenView:NSView
       {
          //var lokstring:String =  lokident.rawValue
          lok = Int(lokident.rawValue) ?? 0
-          // do something with viewIdent
+         // do something with viewIdent
       } else {
-          // view.identifier was nil
+         // view.identifier was nil
          return
       }
-
+      
       //print("subviews: : \(self.subviews)")
       //   NSColor.blue.set() // choose color
       // let achsen = NSBezierPath() // container for line(s)
@@ -98,14 +98,14 @@ class rAdresstastenView:NSView
             //print("tastetag: \(tastetag)")
             taste.target = self
             taste.action = #selector(self.tastenaktion)
-           
+            
          }
          
       }// init
       
    } 
    
-    
+   
    @IBAction func tastenaktion(_ sender: NSButton)
    {
       
@@ -121,14 +121,14 @@ class rAdresstastenView:NSView
       } 
       else 
       {
-          // view.identifier was nil
+         // view.identifier was nil
          return
       }
       
-    //  let lokident:Int = Int(self.identifier?.rawValue ?? "1111")
-       
+      //  let lokident:Int = Int(self.identifier?.rawValue ?? "1111")
+      
       print("tastenaktion tag: \(sender.tag) state: \(sender.state) lok: \(lok) identifier: \(Int(lokstring))")
-     
+      
       // let ident = 1000 + 10 * row + col
       let row = (sender.tag - 1000) / 10
       let col = (sender.tag - 1000) % 10
@@ -151,7 +151,7 @@ class rAdresstastenView:NSView
          {
             
             checktaste.state = .off
-         
+            
          }
          else
          {
@@ -161,7 +161,7 @@ class rAdresstastenView:NSView
       } // for checkrow
       print("tastenaktion tastenstatus nach: \(tastenstatus)")
       let userinformation = ["message":"tastenaktion", "tastenstatus": tastenstatus, "lok": lok] as [String : Any]
-       
+      
       let nc = NotificationCenter.default
       
       if(lok < ANZLOKS - 1) // letzte fuer Weiche
@@ -171,7 +171,7 @@ class rAdresstastenView:NSView
                  userInfo: userinformation)
       }
    }
-
+   
    func setTasten(tastenarray:[Int])
    {
       print("*** Original array: \(tastenarray)")
@@ -196,8 +196,8 @@ class rAdresstastenView:NSView
             }
          }
          
-       }
-       
+      }
+      
    }
    
    
@@ -234,9 +234,9 @@ class rAdresstastenView:NSView
    }
    
    
-    
+   
    
 }
-   
-   
+
+
 

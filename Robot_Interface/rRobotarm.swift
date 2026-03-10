@@ -10,7 +10,8 @@ import Cocoa
 let rad2deg:Double = 180.0/Double.pi
 
 
-class rRobotarm: NSView {
+class rRobotarm: NSView 
+{
    var arm: NSBezierPath = NSBezierPath()
    var achsen: NSBezierPath = NSBezierPath()
    var waagrechtelinien: NSBezierPath = NSBezierPath()
@@ -21,7 +22,7 @@ class rRobotarm: NSView {
    var fixpunkt1:NSPoint = NSPoint()
    var fixpunkt2:NSPoint = NSPoint()
    var fixpunkt3:NSPoint = NSPoint()
-     
+   
    required init?(coder  aDecoder : NSCoder) 
    {
       super.init(coder: aDecoder)
@@ -72,7 +73,7 @@ class rRobotarm: NSView {
          waagrechtelinien.line(to: NSMakePoint(bounds.size.width,fixpunkt0.y + y * CGFloat(index)))
       }
    }
- 
+   
    func senkrechtelinienzeichnen(schritt:Int)
    {
       let anzneg = Int(fixpunkt0.x / CGFloat(schritt))
@@ -92,7 +93,7 @@ class rRobotarm: NSView {
          senkrechtelinien.line(to: NSMakePoint(fixpunkt0.x + x * CGFloat(index),bounds.size.height))
       }
    }
-
+   
    
    
    func setstartpunkt(punkt: NSPoint)
@@ -117,7 +118,7 @@ class rRobotarm: NSView {
       let mitterect:NSRect = NSMakeRect(startpunkt.x-2, startpunkt.y-2, 2*d, 2*d)      
       arm.appendOval(in: mitterect)
       arm.move(to: startpunkt)
-
+      
       let lenx:CGFloat = len * sin(winkel / CGFloat(rad2deg))
       let leny:CGFloat = len * cos(winkel / CGFloat(rad2deg))
       arm.relativeLine(to: NSMakePoint(lenx,leny))
@@ -128,26 +129,26 @@ class rRobotarm: NSView {
       let d:CGFloat = 2.0
       let startpunkt1:NSPoint = arm.currentPoint
       let mitterect:NSRect = NSMakeRect(startpunkt1.x-2, startpunkt1.y-2, 2*d, 2*d)      
-
+      
       arm.move(to: startpunkt1)
       arm.appendOval(in: mitterect)
       arm.move(to: startpunkt1)
-
+      
       
       let lenx:CGFloat = len * sin(winkel / CGFloat(rad2deg))
       let leny = len * cos(winkel / CGFloat(rad2deg))
       arm.relativeLine(to: NSMakePoint(lenx,leny))
       needsDisplay = true 
    }
-  
+   
    
    override func draw(_ dirtyRect: NSRect) 
    {
       super.draw(dirtyRect)
       let hgfarbe  = NSColor.init(red: 0.25, 
-                              green: 0.25, 
-                              blue: 0.85, 
-                              alpha: 0.25)
+                                  green: 0.25, 
+                                  blue: 0.85, 
+                                  alpha: 0.25)
       
       let currentContext = NSGraphicsContext.current!.cgContext
       currentContext.setLineWidth(2)

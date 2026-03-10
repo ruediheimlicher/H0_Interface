@@ -33,8 +33,6 @@
 		BD3EE2582ADD7F52008DCF8D /* drehen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BD3EE2572ADD7F52008DCF8D /* drehen.jpg */; };
 		BD4D7FF22A3C5E0300D08EA7 /* Lok512_inv.png in Resources */ = {isa = PBXBuildFile; fileRef = BD4D7FF12A3C5E0300D08EA7 /* Lok512_inv.png */; };
 		BD6A989122EDE8CE001FBADA /* defines.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6A989022EDE8CE001FBADA /* defines.swift */; };
-		BD6A98C522FA07BA001FBADA /* rBasis.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6A98C322FA07BA001FBADA /* rBasis.swift */; };
-		BD6A98C922FA07EB001FBADA /* rTrigo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6A98C722FA07EB001FBADA /* rTrigo.swift */; };
 		BD8702601A06852A00F2C77B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD87025F1A06852A00F2C77B /* AppDelegate.swift */; };
 		BD8702621A06852A00F2C77B /* rViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD8702611A06852A00F2C77B /* rViewController.swift */; };
 		BD8702641A06852A00F2C77B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD8702631A06852A00F2C77B /* Images.xcassets */; };
@@ -47,7 +45,6 @@
 		BDACB33D2537021D00BF7361 /* drehscheibe.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BDACB33C2537021D00BF7361 /* drehscheibe.jpg */; };
 		BDD71BFC26AC40B400213B2E /* usb.png in Resources */ = {isa = PBXBuildFile; fileRef = BDD71BFA26AC40B400213B2E /* usb.png */; };
 		BDD71BFD26AC40B400213B2E /* local.png in Resources */ = {isa = PBXBuildFile; fileRef = BDD71BFB26AC40B400213B2E /* local.png */; };
-		BDE9397A232AC32B005A1A29 /* rRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE93978232AC32B005A1A29 /* rRobot.swift */; };
 		BDFCF9B822DCFD4400335B2B /* usb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFCF9B622DCFD4400335B2B /* usb.swift */; };
 /* End PBXBuildFile section */
 
@@ -79,8 +76,6 @@
 		BD3EE2572ADD7F52008DCF8D /* drehen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = drehen.jpg; sourceTree = "<group>"; };
 		BD4D7FF12A3C5E0300D08EA7 /* Lok512_inv.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Lok512_inv.png; sourceTree = "<group>"; };
 		BD6A989022EDE8CE001FBADA /* defines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = defines.swift; sourceTree = "<group>"; };
-		BD6A98C322FA07BA001FBADA /* rBasis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rBasis.swift; sourceTree = "<group>"; };
-		BD6A98C722FA07EB001FBADA /* rTrigo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rTrigo.swift; sourceTree = "<group>"; };
 		BD87025A1A06852A00F2C77B /* H0_Interface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = H0_Interface.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD87025E1A06852A00F2C77B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD87025F1A06852A00F2C77B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -95,7 +90,6 @@
 		BDACB33C2537021D00BF7361 /* drehscheibe.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = drehscheibe.jpg; sourceTree = "<group>"; };
 		BDD71BFA26AC40B400213B2E /* usb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = usb.png; sourceTree = "<group>"; };
 		BDD71BFB26AC40B400213B2E /* local.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = local.png; sourceTree = "<group>"; };
-		BDE93978232AC32B005A1A29 /* rRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rRobot.swift; sourceTree = "<group>"; };
 		BDFCF9B522DCFD4400335B2B /* hid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hid.h; sourceTree = "<group>"; };
 		BDFCF9B622DCFD4400335B2B /* usb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = usb.swift; sourceTree = "<group>"; };
 		BDFCF9B922DCFDA100335B2B /* Robot_Interface-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Robot_Interface-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -183,9 +177,6 @@
 				BD3E63122309AA600096AC70 /* rDrehknopfView.swift */,
 				BD8702631A06852A00F2C77B /* Images.xcassets */,
 				BD8702651A06852A00F2C77B /* Main.storyboard */,
-				BDE93978232AC32B005A1A29 /* rRobot.swift */,
-				BD6A98C722FA07EB001FBADA /* rTrigo.swift */,
-				BD6A98C322FA07BA001FBADA /* rBasis.swift */,
 				BD87025D1A06852A00F2C77B /* Supporting Files */,
 			);
 			path = Robot_Interface;
@@ -307,14 +298,11 @@
 				BD6A989122EDE8CE001FBADA /* defines.swift in Sources */,
 				BD3E62F0230541910096AC70 /* kreisschnittpunkt.c in Sources */,
 				BD3E63132309AA600096AC70 /* rDrehknopfView.swift in Sources */,
-				BDE9397A232AC32B005A1A29 /* rRobot.swift in Sources */,
-				BD6A98C922FA07EB001FBADA /* rTrigo.swift in Sources */,
 				BD94F6D42F5ED06E006B21BB /* hid.m in Sources */,
 				BD3EE24E2AD9916D008DCF8D /* rAdresstastenView.swift in Sources */,
 				BD94F6CC2F55D9CD006B21BB /* rWeicheSwitchView.swift in Sources */,
 				BD8702621A06852A00F2C77B /* rViewController.swift in Sources */,
 				BD1407412337F6DD00EDC163 /* rRobotarm.swift in Sources */,
-				BD6A98C522FA07BA001FBADA /* rBasis.swift in Sources */,
 				BD3E63112309A96D0096AC70 /* rJoystickView.swift in Sources */,
 				BDFCF9B822DCFD4400335B2B /* usb.swift in Sources */,
 				BD3E630E2305DDE60096AC70 /* geom.swift in Sources */,

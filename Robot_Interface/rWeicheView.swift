@@ -29,10 +29,10 @@ class rWeichenradio: NSButton
    override init(frame frameRect: NSRect) 
    {
       Swift.print("rWeichenradio init frame")
-          super.init(frame: frameRect)
-          configure()
+      super.init(frame: frameRect)
+      configure()
       self.action = #selector(self.report_weichentaste)
-      }
+   }
    required init?(coder  aDecoder : NSCoder) 
    {
       super.init(coder: aDecoder)
@@ -44,34 +44,34 @@ class rWeichenradio: NSButton
    
    func setValue(_ v: Int) 
    {
-          self.radionummer = v
-      }
+      self.radionummer = v
+   }
    
    @objc func report_weichentaste(_ sender: NSButton)
    {
       Swift.print("report_weichentaste  ident: \(self.radionummer) name: \(self.name) tag: \(self.tag)")  
       let status = sender.state
-     
+      
       
       // let ident = self.identifier
       let tastetag = self.tag
       let userinformation = ["message":"weichenaktion","tag":self.tag, ] as [String : Any]
       let nc = NotificationCenter.default
-     
-
+      
+      
       nc.post(name:Notification.Name(rawValue:"tastenstatus"),
               object: nil,
               userInfo: userinformation)
-
+      
    }
    
    @objc func reportRadiotaste()
    {
       
-  
+      
       
    }
-
+   
    
 }// rWeichenradio
 
@@ -82,7 +82,7 @@ class rWeichenradiogruppeH:NSView
    
    var weichengruppenummer:Int = 0
    var weichen: [rWeichenradio] = []
-  
+   
    var hintergrundfarbe = NSColor()
    
    var weichenstatus:[Int] = Array(repeating: 0, count: 2) 
@@ -117,7 +117,7 @@ class rWeichenradiogruppeH:NSView
                                        alpha: 0.25)
       self.layer?.backgroundColor =  hintergrundfarbe.cgColor
       
-       
+      
       let tasteW:CGFloat = 20
       let tasteH:CGFloat = 20
       
@@ -126,20 +126,20 @@ class rWeichenradiogruppeH:NSView
       
       radio0 = rWeichenradio(frame:tastenrect)
       //radio0.setValue(10)
-     
+      
       radio0.name = "radio0"
       
- 
-   //   addSubview(radio0)
+      
+      //   addSubview(radio0)
       let tastenrect1 : NSRect = NSMakeRect(30 ,0 , tasteW,tasteH)
       radio1 = rWeichenradio(frame:tastenrect1)
       //radio1.setValue(11)
       radio1.name = "radio1"
       
-  //    addSubview(radio1)
+      //    addSubview(radio1)
       
       //var gruppenrect0 : NSRect = NSMakeRect(50 ,0 , tasteW,tasteH)
-
+      
       
       
    }
@@ -152,10 +152,10 @@ class rWeichenradiogruppeH:NSView
 class rWeichenradiogruppeV:NSView
 {
    var titelFeld:NSTextField!
-
+   
    var weichengruppenummer:Int = 0
    var weichen: [rWeichenradio] = []
-  
+   
    var hintergrundfarbe: NSColor = .systemBlue
    
    var weichenstatus:[Int] = Array(repeating: 0, count: 2) 
@@ -170,29 +170,29 @@ class rWeichenradiogruppeV:NSView
       
    }
    
-  
+   
    
    
    override init(frame frameRect: NSRect) 
    {
       super.init(frame: frameRect)
       /*
-      self.title = "Meine Box"   // Beispiel: Titel setzen
-      self.boxType = .primary     // Typ der Box
-      self.borderColor = .black   // Rahmenfarbe
-      self.fillColor = .lightGray //
-      self.titlePosition = .noTitle
-      */
-       let w:CGFloat = bounds.size.width
-       let h:CGFloat = bounds.size.height
+       self.title = "Meine Box"   // Beispiel: Titel setzen
+       self.boxType = .primary     // Typ der Box
+       self.borderColor = .black   // Rahmenfarbe
+       self.fillColor = .lightGray //
+       self.titlePosition = .noTitle
+       */
+      let w:CGFloat = bounds.size.width
+      let h:CGFloat = bounds.size.height
       let th:CGFloat = 28
       let tw:CGFloat = 28
-       let titelfeldrect = NSMakeRect(w/2 - tw/2, h/2 - th/2 , th,tw)
-       titelFeld = NSTextField(frame:titelfeldrect )
+      let titelfeldrect = NSMakeRect(w/2 - tw/2, h/2 - th/2 , th,tw)
+      titelFeld = NSTextField(frame:titelfeldrect )
       titelFeld.alignment = .center
       titelFeld.font = NSFont(name: "Helvetica", size: 20)
       addSubview(titelFeld)
-
+      
       self.wantsLayer = true
       hintergrundfarbe  = NSColor.init(red: 0, 
                                        green: 1.0, 
@@ -201,7 +201,7 @@ class rWeichenradiogruppeV:NSView
       self.layer?.backgroundColor =  NSColor.systemGreen.cgColor
       
       
-        
+      
       let tasteW:CGFloat = 20
       let tasteH:CGFloat = 20
       
@@ -212,7 +212,7 @@ class rWeichenradiogruppeV:NSView
       //radio0.setValue(10)
       radio0.name = "radio0"
       
- 
+      
       addSubview(radio0)
       var tastenrect1 : NSRect = NSMakeRect(5 ,64 , tasteW,tasteH)
       radio1 = rWeichenradio(frame:tastenrect1)
@@ -222,7 +222,7 @@ class rWeichenradiogruppeV:NSView
       addSubview(radio1)
       
       //var gruppenrect0 : NSRect = NSMakeRect(50 ,0 , tasteW,tasteH)
-
+      
       
       
    }
@@ -252,9 +252,9 @@ class rWeichenradioView:NSView
    
    let n = 10
    var arr: [Int] = []
- 
    
-  
+   
+   
    @objc func setWeichentasten()
    {
       Swift.print("setWeichentasten \(self.bounds.width)") 
@@ -271,7 +271,7 @@ class rWeichenradioView:NSView
       //gerade.state = (sender == gerade) ? .on : .off
    }
    
-  
+   
    
    required init?(coder  aDecoder : NSCoder) 
    {
@@ -280,7 +280,7 @@ class rWeichenradioView:NSView
       Swift.print("rWeichenradioView init coder")
       
       NotificationCenter.default.addObserver(self, selector:#selector(tastenstatusAktion(_:)),name:NSNotification.Name(rawValue: "tastenstatus"),object:nil)
-
+      
       self.wantsLayer = true
       hintergrundfarbe  = NSColor.init(red: 1, 
                                        green: 0.2, 
@@ -295,7 +295,7 @@ class rWeichenradioView:NSView
       let delta:CGFloat = 48
       identifier = NSUserInterfaceItemIdentifier("111")
       
-       
+      
       weiche = 15
       let titelfeldrect = NSMakeRect(w-24,h-24 , 24,24)
       titelFeld = NSTextField(frame:titelfeldrect )
@@ -310,7 +310,7 @@ class rWeichenradioView:NSView
       {
          //let tastenrect = NSMakeRect(10 ,10 + CGFloat(row) * switchH, 2 * tasteW, switchH)
          let grupperect = NSMakeRect(10 + CGFloat(col) * delta ,8 ,  tasteW, (3*switchH))
-
+         
          let weichenradiogruppe = rWeichenradiogruppeV(frame:(grupperect))
          weichenradiogruppe.wantsLayer = true
          //weichenradiogruppe.layer?.backgroundColor =  NSColor.red.cgColor
@@ -329,8 +329,8 @@ class rWeichenradioView:NSView
          weichenarray.append(weichenradiogruppe)      
          Swift.print("rWeichenradioView row: \(col) nr: \(nr)")
       }
-     
- 
+      
+      
       
       
    }//required
@@ -363,7 +363,7 @@ class rWeichenradioView:NSView
       {
          data_gerade += 4
       }
-    
+      
       
       print("tastenstatusAktion data_gerade: \(data_gerade) data_ablenkung: \(data_ablenkung)")
       
@@ -372,7 +372,7 @@ class rWeichenradioView:NSView
       nc.post(name:Notification.Name(rawValue:"weichenstatus"),
               object: nil,
               userInfo: userinformation)
-
+      
       
    }
    
