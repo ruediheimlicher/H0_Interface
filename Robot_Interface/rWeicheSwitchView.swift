@@ -116,7 +116,7 @@ class rWeichentastenView:NSView
          let tastenrect = NSMakeRect(5,Double(row)*switchH , tasteW,switchH)
 
          let ident = 2000 + 10 * row 
-         print("weichentastenview row: \(row)  ident: \(ident) weiche: \(weiche)")
+         //print("weichentastenview row: \(row)  ident: \(ident) weiche: \(weiche)")
 
          var weichentaste:rWeichentaste = rWeichentaste(frame: tastenrect)
          addSubview(weichentaste)

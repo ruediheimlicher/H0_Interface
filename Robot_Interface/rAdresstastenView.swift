@@ -25,7 +25,7 @@ class rAdresstaste:NSButton
    {
       super.init(coder: aDecoder)
       let t = self.tag
-      Swift.print("rAdresstaste init tag: \(t)")
+      //Swift.print("rAdresstaste init tag: \(t)")
       self.action = #selector(self.report_taste)
       self.controlSize = .mini
    }
@@ -56,7 +56,7 @@ class rAdresstastenView:NSView
    required init?(coder  aDecoder : NSCoder) 
    {
       super.init(coder: aDecoder)
-      Swift.print("rAdresstastenView init")
+      //Swift.print("rAdresstastenView init")
       self.wantsLayer = true
       hintergrundfarbe  = NSColor.init(red: 0.45, 
                                        green: 0.45, 
@@ -90,7 +90,7 @@ class rAdresstastenView:NSView
             let tastenrect = NSMakeRect(Double(col)*w,Double(row)*w, w,h)
             let ident = 1000 + 10 * row + col
             
-            print("adresstastenview row: \(row) col: \(col) ident: \(ident) lok: \(lok)")
+            //print("adresstastenview row: \(row) col: \(col) ident: \(ident) lok: \(lok)")
             
             var taste:rAdresstaste = self.viewWithTag(ident) as! rAdresstaste
             

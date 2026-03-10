@@ -74,6 +74,7 @@ var adressetastenarray:[rAdresstastenView] = []
 
 class rRobot: rViewController 
 {
+  
    
    @IBOutlet weak var Intervalltimer_Feld: NSTextField!
    @IBOutlet weak var Intervalltimer_Stepper: NSStepper!
@@ -154,9 +155,12 @@ class rRobot: rViewController
    
    @IBOutlet  var addresstastenfeld2: rAdresstastenView!
    
+   
+   
+   @IBOutlet weak var BoardFeld: NSTextField!
    @IBOutlet  var addresstastenfeld3: rAdresstastenView!
    
-   @IBOutlet  var weichentastenfeld0: rWeichentastenView!
+   //@IBOutlet  var weichentastenfeld0: rWeichentastenView!
    
    @IBOutlet  var weichentastenfeldB: rWeichenradioView!
    
@@ -276,7 +280,8 @@ class rRobot: rViewController
  
       NotificationCenter.default.addObserver(self, selector:#selector(weichenstatusAktion(_:)),name:NSNotification.Name(rawValue: "weichenstatus"),object:nil)
 
-      
+  //    NotificationCenter.default.addObserver(self, selector:#selector(HIDInputReportReceivedAktion(_:)),name:NSNotification.Name(rawValue: "HIDInputReportReceived"),object:nil)
+
       
       
       
@@ -468,8 +473,7 @@ class rRobot: rViewController
       
       
    }
-   
-   
+ 
    
    @nonobjc override func 
    windowShouldClose(_ sender: Any) 
