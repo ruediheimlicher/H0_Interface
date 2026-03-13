@@ -93,7 +93,7 @@ func getProductID(device: IOHIDDevice) -> Int? {
 // Callback: Called when a device is connected
 func deviceConnectedCallback(context: UnsafeMutableRawPointer?, result: IOReturn, sender: UnsafeMutableRawPointer?, device: IOHIDDevice)
 {
-   print("USB deviceConnectedCallback callbackcounter vor: \(callbackcounter)")
+   //print("USB deviceConnectedCallback callbackcounter vor: \(callbackcounter)")
    if(callbackcounter > 0)
    {
       //print("deviceConnectedCallback return")

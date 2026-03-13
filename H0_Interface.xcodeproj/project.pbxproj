@@ -42,7 +42,10 @@
 		BD94F6CC2F55D9CD006B21BB /* rWeicheSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD94F6CB2F55D9CD006B21BB /* rWeicheSwitchView.swift */; };
 		BD94F6D02F59BEE0006B21BB /* rWeicheView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD94F6CF2F59BEE0006B21BB /* rWeicheView.swift */; };
 		BD94F6D42F5ED06E006B21BB /* hid.m in Sources */ = {isa = PBXBuildFile; fileRef = BD94F6D32F5ED06E006B21BB /* hid.m */; };
+		BD94F6D92F6206E9006B21BB /* WS_Ablenkung.png in Resources */ = {isa = PBXBuildFile; fileRef = BD94F6D72F6206E9006B21BB /* WS_Ablenkung.png */; };
+		BD94F6DA2F6206E9006B21BB /* WS_Gerade.png in Resources */ = {isa = PBXBuildFile; fileRef = BD94F6D82F6206E9006B21BB /* WS_Gerade.png */; };
 		BDACB33D2537021D00BF7361 /* drehscheibe.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BDACB33C2537021D00BF7361 /* drehscheibe.jpg */; };
+		BDD2071D2F640773005B3F82 /* H0_PList.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDD2071C2F640773005B3F82 /* H0_PList.plist */; };
 		BDD71BFC26AC40B400213B2E /* usb.png in Resources */ = {isa = PBXBuildFile; fileRef = BDD71BFA26AC40B400213B2E /* usb.png */; };
 		BDD71BFD26AC40B400213B2E /* local.png in Resources */ = {isa = PBXBuildFile; fileRef = BDD71BFB26AC40B400213B2E /* local.png */; };
 		BDFCF9B822DCFD4400335B2B /* usb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFCF9B622DCFD4400335B2B /* usb.swift */; };
@@ -87,7 +90,10 @@
 		BD94F6CB2F55D9CD006B21BB /* rWeicheSwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rWeicheSwitchView.swift; sourceTree = "<group>"; };
 		BD94F6CF2F59BEE0006B21BB /* rWeicheView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rWeicheView.swift; sourceTree = "<group>"; };
 		BD94F6D32F5ED06E006B21BB /* hid.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = hid.m; sourceTree = "<group>"; };
+		BD94F6D72F6206E9006B21BB /* WS_Ablenkung.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WS_Ablenkung.png; sourceTree = "<group>"; };
+		BD94F6D82F6206E9006B21BB /* WS_Gerade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WS_Gerade.png; sourceTree = "<group>"; };
 		BDACB33C2537021D00BF7361 /* drehscheibe.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = drehscheibe.jpg; sourceTree = "<group>"; };
+		BDD2071C2F640773005B3F82 /* H0_PList.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = H0_PList.plist; sourceTree = "<group>"; };
 		BDD71BFA26AC40B400213B2E /* usb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = usb.png; sourceTree = "<group>"; };
 		BDD71BFB26AC40B400213B2E /* local.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = local.png; sourceTree = "<group>"; };
 		BDFCF9B522DCFD4400335B2B /* hid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hid.h; sourceTree = "<group>"; };
@@ -141,6 +147,8 @@
 				BD140747233A93A900EDC163 /* ok_image.png */,
 				BD140743233A8F6400EDC163 /* notok.png */,
 				BD140742233A8F6300EDC163 /* ok.png */,
+				BD94F6D72F6206E9006B21BB /* WS_Ablenkung.png */,
+				BD94F6D82F6206E9006B21BB /* WS_Gerade.png */,
 			);
 			name = Bilder;
 			sourceTree = "<group>";
@@ -148,6 +156,7 @@
 		BD8702511A06852A00F2C77B = {
 			isa = PBXGroup;
 			children = (
+				BDD2071C2F640773005B3F82 /* H0_PList.plist */,
 				BD87025C1A06852A00F2C77B /* Robot_Interface */,
 				BD87025B1A06852A00F2C77B /* Products */,
 			);
@@ -229,7 +238,7 @@
 				TargetAttributes = {
 					BD8702591A06852A00F2C77B = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = 98GTAN37XF;
+						DevelopmentTeam = 535FNG3TMM;
 						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
@@ -260,6 +269,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD2ED5DB256FAB97008D1E16 /* Lok512.png in Resources */,
+				BD94F6D92F6206E9006B21BB /* WS_Ablenkung.png in Resources */,
+				BD94F6DA2F6206E9006B21BB /* WS_Gerade.png in Resources */,
 				BD3EE2502AD9B93C008DCF8D /* green.png in Resources */,
 				BD3EE2542AD9BBAF008DCF8D /* grey.png in Resources */,
 				BD3EE2582ADD7F52008DCF8D /* drehen.jpg in Resources */,
@@ -278,6 +289,7 @@
 				BD2ED5E0256FAB97008D1E16 /* Lok128_2x.png in Resources */,
 				BD2ED5DC256FAB97008D1E16 /* Lok256_2x.png in Resources */,
 				BD2ED5E1256FAB97008D1E16 /* Lok128.png in Resources */,
+				BDD2071D2F640773005B3F82 /* H0_PList.plist in Resources */,
 				BD3EE2562ADD7CD8008DCF8D /* turn-around-icon.jpg in Resources */,
 				BDD71BFD26AC40B400213B2E /* local.png in Resources */,
 				BD140744233A8F6400EDC163 /* ok.png in Resources */,
@@ -343,9 +355,10 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = 98GTAN37XF;
+				DEVELOPMENT_TEAM = 535FNG3TMM;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -362,7 +375,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -388,10 +401,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 98GTAN37XF;
+				DEVELOPMENT_TEAM = 535FNG3TMM;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -401,7 +415,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
@@ -411,11 +425,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 98GTAN37XF;
+				DEVELOPMENT_TEAM = 535FNG3TMM;
 				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Robot_Interface/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -432,11 +446,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 98GTAN37XF;
+				DEVELOPMENT_TEAM = 535FNG3TMM;
 				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Robot_Interface/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";

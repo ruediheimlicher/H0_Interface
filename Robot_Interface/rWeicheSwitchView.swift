@@ -103,7 +103,7 @@ class rWeichentastenView:NSView
       let switchH = h/Double(numtasten)
       let tasteW:CGFloat = 30
       identifier = NSUserInterfaceItemIdentifier("111")
-      weiche = 10
+      weiche = 4
       
       let titelfeldrect = NSMakeRect(w-24,h-24 , 24,24)
       titelFeld = NSTextField(frame:titelfeldrect )

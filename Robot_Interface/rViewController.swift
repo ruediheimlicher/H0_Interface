@@ -15,6 +15,28 @@ public var boardindex = 0
 
 var globalusbstatus = 0
 
+class rH0Controller:NSViewController ,NSWindowDelegate
+{
+   
+   let notokimage :NSImage = NSImage(named:NSImage.Name(rawValue: "notok_image"))!
+   let okimage :NSImage = NSImage(named:NSImage.Name(rawValue: "ok_image"))!
+   
+   @IBOutlet weak var USBKontrolle: NSImageView!
+   
+   override func viewDidLoad()
+   {
+      super.viewDidLoad()
+      view.window?.delegate = self // https://stackoverflow.com/questions/44685445/trying-to-know-when-a-window-closes-in-a-macos-document-based-application
+      self.view.window?.acceptsMouseMovedEvents = true
+ 
+   }
+   override func viewDidAppear() 
+   {
+      print("viewDidAppear")
+   } // viewDidAppear
+
+} // class rH0Controller
+
 
 class rZeigerView:NSView
 {
@@ -140,7 +162,9 @@ class rDeviceTabViewController: NSTabViewController
    override func tabView(_ tabView: NSTabView, didSelect tabViewItem: NSTabViewItem?) 
    {
       let identifier:String = tabViewItem?.identifier as! String
-      //  print("DeviceTab identifier: \(String(describing: identifier)) usbstatus: \(globalusbstatus)")
+      print("DeviceTab identifier: \(String(describing: identifier)) usbstatus: \(globalusbstatus)")
+      let views = self.view.subviews
+      print("DeviceTab subviews: \(views)")
       // let sup = self.view.superview
       // print("DeviceTab superview: \(sup) ident: \(sup?.identifier)")
       //let supsup = self.view.superview?.superview
@@ -210,7 +234,7 @@ let ANZLOKS:Int = 4
 //MARK: ViewController
 class rViewController: NSViewController,  NSWindowDelegate
 {
-   @IBOutlet weak var USBKontrolle: NSTextField!
+   //@IBOutlet weak var USBKontrolle: NSTextField!
    //@IBOutlet weak var BoardFeld: NSTextField!
    
    let USBATTACHED = 5
@@ -260,7 +284,7 @@ class rViewController: NSViewController,  NSWindowDelegate
    var lookupindex:Int = 0
    var lookuptableArray = [UInt8]()
    
-   
+   var startzeit:Int64 = 0
    
    
    // var usbzugang:
@@ -282,8 +306,7 @@ class rViewController: NSViewController,  NSWindowDelegate
    var achse0_start:UInt16  = ACHSE0_START;
    var achse0_max:UInt16   = ACHSE0_MAX;
    
-   var robotPList = UserDefaults.standard 
-   let defaults = UserDefaults.standard
+   var H0_PList = UserDefaults.standard 
    
    // https://learnappmaking.com/plist-property-list-swift-how-to/
    struct Preferences: Codable {
@@ -294,11 +317,11 @@ class rViewController: NSViewController,  NSWindowDelegate
    }
    
    func windowWillClose(_ aNotification: Notification) {
-      print("windowWillClose")
+      print("VC windowWillClose")
       let nc = NotificationCenter.default
-      nc.post(name:Notification.Name(rawValue:"beenden"),
-              object: nil,
-              userInfo: nil)
+  //    nc.post(name:Notification.Name(rawValue:"beenden"),
+  //            object: nil,
+  //            userInfo: nil)
       
    }
    
@@ -321,6 +344,7 @@ class rViewController: NSViewController,  NSWindowDelegate
       //formatter.roundingMode = .down
       
       
+          
       //USB_OK.backgroundColor = NSColor.greenColor()
       // Do any additional setup after loading the view.
       let newdataname = Notification.Name("newdata")
@@ -338,17 +362,11 @@ class rViewController: NSViewController,  NSWindowDelegate
       NotificationCenter.default.addObserver(self, selector:#selector(weichenstatusAktion(_:)),name:NSNotification.Name(rawValue: "weichenstatus"),object:nil)
       
       
-      defaults.set(25, forKey: "Age")
-      defaults.set(true, forKey: "UseTouchID")
-      defaults.set(CGFloat.pi, forKey: "Pi")
-      
-      defaults.set("Paul Hudson", forKey: "Name")
-      defaults.set(Date(), forKey: "LastRun")
-      
+       
       let name = "John Doe"
       let robot1 = 300
-      //      robotPList.set(name, forKey: "name")
-      robotPList.set(robot1, forKey: "robot1")
+      //      H0_PList.set(name, forKey: "name")
+      H0_PList.set(robot1, forKey: "robot1")
       
       var preferences = Preferences(webserviceURL: "https://api.twitter.com", itemsPerPage: 12, backupEnabled: false,robot1_offset: 300)
       
@@ -436,6 +454,12 @@ class rViewController: NSViewController,  NSWindowDelegate
       self.view.window?.delegate = self // as? NSWindowDelegate 
       
       
+      let h0 = NSTabViewItem(identifier: "H0") as NSTabViewItem
+       let subs = h0.view?.subviews ?? []
+       print("h0.view?.subviews.count: \(subs.count)")
+
+      
+      
       startHIDManager()
       var teensypresent:Int32 = 0
       teensypresent = teensy.dev_present()
@@ -443,8 +467,8 @@ class rViewController: NSViewController,  NSWindowDelegate
       
       if (teensypresent == 0) // Noch nichts eingesteckt
       {
-         USBKontrolle.stringValue = "USB OFF"
-         USB_OK_Feld.image = notokimage
+         //USBKontrolle.stringValue = "USB OFF"
+         //USB_OK_Feld.image = notokimage
          let warnung = NSAlert.init()
          warnung.messageText = "USB"
          warnung.messageText = "viewDidAppear: Kein USB-Device"
@@ -522,8 +546,8 @@ class rViewController: NSViewController,  NSWindowDelegate
       addressarray[loknummer][2] = UInt8(weichenstatus[2])
       addressarray[loknummer][3] = UInt8(weichenstatus[3])
       
-      teensy.write_byteArray[16] = ablenkung // funktion
-      teensy.write_byteArray[17] = weiche // speed
+      teensy.write_byteArray[16] = ablenkung    // funktion
+      teensy.write_byteArray[17] = weiche       // speed
       
       for i in 0...3
       {
@@ -597,10 +621,15 @@ class rViewController: NSViewController,  NSWindowDelegate
    @objc func beendenAktion(_ notification:Notification) 
    {
       
-      print("beendenAktion")
+      print("VC beendenAktion")
       
-      
-      
+      /*
+      UserDefaults.standard.set(a0.indexOfSelectedItem, forKey: "a0index")
+      UserDefaults.standard.set(a1.indexOfSelectedItem, forKey: "a1index")
+      UserDefaults.standard.set(a2.indexOfSelectedItem, forKey: "a2index")
+      UserDefaults.standard.set(a3.indexOfSelectedItem, forKey: "a3index")
+*/
+     
    }
    
    
@@ -623,112 +652,6 @@ class rViewController: NSViewController,  NSWindowDelegate
       //print("xxx joystickAktion:\t \(punkt)")
       //print("x: \(punkt.x) y: \(punkt.y) index: \(wegindex) first: \(first)")
       
-      /*
-       teensy.write_byteArray[0] = SET_ROB // Code 
-       
-       // Horizontal Pot0
-       let w = Double(Joystickfeld.bounds.size.width) // Breite Joystickfeld
-       let faktorw:Double = (Pot0_Slider.maxValue - Pot0_Slider.minValue) / w
-       //      print("w: \(w) faktorw: \(faktorw)")
-       var x = Double(punkt.x)
-       if (x > w)
-       {
-       x = w
-       }
-       goto_x.integerValue = Int(Float(x*faktorw))
-       joystick_x.integerValue = Int(Float(x*faktorw))
-       goto_x_Stepper.integerValue = Int(Float(x*faktorw))
-       let achse0 = UInt16(Float(x*faktorw) * FAKTOR0)
-       //print("x: \(x) achse0: \(achse0)")
-       teensy.write_byteArray[ACHSE0_BYTE_H] = UInt8((achse0 & 0xFF00) >> 8) // hb
-       teensy.write_byteArray[ACHSE0_BYTE_L] = UInt8((achse0 & 0x00FF) & 0xFF) // lb
-       
-       
-       let h = Double(Joystickfeld.bounds.size.height)
-       let faktorh:Double = (Pot1_Slider.maxValue - Pot1_Slider.minValue) / h
-       
-       let faktorz = 1
-       //     print("h: \(h) faktorh: \(faktorh)")
-       var y = Double(punkt.y)
-       if (y > h)
-       {
-       y = h
-       }
-       let z = 0
-       goto_y.integerValue = Int(Float(y*faktorh))
-       joystick_y.integerValue = Int(Float(y*faktorh))
-       goto_y_Stepper.integerValue = Int(Float(y*faktorh))
-       let achse1 = UInt16(Float(y*faktorh) * FAKTOR1)
-       //print("y: \(y) achse1: \(achse1)")
-       teensy.write_byteArray[ACHSE1_BYTE_H] = UInt8((achse1 & 0xFF00) >> 8) // hb
-       teensy.write_byteArray[ACHSE1_BYTE_L] = UInt8((achse1 & 0x00FF) & 0xFF) // lb
-       let achse2 =  UInt16(Float(z*faktorz) * FAKTOR2)
-       teensy.write_byteArray[ACHSE2_BYTE_H] = UInt8((achse2 & 0xFF00) >> 8) // hb
-       teensy.write_byteArray[ACHSE2_BYTE_L] = UInt8((achse2 & 0x00FF) & 0xFF) // lb
-       
-       
-       let message:String = info?["message"] as! String
-       if ((message == "mousedown") && (first >= 0))// Polynom ohne mousedragged
-       {
-       teensy.write_byteArray[0] = SET_RING
-       let anz = servoPfad?.anzahlPunkte()
-       if (wegindex > 1)
-       {
-       print("")
-       print("joystickAktion cont achse0: \(achse0) achse1: \(achse1)  achse2: \(achse2) anz: \(String(describing: anz)) wegindex: \(wegindex)")
-       
-       let lastposition = servoPfad?.pfadarray.last
-       
-       let lastx:Int = Int(lastposition!.x)
-       let nextx:Int = Int(achse0)
-       let hypx:Int = (nextx - lastx) * (nextx - lastx)
-       
-       let lasty:Int = Int(lastposition!.y)
-       let nexty:Int = Int(achse1)
-       let hypy:Int = (nexty - lasty) * (nexty - lasty)
-       
-       let lastz:Int = Int(lastposition!.z)
-       let nextz:Int = Int(achse2)
-       let hypz:Int = (nextz - lastz) * (nextz - lastz)
-       
-       print("joystickAktion lastx: \(lastx) nextx: \(nextx) lasty: \(lasty) nexty: \(nexty)")
-       
-       let hyp:Float = (sqrt((Float(hypx + hypy + hypz))))
-       
-       let anzahlsteps = hyp/schrittweiteFeld.floatValue
-       print("joystickAktion hyp: \(hyp) anzahlsteps: \(anzahlsteps) ")
-       
-       teensy.write_byteArray[HYP_BYTE_H] = UInt8((Int(hyp) & 0xFF00) >> 8) // hb
-       teensy.write_byteArray[HYP_BYTE_L] = UInt8((Int(hyp) & 0x00FF) & 0xFF) // lb
-       
-       teensy.write_byteArray[STEPS_BYTE_H] = UInt8((Int(anzahlsteps) & 0xFF00) >> 8) // hb
-       teensy.write_byteArray[STEPS_BYTE_L] = UInt8((Int(anzahlsteps) & 0x00FF) & 0xFF) // lb
-       
-       teensy.write_byteArray[INDEX_BYTE_H] = UInt8(((wegindex-1) & 0xFF00) >> 8) // hb // hb // Start, Index 0
-       teensy.write_byteArray[INDEX_BYTE_L] = UInt8(((wegindex-1) & 0x00FF) & 0xFF) // lb
-       
-       print("joystickAktion hypx: \(hypx) hypy: \(hypy) hypz: \(hypz) hyp: \(hyp)")
-       
-       }
-       else
-       {
-       print("joystickAktion start achse0: \(achse0) achse1: \(achse1)  achse2: \(achse2) anz: \(anz) wegindex: \(wegindex)")
-       teensy.write_byteArray[HYP_BYTE_H] = 0 // hb // Start, keine Hypo
-       teensy.write_byteArray[HYP_BYTE_L] = 0 // lb
-       teensy.write_byteArray[INDEX_BYTE_H] = 0 // hb // Start, Index 0
-       teensy.write_byteArray[INDEX_BYTE_L] = 0 // lb
-       
-       }
-       
-       servoPfad?.addPosition(newx: achse0, newy: achse1, newz: 0)
-       }
-       
-       if (usbstatus > 0)
-       {
-       let senderfolg = teensy.send_USB()
-       //print("report_Slider0 senderfolg: \(senderfolg)")
-       }
-       */
    }
    
    
@@ -1061,6 +984,224 @@ class rViewController: NSViewController,  NSWindowDelegate
       
    }
    
+   @IBAction  func report_Slider(_ sender: NSSlider)
+   {
+      let t = sender.tag
+      let loktag = sender.tag - 1000
+      //     teensy.write_byteArray[0] = LOK_0_SPEED // Code 
+      teensy.write_byteArray[0] = speedcodearray[loktag]
+      //print("\nRobot report_Slider loktag \(loktag) IntVal: \(sender.intValue) ")
+      //     lok0array[12] = LOK_0_SPEED
+      //   print("report_Slider funktioncoderray: \(funktioncoderray) ")
+      
+      let pos = sender.floatValue
+      
+      //    let intpos = UInt8(pos * LOK_FAKTOR0)
+      let intpos = UInt8(pos)
+      //    let Ustring = formatter.string(from: NSNumber(value: intpos))
+      //    var speed:UInt8 =  intpos
+      var speed:UInt8 =  UInt8(sender.intValue)
+      
+      //print("report_Slider pos: \(pos) intpos: \(intpos)  speed: \(speed)")
+      //      print("report_Slider0 speed: \(speed) richtung: \(richtung)")
+      if speed > 0
+      {
+         speed += 1 // speed 1 ist Richtungsumschaltung
+      }
+      
+      speedarray[loktag] = speed
+      
+      print("Lok: \(loktag) speedarray: \(speedarray)")
+      //   print("lok0array vor loadLokAddress: \(lok0array)")
+      
+      loadLokAddress(lok: loktag) // lokaddress in write_byteArray
+      
+      
+      teensy.write_byteArray[17] = speed
+      
+            print("teensy.write_byteArray:")
+            print("\(teensy.write_byteArray[8...18])")
+      
+      (self.view.viewWithTag(2000 + loktag) as! NSTextField).intValue = Int32(pos)
+      
+      //print("report_Slider usbstatus: \(usbstatus)")
+      //print("report_Slider loknummer: \(loknummer.indexOfSelectedItem) ")
+      //print("report_Slider speed: \(speed)")
+      //teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
+      teensy.write_byteArray[20] = UInt8(loktag)
+      
+      //print("lok: \(loktag) write_byteArray: \(teensy.write_byteArray)")
+      if (usbstatus > 0)
+      {
+         let senderfolg = teensy.send_USB()
+         if(senderfolg == 0)
+         {
+            print("Robot report_Slider senderfolg: \(senderfolg)")
+         }
+         //print("Robot report_Slider senderfolg: \(senderfolg)")
+      }
+   }
+   
+   @objc func loadLokAddress(lok:Int)
+   {
+      //print("loadLokAddress lok: \(lok)")
+      for i in 0...3
+      {
+         teensy.write_byteArray[8 + i] = addressarray[lok][i]
+         //print(addressarray[lok][i])
+      }
+      //print("loadLokAddress\(teensy.write_byteArray[8...11])")
+   } // loadLokAddress
+   
+   
+   @objc func loadFunktion(lok:Int)
+   {
+      
+      let loktag = Lok_2_FunktionTaste.tag - 3000
+      if loktag == lok
+      {
+         var funktion:UInt8 = 0
+         if Lok_2_FunktionTaste.state == .on
+         {
+            funktion = 1
+         }
+         teensy.write_byteArray[16] = funktion // Richtung
+      }
+      
+   }
+   
+   @objc func loadSpeed(lok:Int)
+   {
+      teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
+      teensy.write_byteArray[17] = speedarray[lok]
+   }
+   
+   @IBAction  func report_Speed_auto(_ sender: NSButton)
+   {
+      let autospeed = sender.state.rawValue
+      
+      Pot0_Slider.intValue = 0
+      speedautocounter = 0 
+      
+      startzeit = Int64(NSDate().timeIntervalSince1970)
+      if autospeed == 1
+      {
+         let minspeed = 0
+         let maxspeed = 14
+         let step = 1
+         let interval:Double = 2
+         
+         var userinformation:NSMutableDictionary = ["minspeed": minspeed, "maxspeed": maxspeed, "step": step, "speedautocounter":speedautocounter] //as! [String : Int]
+         var timer : Timer? = nil
+         
+         timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(speed_auto(_:)), userInfo: userinformation, repeats: true)
+      }
+      else 
+      {
+         print("auto off")
+      }
+   }
+   
+   
+   @objc func speed_auto(_ timer: Timer)
+   {
+      if (autospeedtaste.state.rawValue == 1)
+      {
+         // print("speed_auto : \( timer.userInfo)")
+         //       if  var dic = timer.userInfo as? NSMutableDictionary
+         //       {
+         //print("step: \(dic["step"])")
+         speedautocounter += 1
+         if speedautocounter > sinarray.count - 1
+         {
+            speedautocounter = 0 // neu beginnen
+         }
+         //      var tempmin:Int = dic["minspeed"] as! Int
+         //      var tempmax:Int = dic["maxspeed"] as! Int
+         //       var tempspeedautocounter = dic["speedautocounter"] as! Int
+         
+         var       tempmin = autospeedminstepper.integerValue
+         var       tempmax = autospeedmaxstepper.integerValue
+         if !(tempmax > tempmin)
+         {
+            tempmax = tempmin + 1
+         }
+         
+         var sinint = sinarray[speedautocounter]
+         
+         // https://deepbluembedded.com/map-function-embedded-c/#:~:text=The%20map%20function%20is%20commonly,certain%20domain%20to%20another%20domain.
+         //return ((((IN - INmin)*(OUTmax - OUTmin))/(INmax - INmin)) + OUTmin);
+         
+         
+         var INint = Int(sinint)
+         var INmin = Int(sinarray.min() ?? 1)
+         var INmax = Int(sinarray.max() ?? 2)
+         
+         var OUTmin = tempmin
+         var OUTmax = tempmax
+         
+         var outint = (((INint - INmin)*(OUTmax - OUTmin)) / (INmax - INmin)) + OUTmin
+         
+         print("speedautocounter : \( speedautocounter) sinint: \(sinint) outint: \(outint)")
+         teensy.write_byteArray[0] = speedcodearray[0]
+         teensy.write_byteArray[17] = UInt8(outint)
+         autospeedrandomfeld.integerValue = outint
+         
+         
+         //return
+         
+         var randomInt = Int.random(in: tempmin..<tempmax)
+         if randomInt > 0 
+         {
+            randomInt += 1
+         }
+         
+         
+         teensy.write_byteArray[0] = speedcodearray[0]
+         
+         /*
+          if speedautocounter % 5 == 0
+          {
+          teensy.write_byteArray[17] = 0
+          autospeedrandomfeld.integerValue = 0
+          }
+          else
+          {
+          teensy.write_byteArray[17] = UInt8(randomInt)
+          autospeedrandomfeld.integerValue = randomInt
+          //      dic["step"] = randomInt
+          }
+          */
+         //      var date = Int64(NSDate().timeIntervalSince1970) - startzeit            
+         
+         
+         //print("speed_auto : \( autospeedrandomfeld.integerValue) time: \(date)")
+         
+         loadLokAddress(lok: 0)
+         //teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
+         if (usbstatus > 0)
+         {
+            let senderfolg = teensy.send_USB()
+            //print("Robot report_Slider senderfolg: \(senderfolg)")
+         }
+         //      }
+      }
+      else 
+      {
+         timer.invalidate()
+         teensy.write_byteArray[17] = 0
+         loadLokAddress(lok: 0)
+         //teensy.write_byteArray[20] = UInt8(loknummer.indexOfSelectedItem)
+         if (usbstatus > 0)
+         {
+            let senderfolg = teensy.send_USB()
+            //print("Robot report_Slider senderfolg: \(senderfolg)")
+         }
+      }
+      
+   }
+   
+   
    @IBAction func report_Slider_sin(_ sender: NSSlider)
    {
       teensy.write_byteArray[0] = SET_2 // Code 
@@ -1226,8 +1367,8 @@ class rViewController: NSViewController,  NSWindowDelegate
             //self.Attach_USB()
          }
          
-         USB_OK_Feld.image = okimage
-         USBKontrolle.stringValue = "USB ON"
+         //USB_OK_Feld.image = okimage
+         //USBKontrolle.stringValue = "USB ON"
          globalusbstatus = 1
          usbstatus = 1
          print("ViewController usbattachAktion USBATTACHED")
@@ -1236,10 +1377,10 @@ class rViewController: NSViewController,  NSWindowDelegate
       
       else if (status == USBREMOVED)
       {
-         USB_OK_Feld.image = notokimage
+        //USB_OK_Feld.image = notokimage
          globalusbstatus = 0
          usbstatus = 0
-         USBKontrolle.stringValue="USB OFF"
+         //USBKontrolle.stringValue="USB OFF"
          print("\nViewController usbattachAktion USBREMOVED ")
          //       teensy.usb_free()
          
@@ -1464,6 +1605,10 @@ class rViewController: NSViewController,  NSWindowDelegate
       
    }
    
+   override var acceptsFirstResponder : Bool {
+          return true
+   }
+
    // https://nabtron.com/quit-cocoa-app-window-close/
    
    @nonobjc func windowShouldClose(_ sender: Any) 
@@ -1572,6 +1717,34 @@ class rViewController: NSViewController,  NSWindowDelegate
    
    @IBOutlet weak var schrittweiteFeld: NSTextField!
    
+   @IBOutlet weak var pos0Feld: NSTextField!
+   @IBOutlet weak var pos1Feld: NSTextField!
+   @IBOutlet weak var pos2Feld: NSTextField!
+   
+   @IBOutlet weak var intpos0Feld: NSTextField!
+   @IBOutlet weak var intpos1Feld: NSTextField!
+   @IBOutlet weak var intpos2Feld: NSTextField!
+   
+   @IBOutlet weak var TeensyPot0Feld: NSTextField!
+   @IBOutlet weak var TeensyPot1Feld: NSTextField!
+   @IBOutlet weak var TeensyPot2Feld: NSTextField!
+   @IBOutlet weak var TeensyPot3Feld: NSTextField!
+   
+   @IBOutlet weak var reverscountFeld: NSTextField!
+   
+   @IBOutlet weak var LocalTaste: NSButton!
+   
+   @IBOutlet weak var Lok_0_RichtungTaste: NSButton!
+   @IBOutlet weak var Lok_1_RichtungTaste: NSButton!
+   @IBOutlet weak var Lok_2_RichtungTaste: NSButton!
+   
+   @IBOutlet weak var Lok_0_FunktionTaste: NSButton!
+   @IBOutlet weak var Lok_1_FunktionTaste: NSButton!
+   @IBOutlet weak var Lok_2_FunktionTaste: NSButton!
+   
+   @IBOutlet weak var Weiche0_Slider: NSSliderCell!
+
+   
    @IBOutlet weak var Pot0_Feld: NSTextField!
    @IBOutlet weak var Pot0_Slider: NSSlider!
    @IBOutlet weak var Pot0_Stepper_H: NSStepper!
@@ -1621,6 +1794,39 @@ class rViewController: NSViewController,  NSWindowDelegate
    
    @IBOutlet weak var clear_Ring: NSButton!
    @IBOutlet weak var emitterFeld: NSTextField!
+   @IBOutlet weak var loknummer: NSSegmentedControl!
+   @IBOutlet weak var autospeedtaste: NSButton!
+   @IBOutlet weak var autospeedmaxstepper: NSStepper!
+   @IBOutlet weak var autospeedmaxfeld: NSTextField!
+   @IBOutlet weak var autospeedminstepper: NSStepper!
+   @IBOutlet weak var autospeedminfeld: NSTextField!
+   @IBOutlet weak var autospeedrandomfeld: NSTextField!
+   @IBOutlet weak var lookuptablepop: NSPopUpButton!
+   @IBOutlet weak var lookupindexFeld: NSTextField!
+   
+   @IBOutlet weak var autoscantaste: NSButton!
+   
+   @IBOutlet weak var Drehknopf_Feld: NSTextField!
+   @IBOutlet weak var Drehknopf_Feld_raw: NSTextField!
+   
+   @IBOutlet weak var Drehknopf_Stepper_H: NSStepper!
+   @IBOutlet weak var Drehknopf_Stepper_L: NSStepper!
+   @IBOutlet weak var Drehknopf_Stepper_L_Feld: NSTextField!
+   @IBOutlet weak var Drehknopf_Stepper_H_Feld: NSTextField!
+   
+   @IBOutlet weak var Intervalltimer_Feld: NSTextField!
+   @IBOutlet weak var Intervalltimer_Stepper: NSStepper!
+   
+   @IBOutlet weak var Pause_Feld: NSTextField!
+   @IBOutlet weak var Pause_Stepper: NSStepper!
+   
+   @IBOutlet  weak var RobotarmFeld:rRobotarm!
+
+   
+   var scanautocounter:Int = 0
+   var scanstartzeit:Int64 = 0
+   
+
    
 }
 

@@ -79,7 +79,6 @@ class rWeichenradio: NSButton
 
 class rWeichenradiogruppeH:NSView
 {
-   
    var weichengruppenummer:Int = 0
    var weichen: [rWeichenradio] = []
    
@@ -206,18 +205,27 @@ class rWeichenradiogruppeV:NSView
       let tasteH:CGFloat = 20
       
       var tastenrect : NSRect = NSMakeRect(5 ,10 , tasteW,tasteH)
-      var radiotaste0 = rWeichenradio(frame:tastenrect)
-      
+      //var radiotaste0 = rWeichenradio(frame:tastenrect)
+      //let weichegerade:NSImage = NSImage(name: "WS_Gerade")!
+      let weichegerade :NSImage = NSImage(named:NSImage.Name(rawValue: "WS_Gerade"))!
+
+      let weicheablenkung :NSImage = NSImage(named:NSImage.Name(rawValue: "WS_Ablenkung"))!
+      //radiotaste0.image = weichegerade
+      //radiotaste0.imagePosition = .imageOnly
       radio0 = rWeichenradio(frame:tastenrect)
       //radio0.setValue(10)
       radio0.name = "radio0"
-      
+      //radio0.image = weichegerade
+      radio0.imagePosition = .imageOnly
+      radio0.state = .on
       
       addSubview(radio0)
       var tastenrect1 : NSRect = NSMakeRect(5 ,64 , tasteW,tasteH)
       radio1 = rWeichenradio(frame:tastenrect1)
       //radio1.setValue(11)
       radio1.name = "radio1"
+      //radio1.image = weicheablenkung
+      radio0.imagePosition = .imageOnly
       
       addSubview(radio1)
       
@@ -241,6 +249,7 @@ class rWeichenradioView:NSView
    var weiche:Int = 0
    
    var weichenradiogruppe0:rWeichenradiogruppeH!
+   
    var weichenradiogruppe1:rWeichenradiogruppeH!
    var weichengruppenummer:Int = 0 
    var titelFeld:NSTextField!
@@ -294,7 +303,7 @@ class rWeichenradioView:NSView
       let tasteW:CGFloat = 32
       let delta:CGFloat = 48
       identifier = NSUserInterfaceItemIdentifier("111")
-      
+      //tag = 111
       
       weiche = 15
       let titelfeldrect = NSMakeRect(w-24,h-24 , 24,24)
@@ -327,7 +336,7 @@ class rWeichenradioView:NSView
          //weichenradiogruppe.radio1.action = #selector(self.weichenaktion)
          addSubview(weichenradiogruppe)
          weichenarray.append(weichenradiogruppe)      
-         Swift.print("rWeichenradioView row: \(col) nr: \(nr)")
+         Swift.print("rWeichenradioView row: \(col) nr: \(nr) tag: \(self.tag)")
       }
       
       
